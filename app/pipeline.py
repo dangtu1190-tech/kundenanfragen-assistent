@@ -46,6 +46,39 @@ def _reichere_an(ergebnis: dict, mail: dict, systeme, heute: date) -> None:
         extraktion["unklarheiten"] = list(dict.fromkeys(vorhanden + neue_unklarheiten))
 
 
+def extrahiere_und_bewerte(mail: dict, client, heute: date) -> dict:
+    """Schlanker Ausschnitt der Pipeline für den Modellvergleich (`app.vergleich`).
+
+    Nur Pseudonymisierung, Extraktion, Rücksetzen und Regeln, ohne Systeme und
+    ohne Ticket - der Modellvergleich braucht weder Systemdaten noch ein CRM.
+    Bewusst nicht in `verarbeite` eingebaut: dort müsste die Dringlichkeitsbegründung
+    (`dringlichkeit_grund`) ein zweites Mal aus den Regeln geholt werden, weil
+    dieser schlanke Ausschnitt sie nicht zurückgibt - kein echtes Wiederverwenden,
+    nur verschobener Code. `verarbeite` bleibt deshalb unverändert.
+    """
+    start = time.perf_counter()
+    pseudonym_text, tabelle = anonymisiere(mail["text"], mail.get("absender_name"), mail.get("absender_firma"))
+    ergebnis = {
+        "mail_id": mail["id"], "extraktion": None, "extraktion_fehler": None,
+        "extraktion_hinweise": [], "zustaendigkeit": "kundenservice", "dringlichkeit": "mittel",
+    }
+    try:
+        extraktion, hinweise = extrahiere(client, pseudonym_text, heute)
+    except ExtraktionsFehler as e:
+        ergebnis["extraktion_fehler"] = str(e)
+    except Exception as e:  # Netz, Anbieter, Schlüssel
+        ergebnis["extraktion_fehler"] = f"Modellaufruf fehlgeschlagen: {type(e).__name__}: {e}"
+    else:
+        ex = zuruecksetzen(extraktion.model_dump(), tabelle)
+        ergebnis["extraktion"] = ex
+        ergebnis["extraktion_hinweise"] = hinweise
+        kategorien = [a["kategorie"] for a in ex["anliegen"]]
+        ergebnis["zustaendigkeit"] = regeln.zustaendigkeit(kategorien)
+        ergebnis["dringlichkeit"], _ = regeln.dringlichkeit(ex, heute)
+    ergebnis["dauer_ms"] = int((time.perf_counter() - start) * 1000)
+    return ergebnis
+
+
 def verarbeite(mail: dict, client, heute: date, systeme=None) -> dict:
     start = time.perf_counter()
     pseudonym_text, tabelle = anonymisiere(mail["text"], mail.get("absender_name"), mail.get("absender_firma"))
