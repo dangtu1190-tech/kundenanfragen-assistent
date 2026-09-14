@@ -3,64 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Serviceanfragen-Assistent – Demo</title>
+<title>Kundenanfragen-Assistent</title>
 <style>
+  /* ---- Grundgerüst ----------------------------------------------------- */
   :root { --akzent: #0b4f9c; --bg: #ffffff; --bg-alt: #f4f5f7; --rand: #d8dbe0; --text: #1c2126; --muted: #5a6472; }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, Segoe UI, Arial, sans-serif; background: var(--bg-alt); color: var(--text); }
   header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 20px; background: var(--akzent); color: #fff; }
   header .untertitel { font-size: 12px; opacity: .85; margin-top: 2px; }
   header h1 { font-size: 18px; margin: 0; font-weight: 600; }
-  #kopf-info { font-size: 13px; text-align: right; }
+  #kopf-info { font-size: 13px; text-align: right; max-width: 620px; }
+  #kopf-info .badge { white-space: normal; text-align: left; }
+
+  /* ---- Kennzeichen: Status, Zuständigkeit, Dringlichkeit, Maschine ----- */
   .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 12px; color: #fff; }
   .badge.unverarbeitet { background: #7a8290; }
   .badge.offen { background: #2563a8; }
   .badge.pruefung_noetig { background: #c1720a; }
   .badge.freigegeben { background: #1a7a3c; }
   .badge.abgelehnt { background: #b3261e; }
-  #layout { display: grid; grid-template-columns: 260px 1fr 380px; gap: 12px; padding: 12px; align-items: start; }
-  @media (max-width: 1000px) { #layout { grid-template-columns: 1fr; } }
+  .badge.neutral { background: #5a6472; }
+  .badge.z-kundenservice { background: #2563a8; }
+  .badge.z-veredelung { background: #6b3fa0; }
+  .badge.z-vertrieb { background: #0f7a6c; }
+  .badge.z-buchhaltung { background: #8a6d1f; }
+  .badge.d-niedrig { background: #6f7d6f; }
+  .badge.d-mittel { background: #c1720a; }
+  .badge.d-hoch { background: #b3261e; }
+  .badge.m-laeuft { background: #1a7a3c; }
+  .badge.m-stillstand { background: #7a8290; }
+  .badge.m-stoerung { background: #b3261e; }
+
+  /* ---- Spalten ---------------------------------------------------------- */
+  #layout { display: grid; grid-template-columns: 270px 1fr 380px; gap: 12px; padding: 12px; align-items: start; }
+  @media (max-width: 1100px) { #layout { grid-template-columns: 1fr; } }
   .spalte { background: var(--bg); border: 1px solid var(--rand); border-radius: 4px; padding: 10px; min-width: 0; overflow-x: auto; }
-  #kopf-info .badge { white-space: normal; text-align: left; }
   .spalte h2 { font-size: 14px; margin: 0 0 8px; color: var(--akzent); }
+  h3 { font-size: 13px; margin: 12px 0 4px; color: var(--akzent); }
+  h4 { font-size: 12px; margin: 0 0 2px; color: var(--akzent); letter-spacing: .3px; }
+  .unter { font-size: 12px; font-weight: 600; margin-top: 8px; }
+
+  /* ---- Mailliste -------------------------------------------------------- */
   #mailliste { list-style: none; margin: 8px 0 0; padding: 0; }
   #mailliste li { padding: 6px 4px; border-bottom: 1px solid var(--rand); cursor: pointer; font-size: 13px; }
   #mailliste li:hover { background: var(--bg-alt); }
   #mailliste li.aktiv { background: #e7eefa; }
   #mailliste .kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  #mailliste .kopf .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #mailliste .kopf .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
   #mailliste .badge { flex: none; }
-  #mailliste .betreff { color: var(--muted); display: block; }
+  #mailliste .firma, #mailliste .betreff { color: var(--muted); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #mailliste .kennzeichen { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+
+  /* ---- Bedienelemente --------------------------------------------------- */
   button { font-family: inherit; font-size: 13px; padding: 6px 10px; border: 1px solid var(--akzent); background: #fff; color: var(--akzent); border-radius: 3px; cursor: pointer; }
   button:hover { background: #e7eefa; }
   button:disabled { opacity: .5; cursor: not-allowed; }
-  button.primaer { background: var(--akzent); color: #fff; }
+  button.primaer, button.gewaehlt { background: var(--akzent); color: #fff; }
   .knopfleiste { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-  .vergleich { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media (max-width: 700px) { .vergleich { grid-template-columns: 1fr; } }
-  .textfeld { border: 1px solid var(--rand); border-radius: 4px; padding: 8px; background: var(--bg-alt); white-space: pre-wrap; font-size: 13px; min-height: 120px; }
+  input[type=text] { width: 100%; font-family: inherit; font-size: 13px; padding: 4px 6px; border: 1px solid var(--rand); border-radius: 3px; margin-bottom: 6px; }
+  textarea { width: 100%; min-height: 180px; font-family: inherit; font-size: 13px; border: 1px solid var(--rand); border-radius: 4px; padding: 6px; }
+  label { font-size: 12px; color: var(--muted); display: block; margin-top: 4px; }
+
+  /* ---- Inhaltsblöcke ---------------------------------------------------- */
+  .textfeld { border: 1px solid var(--rand); border-radius: 4px; padding: 8px; background: var(--bg-alt); white-space: pre-wrap; font-size: 13px; min-height: 140px; }
   mark.orig { background: #fdeb8f; color: inherit; }
   mark.ph { background: #cfe0f5; color: inherit; }
-  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 6px; }
   table th, table td { border: 1px solid var(--rand); padding: 4px 6px; text-align: left; vertical-align: top; }
   table th { background: var(--bg-alt); }
+  table th.feld { width: 34%; font-weight: 600; }
+  ul.knapp { margin: 0; padding-left: 18px; }
+  .block { border: 1px solid var(--rand); border-radius: 4px; padding: 8px; margin-top: 8px; }
   .fehlerkasten { border: 1px solid #b3261e; background: #fbe9e8; color: #7a1a15; padding: 8px; border-radius: 4px; margin-top: 8px; font-size: 13px; }
-  textarea { width: 100%; min-height: 180px; font-family: inherit; font-size: 13px; border: 1px solid var(--rand); border-radius: 4px; padding: 6px; }
+  .hinweiskasten { border: 1px solid #c1720a; background: #fdf4e0; color: #6d4405; padding: 8px; border-radius: 4px; margin-top: 8px; font-size: 13px; }
+  .fehlerkasten strong, .hinweiskasten strong { display: block; margin-bottom: 4px; }
   .fussnote { font-size: 11px; color: var(--muted); margin-top: 6px; }
-  input[type=text] { width: 100%; font-family: inherit; font-size: 13px; padding: 4px 6px; border: 1px solid var(--rand); border-radius: 3px; margin-bottom: 6px; }
-  label { font-size: 12px; color: var(--muted); display: block; margin-top: 4px; }
   .hinweis { font-size: 12px; color: var(--muted); }
+  .leer { color: var(--muted); font-style: italic; }
   #ladefehler { display: none; margin: 12px 20px; padding: 10px; border: 1px solid #b3261e; background: #fbe9e8; color: #7a1a15; border-radius: 4px; }
-  h3 { font-size: 13px; margin: 10px 0 4px; color: var(--akzent); }
 </style>
 </head>
 <body>
 <header>
-  <div><h1>Serviceanfragen-Assistent – Demo</h1><div class="untertitel">Eigenprojekt für Bewerbungen. Alle Kundenmails und Kundendaten sind erfunden.</div></div>
-  <div id="kopf-info">lädt …</div>
+  <div>
+    <h1>Kundenanfragen-Assistent</h1>
+    <div class="untertitel" id="untertitel">Berufskleidung Nord GmbH, Kundenservice (Demo)</div>
+  </div>
+  <div id="kopf-info">lädt ...</div>
 </header>
 <div id="ladefehler"></div>
+
 <div id="layout">
+  <!-- ============ Linke Spalte: Posteingang ============================= -->
   <section class="spalte" id="spalte-links">
     <h2>Posteingang</h2>
     <div class="knopfleiste">
@@ -70,6 +104,7 @@
     <div id="neue-mail-formular" style="display:none">
       <label>Absender</label><input type="text" id="f-absender">
       <label>Firma</label><input type="text" id="f-firma">
+      <label>E-Mail</label><input type="text" id="f-email">
       <label>Betreff</label><input type="text" id="f-betreff">
       <label>Text</label><textarea id="f-text" style="min-height:100px"></textarea>
       <div class="knopfleiste">
@@ -80,34 +115,39 @@
     <ul id="mailliste"></ul>
   </section>
 
+  <!-- ============ Mittlere Spalte: Analyse ============================== -->
   <section class="spalte" id="spalte-mitte">
     <div id="mitte-leer" class="hinweis">Keine Mail ausgewählt.</div>
     <div id="mitte-inhalt" style="display:none">
-      <div class="vergleich">
-        <div>
-          <h3>So sieht es der Mitarbeiter</h3>
-          <div class="textfeld" id="feld-roh"></div>
-        </div>
-        <div>
-          <h3>Das bekam das Modell</h3>
-          <div class="textfeld" id="feld-pseudonym"></div>
-        </div>
+      <h2>Analyse</h2>
+      <div class="knopfleiste">
+        <button id="btn-roh" class="gewaehlt">Originaltext (Mitarbeiter)</button>
+        <button id="btn-pseudonym">Text für das Modell</button>
       </div>
+      <div class="textfeld" id="feld-text"></div>
+      <div class="hinweis" id="text-erklaerung"></div>
+
       <h3>Platzhalter</h3>
       <table id="tabelle-platzhalter"><thead><tr><th>Typ</th><th>Platzhalter</th><th>Original</th></tr></thead><tbody></tbody></table>
+
       <div id="fehler-extraktion" class="fehlerkasten" style="display:none"></div>
-      <div id="extraktion-block">
-        <h3>Extrahierte Felder</h3>
-        <table id="tabelle-extraktion"><tbody></tbody></table>
-      </div>
+
+      <h3>Extrahierte Felder</h3>
+      <table id="tabelle-extraktion"><tbody></tbody></table>
+
+      <h3>Systemdaten</h3>
+      <div id="systemdaten"></div>
+      <div id="hinweise-kasten" class="hinweiskasten" style="display:none"></div>
+      <div id="fehler-integration" class="fehlerkasten" style="display:none"></div>
     </div>
   </section>
 
+  <!-- ============ Rechte Spalte: Antwort ================================ -->
   <section class="spalte" id="spalte-rechts">
-    <div id="rechts-leer" class="hinweis">–</div>
+    <div id="rechts-leer" class="hinweis">Noch keine Antwort. Mail auswählen oder verarbeiten.</div>
     <div id="rechts-inhalt" style="display:none">
-      <h2>Einsatzvorschlag</h2>
-      <div id="termin-block"></div>
+      <h2>Antwort</h2>
+      <div id="einordnung"></div>
       <h3>Antwortentwurf</h3>
       <textarea id="antwort-text"></textarea>
       <div class="knopfleiste">
@@ -123,12 +163,15 @@
 <script>
 "use strict";
 
-// ---- Zustand ----------------------------------------------------------
+// ---- Zustand ------------------------------------------------------------
 var statisch = false;
-var mails = [];
-var ergebnisse = {}; // statischer Modus: id -> Ergebnis
+var mails = [];            // Listeneinträge
+var mailsVoll = {};        // id -> Mail mit Volltext (statischer Modus)
+var ergebnisse = {};       // id -> Ergebnis; statisch vollständig, am Server nachgeladen
 var aktuelleId = null;
+var aktuelleMail = null;
 var aktuellesErgebnis = null;
+var textAnsicht = "roh";   // "roh" oder "pseudonym"
 
 // ---- Hilfsfunktionen ----------------------------------------------------
 function esc(s) {
@@ -156,7 +199,7 @@ function markiereWerte(text, werte, klasse) {
   // längere zuerst, damit ein kürzerer Wert keinen längeren zerschneidet
   eindeutig.sort(function (a, b) { return b.length - a.length; });
   var muster = new RegExp(eindeutig.map(function (w) { return escRegex(esc(w)); }).join("|"), "g");
-  return html.replace(muster, function (treffer) { return "<mark class=\"" + klasse + "\">" + treffer + "</mark>"; });
+  return html.replace(muster, function (treffer) { return '<mark class="' + klasse + '">' + treffer + "</mark>"; });
 }
 
 function markiereOriginale(text, platzhalter) {
@@ -167,54 +210,117 @@ function markierePlatzhalter(text, platzhalter) {
   return markiereWerte(text, (platzhalter || []).map(function (p) { return p.platzhalter; }), "ph");
 }
 
+function leer(text) {
+  return '<span class="leer">' + esc(text) + "</span>";
+}
+
+// Gibt den Wert escaped zurück, sonst den deutschen Leertext.
+function wert(w, leertext) {
+  return (w === null || w === undefined || w === "") ? leer(leertext) : esc(w);
+}
+
+function badge(klasse, text) {
+  return '<span class="badge ' + esc(klasse) + '">' + esc(text) + "</span>";
+}
+
+// Zeilen [Bezeichnung, fertiges HTML] als <tr>-Folge; der Wert ist bereits
+// escaped, die Bezeichnung wird hier escaped.
+function feldZeilen(zeilen) {
+  return zeilen.map(function (z) {
+    return '<tr><th class="feld">' + esc(z[0]) + "</th><td>" + z[1] + "</td></tr>";
+  }).join("");
+}
+
+function feldTabelle(zeilen) {
+  return "<table><tbody>" + feldZeilen(zeilen) + "</tbody></table>";
+}
+
+function punkte(eintraege, leertext) {
+  if (!eintraege || !eintraege.length) return leer(leertext);
+  return '<ul class="knapp">' + eintraege.map(function (e) { return "<li>" + esc(e) + "</li>"; }).join("") + "</ul>";
+}
+
 function zeigeLadefehler(text) {
   var el = document.getElementById("ladefehler");
   el.textContent = text;
   el.style.display = "block";
 }
 
+// Eine gelungene Aktion räumt die alte Meldung weg; sonst bliebe sie stehen
+// und der Bearbeiter hielte einen behobenen Fehler für den aktuellen Stand.
+function versteckeLadefehler() {
+  document.getElementById("ladefehler").style.display = "none";
+}
+
+// Die Fehlermeldung des Servers steht in detail; sie ist deutsch und genauer
+// als "HTTP 409" (etwa "Mail ist noch nicht verarbeitet").
 function anfrage(methode, url, body) {
   return fetch(url, {
     method: methode,
     headers: body ? { "Content-Type": "application/json" } : undefined,
     body: body ? JSON.stringify(body) : undefined,
   }).then(function (r) {
-    if (!r.ok) throw new Error("HTTP " + r.status + " bei " + url);
-    return r.json();
+    if (r.ok) return r.json();
+    return r.text().then(function (roh) {
+      var meldung = "HTTP " + r.status + " bei " + url;
+      try {
+        var daten = JSON.parse(roh);
+        if (daten && daten.detail) {
+          meldung = typeof daten.detail === "string" ? daten.detail : JSON.stringify(daten.detail);
+        }
+      } catch (e) { /* keine JSON-Antwort: es bleibt beim Statuscode */ }
+      throw new Error(meldung);
+    });
   });
 }
 
-// ---- Kopfzeile / Statuserkennung ---------------------------------------
+// ---- Kopfzeile und Betriebsart ------------------------------------------
 function starte() {
   fetch("/api/status")
     .then(function (r) { if (!r.ok) throw new Error("kein Server"); return r.json(); })
     .then(function (s) {
       statisch = false;
-      document.getElementById("kopf-info").textContent = s.anbieter + " / " + s.modell;
-      if (s.live_modellaufrufe === false) {
-        document.getElementById("kopf-info").innerHTML = esc(s.anbieter) + " / " + esc(s.modell) +
-          ' <span class="badge" style="background:#5a6472">Live-Modellaufrufe abgeschaltet: aufgezeichnete Ergebnisse, Freigabe und Ablehnung funktionieren</span>';
-        document.getElementById("btn-alle").disabled = true;
-        document.getElementById("btn-neu").disabled = true;
-        document.getElementById("btn-neu-verarbeiten").disabled = true;
-      }
+      zeigeKopf(s);
       ladeMailsServer();
     })
     .catch(function () {
       statisch = true;
       document.getElementById("kopf-info").innerHTML =
-        '<span class="badge" style="background:#5a6472">statischer Modus (GitHub Pages): vorberechnete Ergebnisse, keine Modellaufrufe</span>';
+        '<span class="badge neutral">statischer Modus (GitHub Pages): vorberechnete Ergebnisse, keine Modellaufrufe</span>';
       document.getElementById("btn-alle").disabled = true;
+      document.getElementById("btn-neu").disabled = true;
+      document.getElementById("btn-neu-verarbeiten").disabled = true;
       ladeDatenStatisch();
     });
 }
 
+function zeigeKopf(s) {
+  if (s.versender) {
+    document.getElementById("untertitel").textContent = s.versender + ", Kundenservice (Demo)";
+  }
+  var teile = [esc(s.anbieter) + " / " + esc(s.modell)];
+  if (s.heute) teile.push("Stand " + esc(s.heute));
+  if (s.schluessel_gesetzt === false) teile.push('<span class="badge d-hoch">kein Schlüssel gesetzt</span>');
+  teile.push(s.systeme_erreichbar
+    ? '<span class="badge m-laeuft">ERP, CRM, MES erreichbar</span>'
+    : '<span class="badge m-stoerung">Systemlandschaft nicht erreichbar</span>');
+  if (s.live_modellaufrufe === false) {
+    teile.push('<span class="badge neutral">Live-Modellaufrufe abgeschaltet: aufgezeichnete Ergebnisse, ' +
+               "Freigabe und Ablehnung funktionieren</span>");
+    document.getElementById("btn-alle").disabled = true;
+    document.getElementById("btn-neu").disabled = true;
+    document.getElementById("btn-neu-verarbeiten").disabled = true;
+  }
+  document.getElementById("kopf-info").innerHTML = teile.join(" ");
+}
+
 function ladeMailsServer() {
-  anfrage("GET", "/api/mails")
+  return anfrage("GET", "/api/mails")
     .then(function (liste) { mails = liste; renderListe(); })
     .catch(function (e) { zeigeLadefehler("Mails konnten nicht geladen werden: " + e.message); });
 }
 
+// GitHub Pages: zwei JSON-Dateien neben index.html, kein Server.
 function ladeDatenStatisch() {
   Promise.all([
     fetch("data/mails.json").then(function (r) { return r.json(); }),
@@ -222,30 +328,40 @@ function ladeDatenStatisch() {
   ])
     .then(function (res) {
       var rohMails = res[0];
-      ergebnisse = res[1];
+      ergebnisse = res[1] || {};
+      mailsVoll = {};
+      rohMails.forEach(function (m) { mailsVoll[m.id] = m; });
       mails = rohMails.map(function (m) {
         var e = ergebnisse[m.id];
-        return { id: m.id, absender_name: m.absender_name, betreff: m.betreff, empfangen: m.empfangen,
-                 status: e ? e.status : "unverarbeitet" };
+        return { id: m.id, absender_name: m.absender_name, absender_firma: m.absender_firma,
+                 betreff: m.betreff, empfangen: m.empfangen, status: e ? e.status : "unverarbeitet" };
       });
-      // Volltext-Mails für den statischen Detailaufruf zwischenspeichern
-      window.__mailsVoll = {};
-      rohMails.forEach(function (m) { window.__mailsVoll[m.id] = m; });
       renderListe();
     })
     .catch(function (e) { zeigeLadefehler("Statische Daten (docs/data/) konnten nicht geladen werden: " + e.message); });
 }
 
-// ---- Linke Spalte: Mailliste -------------------------------------------
+// ---- Linke Spalte: Mailliste --------------------------------------------
 function renderListe() {
   var ul = document.getElementById("mailliste");
   ul.innerHTML = "";
   mails.forEach(function (m) {
+    var ergebnis = ergebnisse[m.id];
+    var status = ergebnis ? ergebnis.status : (m.status || "unverarbeitet");
     var li = document.createElement("li");
     li.className = m.id === aktuelleId ? "aktiv" : "";
-    li.innerHTML = '<span class="kopf"><span class="name">' + esc(m.absender_name) + "</span>" +
-      '<span class="badge ' + esc(m.status) + '">' + esc(m.status) + "</span></span>" +
-      '<span class="betreff">' + esc(m.betreff) + "</span>";
+    // Zuständigkeit und Dringlichkeit stehen nicht in /api/mails; im
+    // Serverbetrieb erscheinen sie, sobald das Ergebnis einmal geladen wurde.
+    var kennzeichen = ergebnis
+      ? '<div class="kennzeichen">' + badge("z-" + ergebnis.zustaendigkeit, ergebnis.zustaendigkeit) +
+        badge("d-" + ergebnis.dringlichkeit, "Dringlichkeit " + ergebnis.dringlichkeit) + "</div>"
+      : "";
+    li.innerHTML =
+      '<span class="kopf"><span class="name">' + esc(m.absender_name) + "</span>" +
+      badge(status, status) + "</span>" +
+      '<span class="firma">' + (m.absender_firma ? esc(m.absender_firma) : leer("ohne Firma")) + "</span>" +
+      '<span class="betreff">' + (m.betreff ? esc(m.betreff) : leer("ohne Betreff")) + "</span>" +
+      kennzeichen;
     li.addEventListener("click", function () { waehleMail(m.id); });
     ul.appendChild(li);
   });
@@ -253,79 +369,294 @@ function renderListe() {
 
 function waehleMail(id) {
   aktuelleId = id;
-  renderListe();
   if (statisch) {
-    var mail = window.__mailsVoll[id];
-    var ergebnis = ergebnisse[id] || null;
-    zeigeDetail(mail, ergebnis);
+    zeigeDetail(mailsVoll[id], ergebnisse[id] || null);
+    renderListe();
   } else {
     anfrage("GET", "/api/mails/" + id)
-      .then(function (d) { zeigeDetail(d.mail, d.ergebnis); })
+      .then(function (d) {
+        if (d.ergebnis) { ergebnisse[id] = d.ergebnis; } else { delete ergebnisse[id]; }
+        zeigeDetail(d.mail, d.ergebnis);
+        renderListe();
+      })
       .catch(function (e) { zeigeLadefehler("Mail konnte nicht geladen werden: " + e.message); });
   }
 }
 
-// ---- Mittlere Spalte -----------------------------------------------------
-function feldZeile(bezeichnung, wert) {
-  return "<tr><th>" + esc(bezeichnung) + "</th><td>" + wert + "</td></tr>";
+// ---- Mittlere Spalte: Text und Platzhalter -------------------------------
+function zeigeText() {
+  var feld = document.getElementById("feld-text");
+  var erklaerung = document.getElementById("text-erklaerung");
+  document.getElementById("btn-roh").className = textAnsicht === "roh" ? "gewaehlt" : "";
+  document.getElementById("btn-pseudonym").className = textAnsicht === "pseudonym" ? "gewaehlt" : "";
+  if (textAnsicht === "roh") {
+    var roh = aktuellesErgebnis ? aktuellesErgebnis.roh_text : (aktuelleMail || {}).text;
+    feld.innerHTML = aktuellesErgebnis
+      ? markiereOriginale(roh, aktuellesErgebnis.platzhalter)
+      : esc(roh);
+    erklaerung.textContent = "Gelb: Angaben, die vor dem Modellaufruf ersetzt werden.";
+  } else if (aktuellesErgebnis) {
+    feld.innerHTML = markierePlatzhalter(aktuellesErgebnis.pseudonym_text, aktuellesErgebnis.platzhalter);
+    erklaerung.textContent = "Blau: Platzhalter. Nur dieser Text wurde an das Modell geschickt.";
+  } else {
+    feld.innerHTML = leer("Mail wurde noch nicht verarbeitet.");
+    erklaerung.textContent = "";
+  }
 }
 
-function renderExtraktion(ex) {
+function renderPlatzhalter(platzhalter) {
+  var tbody = document.querySelector("#tabelle-platzhalter tbody");
+  tbody.innerHTML = (platzhalter || []).map(function (p) {
+    return "<tr><td>" + esc(p.typ) + "</td><td>" + esc(p.platzhalter) + "</td><td>" + esc(p.original) + "</td></tr>";
+  }).join("") || '<tr><td colspan="3">' + leer("keine Platzhalter erkannt") + "</td></tr>";
+}
+
+// ---- Mittlere Spalte: extrahierte Felder ---------------------------------
+function renderExtraktion(ergebnis) {
   var tbody = document.querySelector("#tabelle-extraktion tbody");
-  tbody.innerHTML = "";
-  if (!ex) { tbody.innerHTML = feldZeile("Hinweis", "keine Extraktion vorhanden"); return; }
-  var kunde = esc(ex.kunde && ex.kunde.firma) || "–";
+  if (!ergebnis || !ergebnis.extraktion) {
+    tbody.innerHTML = '<tr><th class="feld">Hinweis</th><td>' +
+      leer(ergebnis ? "keine Extraktion, siehe Fehler oben" : "Mail wurde noch nicht verarbeitet") + "</td></tr>";
+    return;
+  }
+  var ex = ergebnis.extraktion;
+  var kunde = ex.kunde || {};
   var ap = ex.ansprechpartner || {};
-  var ansprechpartner = [ap.anrede, ap.name].filter(function (x) { return x; }).map(esc).join(" ") || "–";
-  var anlage = ex.anlage || {};
-  var anlageText = [anlage.typ, anlage.nummer, anlage.baujahr]
-    .filter(function (x) { return x; }).map(esc).join(" · ") || "–";
-  var anliegen = (ex.anliegen || []).map(function (a) {
-    return "<li>" + esc(a.kategorie) + ": " + esc(a.beschreibung) + "</li>";
-  }).join("") || "<li>–</li>";
-  var wz = ex.wunschzeitraum || {};
-  var wunsch = [wz.von, wz.bis, wz.tageszeit].filter(function (x) { return x; }).map(esc).join(" – ") || "–";
-  var unklar = (ex.unklarheiten || []).map(function (u) { return "<li>" + esc(u) + "</li>"; }).join("") || "<li>keine</li>";
-  tbody.innerHTML =
-    feldZeile("Kunde", kunde) +
-    feldZeile("Ansprechpartner", ansprechpartner) +
-    feldZeile("Anlage", anlageText) +
-    feldZeile("Anliegen", "<ul>" + anliegen + "</ul>") +
-    feldZeile("Dringlichkeit", esc(ex.dringlichkeit) || "–") +
-    feldZeile("Wunschzeitraum", wunsch) +
-    feldZeile("Zuständigkeit", esc(ex.zustaendigkeit) || "–") +
-    feldZeile("Unklarheiten", "<ul>" + unklar + "</ul>");
+  var bezug = ex.bezug || {};
+
+  var kundeText = [kunde.firma, kunde.kundennummer].filter(Boolean).map(esc).join(", ") || leer("nicht genannt");
+  var apText = [ap.anrede, ap.name].filter(Boolean).map(esc).join(" ") || leer("nicht genannt");
+
+  var artikel = (ex.artikel || []).map(function (a) {
+    return [a.artikelnummer, a.bezeichnung, a.groesse, a.farbe,
+            (a.menge === null || a.menge === undefined) ? null : a.menge + " Stück"]
+      .filter(function (x) { return x !== null && x !== undefined && x !== ""; }).map(esc).join(", ");
+  });
+  var anliegen = (ex.anliegen || []).map(function (a) { return a.kategorie + ": " + a.beschreibung; });
+
+  // Endgültige Dringlichkeit kommt aus den Regeln; weicht sie vom Vorschlag
+  // des Modells ab, steht beides da.
+  var dringlichkeit = badge("d-" + ergebnis.dringlichkeit, ergebnis.dringlichkeit);
+  if (ergebnis.dringlichkeit_grund) dringlichkeit += " " + esc(ergebnis.dringlichkeit_grund);
+  if (ex.dringlichkeit && ex.dringlichkeit !== ergebnis.dringlichkeit) {
+    dringlichkeit += ' <span class="hinweis">(Modellvorschlag: ' + esc(ex.dringlichkeit) + ")</span>";
+  }
+
+  tbody.innerHTML = feldZeilen([
+    ["Kunde", kundeText],
+    ["Ansprechpartner", apText],
+    ["Bestellnummer", wert(bezug.bestellnummer, "keine Bestellung genannt")],
+    ["Rechnungsnummer", wert(bezug.rechnungsnummer, "keine Rechnung genannt")],
+    ["Veredelungsauftrag", wert(bezug.veredelungsauftrag, "kein Veredelungsauftrag genannt")],
+    ["Artikel", punkte(artikel, "keine Artikel genannt")],
+    ["Anliegen", punkte(anliegen, "kein Anliegen erkannt")],
+    ["Frist", wert(ex.frist, "keine Frist genannt")],
+    ["Dringlichkeit", dringlichkeit],
+    ["Zuständigkeit", badge("z-" + ergebnis.zustaendigkeit, ergebnis.zustaendigkeit)],
+    ["Unklarheiten", punkte(ex.unklarheiten, "keine")],
+    ["Hinweise der Extraktion", punkte(ergebnis.extraktion_hinweise, "keine")],
+  ]);
 }
 
+// ---- Mittlere Spalte: Systemdaten ----------------------------------------
+// Fiel das System aus, fehlen die Daten; das ist etwas anderes als "nicht
+// gefunden" und muss im Leertext auch so dastehen.
+function ausgefallen(ergebnis, system) {
+  return (ergebnis.integrationsfehler || []).some(function (f) {
+    return String(f).toLowerCase().indexOf(system + ":") === 0;
+  });
+}
+
+function blockKunde(sd, bezugKundennummer, aus) {
+  var k = sd.kunde;
+  if (!k) return leer(aus ? "ERP nicht erreichbar, Kundendaten fehlen"
+                          : bezugKundennummer ? "Kunde " + bezugKundennummer + " im ERP nicht gefunden"
+                                              : "keine Kundennummer genannt, kein Kunde geladen");
+  return feldTabelle([
+    ["Kundennummer", wert(k.kundennummer, "unbekannt")],
+    ["Firma", wert(k.firma, "unbekannt")],
+    ["Ort", wert(k.ort, "unbekannt")],
+    ["Kunde seit", wert(k.kundenseit, "unbekannt")],
+    ["Zahlungsziel", k.zahlungsziel_tage ? esc(k.zahlungsziel_tage) + " Tage" : leer("unbekannt")],
+  ]);
+}
+
+function positionenTabelle(positionen) {
+  if (!positionen || !positionen.length) return leer("keine Positionen");
+  return "<table><thead><tr><th>Artikel</th><th>Bezeichnung</th><th>Größe</th><th>Farbe</th>" +
+    "<th>Menge</th><th>Status</th></tr></thead><tbody>" +
+    positionen.map(function (p) {
+      return "<tr><td>" + esc(p.artikelnummer) + "</td><td>" + esc(p.bezeichnung) + "</td><td>" +
+        wert(p.groesse, "keine") + "</td><td>" + wert(p.farbe, "keine") + "</td><td>" +
+        esc(p.menge) + "</td><td>" + esc(p.status) + "</td></tr>";
+    }).join("") + "</tbody></table>";
+}
+
+function blockBestellung(sd, bestellnummer, aus) {
+  var b = sd.bestellung;
+  if (!b) return leer(aus ? "ERP nicht erreichbar, Bestelldaten fehlen"
+                          : bestellnummer ? "Bestellung " + bestellnummer + " im ERP nicht gefunden"
+                                          : "keine Bestellung genannt");
+  return feldTabelle([
+    ["Bestellnummer", esc(b.bestellnummer)],
+    ["Status", badge("neutral", b.status)],
+    ["Bestelldatum", wert(b.bestelldatum, "unbekannt")],
+    ["Liefertermin", wert(b.liefertermin, "noch kein Termin")],
+    ["Sendungsnummer", wert(b.sendungsnummer, "noch nicht versendet")],
+    ["Positionen", positionenTabelle(b.positionen)],
+  ]);
+}
+
+function blockRechnung(sd, rechnungsnummer, aus) {
+  var r = sd.rechnung;
+  if (!r) return leer(aus ? "ERP nicht erreichbar, Rechnungsdaten fehlen"
+                          : rechnungsnummer ? "Rechnung " + rechnungsnummer + " im ERP nicht gefunden"
+                                            : "keine Rechnung genannt");
+  return feldTabelle([
+    ["Rechnungsnummer", esc(r.rechnungsnummer)],
+    ["Betrag", (r.betrag === null || r.betrag === undefined) ? leer("unbekannt") : esc(r.betrag) + " EUR"],
+    ["Fällig", wert(r.faellig, "unbekannt")],
+    ["Status", badge("neutral", r.status)],
+    ["Kostenstelle", wert(r.kostenstelle, "keine hinterlegt")],
+  ]);
+}
+
+function blockArtikel(sd, aus) {
+  var artikel = sd.artikel;
+  if (!artikel || !artikel.length) {
+    return leer(aus ? "ERP nicht erreichbar, kein Bestand abgefragt"
+                    : "keine Artikelnummer genannt, kein Bestand abgefragt");
+  }
+  return "<table><thead><tr><th>Artikel</th><th>Größe</th><th>Farbe</th><th>Bestand</th>" +
+    "<th>Nachfolger</th></tr></thead><tbody>" +
+    artikel.map(function (a) {
+      return "<tr><td>" + esc(a.artikelnummer) + "</td><td>" + wert(a.groesse, "keine") + "</td><td>" +
+        wert(a.farbe, "keine") + "</td><td>" +
+        ((a.bestand === null || a.bestand === undefined) ? leer("keine Variante getroffen") : esc(a.bestand)) +
+        "</td><td>" + wert(a.nachfolger, "keiner") + "</td></tr>";
+    }).join("") + "</tbody></table>";
+}
+
+function blockLetzteBestellungen(sd) {
+  var letzte = sd.letzte_bestellungen;
+  if (!letzte || !letzte.length) return "";
+  return '<div class="unter">Letzte Bestellungen</div>' + punkte(letzte.map(function (b) {
+    return b.bestellnummer + " vom " + b.bestelldatum + ", " + b.status;
+  }), "keine");
+}
+
+function blockVeredelung(sd, auftragsnummer, aus) {
+  var v = sd.veredelung;
+  if (!v) return leer(aus ? "MES nicht erreichbar, Veredelungsdaten fehlen"
+                          : auftragsnummer ? "Veredelungsauftrag " + auftragsnummer + " im MES nicht gefunden"
+                                           : "kein Veredelungsauftrag genannt");
+  return feldTabelle([
+    ["Auftrag", esc(v.auftrag)],
+    ["Art", wert(v.art, "unbekannt")],
+    ["Motiv", wert(v.motiv, "unbekannt")],
+    ["Status", badge("neutral", v.status)],
+    ["Geplantes Ende", wert(v.geplantes_ende, "noch nicht eingeplant")],
+    ["Hinweis", wert(v.hinweis, "keiner")],
+  ]);
+}
+
+function blockMaschine(sd, aus) {
+  var m = sd.maschine;
+  if (!m) return leer(aus ? "MES nicht erreichbar, Maschinendaten fehlen" : "keine Maschine zugeordnet");
+  return feldTabelle([
+    ["Maschine", esc(m.maschine)],
+    ["Typ", wert(m.typ, "unbekannt")],
+    ["Zustand", badge("m-" + m.zustand, m.zustand)],
+    ["Meldung", wert(m.meldung, "keine")],
+    ["Seit", wert(m.seit, "unbekannt")],
+  ]);
+}
+
+function blockKontakt(sd, aus) {
+  var k = sd.kontakt;
+  if (!k) return leer(aus ? "CRM nicht erreichbar, Kontaktdaten fehlen" : "kein Kontakt im CRM gefunden");
+  return feldTabelle([
+    ["Name", wert(k.name, "unbekannt")],
+    ["E-Mail", wert(k.email, "unbekannt")],
+    ["Kundennummer", wert(k.kundennummer, "unbekannt")],
+    ["Firma", wert(k.firma, "unbekannt")],
+  ]);
+}
+
+function blockTicket(ticket, aus) {
+  if (!ticket) return leer(aus ? "CRM nicht erreichbar, kein Ticket angelegt" : "kein Ticket angelegt");
+  return feldTabelle([
+    ["Ticket-ID", esc(ticket.ticket_id)],
+    ["Status", badge("neutral", ticket.status)],
+  ]);
+}
+
+function renderSystemdaten(ergebnis) {
+  var ziel = document.getElementById("systemdaten");
+  var hinweiseKasten = document.getElementById("hinweise-kasten");
+  var fehlerKasten = document.getElementById("fehler-integration");
+  if (!ergebnis) {
+    ziel.innerHTML = leer("Mail wurde noch nicht verarbeitet, keine Systemdaten abgefragt.");
+    hinweiseKasten.style.display = "none";
+    fehlerKasten.style.display = "none";
+    return;
+  }
+  var sd = ergebnis.systemdaten || {};
+  var bezug = (ergebnis.extraktion || {}).bezug || {};
+  var kundennummer = ((ergebnis.extraktion || {}).kunde || {}).kundennummer;
+  var erpAus = ausgefallen(ergebnis, "erp");
+  var mesAus = ausgefallen(ergebnis, "mes");
+  var crmAus = ausgefallen(ergebnis, "crm");
+
+  ziel.innerHTML =
+    '<div class="block"><h4>ERP (Warenwirtschaft)</h4>' +
+      '<div class="unter">Kunde</div>' + blockKunde(sd, kundennummer, erpAus) +
+      blockLetzteBestellungen(sd) +
+      '<div class="unter">Bestellung</div>' + blockBestellung(sd, bezug.bestellnummer, erpAus) +
+      '<div class="unter">Rechnung</div>' + blockRechnung(sd, bezug.rechnungsnummer, erpAus) +
+      '<div class="unter">Artikelverfügbarkeit</div>' + blockArtikel(sd, erpAus) +
+    "</div>" +
+    '<div class="block"><h4>MES (Veredelung)</h4>' +
+      '<div class="unter">Veredelungsauftrag</div>' + blockVeredelung(sd, bezug.veredelungsauftrag, mesAus) +
+      '<div class="unter">Maschine</div>' + blockMaschine(sd, mesAus) +
+    "</div>" +
+    '<div class="block"><h4>CRM (Kundenbeziehung)</h4>' +
+      '<div class="unter">Kontakt</div>' + blockKontakt(sd, crmAus) +
+      '<div class="unter">Ticket</div>' + blockTicket(ergebnis.ticket, crmAus) +
+    "</div>";
+
+  var hinweise = ergebnis.hinweise || [];
+  hinweiseKasten.style.display = hinweise.length ? "block" : "none";
+  hinweiseKasten.innerHTML = "<strong>Hinweise für die Bearbeitung</strong>" + punkte(hinweise, "keine");
+
+  var fehler = ergebnis.integrationsfehler || [];
+  fehlerKasten.style.display = fehler.length ? "block" : "none";
+  fehlerKasten.innerHTML = "<strong>Systeme nicht erreichbar</strong>" + punkte(fehler, "keine") +
+    '<div class="hinweis">Der Entwurf verzichtet auf die fehlenden Systemdaten.</div>';
+}
+
+// ---- Detailansicht zusammensetzen ----------------------------------------
 function zeigeDetail(mail, ergebnis) {
-  aktuellesErgebnis = ergebnis;
+  aktuelleMail = mail || null;
+  aktuellesErgebnis = ergebnis || null;
+  versteckeLadefehler();
   document.getElementById("mitte-leer").style.display = "none";
   document.getElementById("mitte-inhalt").style.display = "block";
 
-  if (ergebnis) {
-    document.getElementById("feld-roh").innerHTML = markiereOriginale(ergebnis.roh_text, ergebnis.platzhalter);
-    document.getElementById("feld-pseudonym").innerHTML = markierePlatzhalter(ergebnis.pseudonym_text, ergebnis.platzhalter);
-    var tbody = document.querySelector("#tabelle-platzhalter tbody");
-    tbody.innerHTML = (ergebnis.platzhalter || []).map(function (p) {
-      return "<tr><td>" + esc(p.typ) + "</td><td>" + esc(p.platzhalter) + "</td><td>" + esc(p.original) + "</td></tr>";
-    }).join("") || "<tr><td colspan=3>keine</td></tr>";
+  textAnsicht = "roh";
+  zeigeText();
+  renderPlatzhalter(ergebnis ? ergebnis.platzhalter : []);
 
-    var fehlerBox = document.getElementById("fehler-extraktion");
-    if (ergebnis.status === "pruefung_noetig" && ergebnis.extraktion_fehler) {
-      fehlerBox.style.display = "block";
-      fehlerBox.textContent = "Prüfung nötig: " + ergebnis.extraktion_fehler;
-    } else {
-      fehlerBox.style.display = "none";
-    }
-    renderExtraktion(ergebnis.extraktion);
+  var fehlerBox = document.getElementById("fehler-extraktion");
+  if (ergebnis && ergebnis.extraktion_fehler) {
+    fehlerBox.style.display = "block";
+    fehlerBox.innerHTML = "<strong>Prüfung nötig</strong>" + esc(ergebnis.extraktion_fehler);
   } else {
-    document.getElementById("feld-roh").innerHTML = esc(mail.text);
-    document.getElementById("feld-pseudonym").innerHTML = '<span class="hinweis">Mail wurde noch nicht verarbeitet.</span>';
-    document.querySelector("#tabelle-platzhalter tbody").innerHTML = "<tr><td colspan=3>keine</td></tr>";
-    document.getElementById("fehler-extraktion").style.display = "none";
-    renderExtraktion(null);
+    fehlerBox.style.display = "none";
   }
 
+  renderExtraktion(ergebnis);
+  renderSystemdaten(ergebnis);
   zeigeRechts(ergebnis);
 }
 
@@ -335,33 +666,35 @@ function zeigeRechts(ergebnis) {
   document.getElementById("rechts-inhalt").style.display = ergebnis ? "block" : "none";
   if (!ergebnis) return;
 
-  var terminBlock = document.getElementById("termin-block");
-  var html;
-  if (ergebnis.termin) {
-    var t = ergebnis.termin;
-    html = "<p><strong>" + esc(t.datum) + "</strong>, Techniker " + esc(t.techniker) + " (" + esc(t.qualifikation) + ")" +
-      (t.hinweis ? "<br>" + esc(t.hinweis) : "") + "</p>";
-  } else if (ergebnis.extraktion && ergebnis.extraktion.zustaendigkeit === "vertrieb") {
-    html = "<p class=\"hinweis\">kein Einsatz (Vertrieb)</p>";
-  } else {
-    html = "<p class=\"hinweis\">kein Einsatz</p>";
-  }
-  if (ergebnis.ersatzteile && ergebnis.ersatzteile.length) {
-    html += "<h3>Ersatzteile</h3><ul>" + ergebnis.ersatzteile.map(function (e) {
-      return "<li>" + esc(e.teil) + ": " + esc(e.status) + "</li>";
-    }).join("") + "</ul>";
-  }
-  terminBlock.innerHTML = html;
+  document.getElementById("einordnung").innerHTML = feldTabelle([
+    ["Status", badge(ergebnis.status, ergebnis.status)],
+    ["Zuständigkeit", badge("z-" + ergebnis.zustaendigkeit, ergebnis.zustaendigkeit)],
+    ["Dringlichkeit", badge("d-" + ergebnis.dringlichkeit, ergebnis.dringlichkeit) +
+      (ergebnis.dringlichkeit_grund ? " " + esc(ergebnis.dringlichkeit_grund) : "")],
+    ["Ticket", ergebnis.ticket
+      ? esc(ergebnis.ticket.ticket_id) + " (" + esc(ergebnis.ticket.status) + ")"
+      : leer("kein Ticket angelegt")],
+  ]);
 
   document.getElementById("antwort-text").value = ergebnis.antwort_entwurf || "";
   document.getElementById("fussnote").textContent =
-    "Dauer " + ergebnis.dauer_ms + " ms, Anbieter " + ergebnis.anbieter + "/" + ergebnis.modell + ", " + ergebnis.zeitpunkt;
+    "Anbieter " + ergebnis.anbieter + ", Modell " + ergebnis.modell +
+    ", Dauer " + ergebnis.dauer_ms + " ms, " + ergebnis.zeitpunkt;
 }
 
-// ---- Aktionen --------------------------------------------------------
+// ---- Aktionen ------------------------------------------------------------
 function statischerHinweis() {
   alert("Statischer Modus: Änderungen werden nicht gespeichert.");
 }
+
+document.getElementById("btn-roh").addEventListener("click", function () {
+  textAnsicht = "roh";
+  zeigeText();
+});
+document.getElementById("btn-pseudonym").addEventListener("click", function () {
+  textAnsicht = "pseudonym";
+  zeigeText();
+});
 
 document.getElementById("btn-alle").addEventListener("click", function () {
   if (statisch) { statischerHinweis(); return; }
@@ -369,6 +702,7 @@ document.getElementById("btn-alle").addEventListener("click", function () {
   var kette = Promise.resolve();
   offene.forEach(function (id) {
     kette = kette.then(function () { return anfrage("POST", "/api/mails/" + id + "/verarbeiten"); })
+      .then(function (ergebnis) { ergebnisse[id] = ergebnis; })
       .catch(function (e) { zeigeLadefehler("Verarbeitung von " + id + " fehlgeschlagen: " + e.message); });
   });
   kette.then(ladeMailsServer);
@@ -382,22 +716,25 @@ document.getElementById("f-abbrechen").addEventListener("click", function () {
 });
 document.getElementById("f-senden").addEventListener("click", function () {
   if (statisch) { statischerHinweis(); return; }
-  var absender = document.getElementById("f-absender").value.trim();
-  var firma = document.getElementById("f-firma").value.trim();
-  var betreff = document.getElementById("f-betreff").value.trim();
-  var text = document.getElementById("f-text").value.trim();
-  if (!absender || !text) { alert("Absender und Text sind erforderlich."); return; }
-  anfrage("POST", "/api/mails", { absender_name: absender, absender_firma: firma, betreff: betreff, text: text })
+  var neu = {
+    absender_name: document.getElementById("f-absender").value.trim(),
+    absender_firma: document.getElementById("f-firma").value.trim(),
+    absender_email: document.getElementById("f-email").value.trim(),
+    betreff: document.getElementById("f-betreff").value.trim(),
+    text: document.getElementById("f-text").value.trim(),
+  };
+  if (!neu.absender_name || !neu.text) { alert("Absender und Text sind erforderlich."); return; }
+  anfrage("POST", "/api/mails", neu)
     .then(function (mail) {
       document.getElementById("neue-mail-formular").style.display = "none";
-      document.getElementById("f-absender").value = "";
-      document.getElementById("f-firma").value = "";
-      document.getElementById("f-betreff").value = "";
-      document.getElementById("f-text").value = "";
-      return anfrage("POST", "/api/mails/" + mail.id + "/verarbeiten").then(function () {
-        ladeMailsServer();
-        waehleMail(mail.id);
+      ["f-absender", "f-firma", "f-email", "f-betreff", "f-text"].forEach(function (id) {
+        document.getElementById(id).value = "";
       });
+      return anfrage("POST", "/api/mails/" + mail.id + "/verarbeiten")
+        .then(function (ergebnis) {
+          ergebnisse[mail.id] = ergebnis;
+          return ladeMailsServer().then(function () { waehleMail(mail.id); });
+        });
     })
     .catch(function (e) { zeigeLadefehler("Neue Mail konnte nicht angelegt werden: " + e.message); });
 });
@@ -408,7 +745,8 @@ document.getElementById("btn-neu-verarbeiten").addEventListener("click", functio
   if (statisch) { statischerHinweis(); return; }
   if (!aktuelleId) return;
   anfrage("POST", "/api/mails/" + aktuelleId + "/verarbeiten")
-    .then(function () { ladeMailsServer(); waehleMail(aktuelleId); })
+    .then(function () { return ladeMailsServer(); })
+    .then(function () { waehleMail(aktuelleId); })
     .catch(function (e) { zeigeLadefehler("Verarbeitung fehlgeschlagen: " + e.message); });
 });
 
@@ -417,7 +755,8 @@ function setzeStatus(status) {
   if (!aktuelleId) return;
   var entwurf = document.getElementById("antwort-text").value;
   anfrage("POST", "/api/mails/" + aktuelleId + "/status", { status: status, antwort_entwurf: entwurf })
-    .then(function () { ladeMailsServer(); waehleMail(aktuelleId); })
+    .then(function () { return ladeMailsServer(); })
+    .then(function () { waehleMail(aktuelleId); })
     .catch(function (e) { zeigeLadefehler("Status konnte nicht geändert werden: " + e.message); });
 }
 
