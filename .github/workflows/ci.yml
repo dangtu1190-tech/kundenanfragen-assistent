@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  tests:
+    name: Tests und Linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Abhängigkeiten
+        # Ruff gepinnt: eine neuere Version könnte die Regelmenge erweitern und
+        # den main-Lauf rot färben, ohne dass wir selbst etwas geändert haben.
+        run: python -m pip install -r requirements.txt "ruff==0.16.*"
+      - name: Linter (Ruff)
+        run: ruff check app tests
+      - name: Pseudonymisierung, kein Originalwert erreicht das Modell
+        # Eigener Schritt, damit dieser Test im Lauf sichtbar ist. Schlägt er
+        # fehl, ist der Lauf rot und das Image wird nicht gebaut.
+        run: >
+          python -m pytest -v
+          tests/test_pipeline.py::test_kein_original_erreicht_das_modell
+          tests/test_pipeline.py::test_modell_sieht_keine_originale
+      - name: Alle Tests
+        run: python -m pytest -q
+
+  image:
+    name: Docker-Image
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Image bauen
+        run: docker build -t rauchtest .
+      - name: Rauchtest, Container starten
+        # Status muss antworten, der Live-Pfad muss gesperrt sein (403).
+        run: |
+          docker run -d --name rauchtest -p 8040:8040 rauchtest
+          for i in $(seq 1 20); do
+            curl -sf http://localhost:8040/api/status && break
+            sleep 1
+          done
+          curl -sf http://localhost:8040/api/status | grep -q '"live_modellaufrufe":false'
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:8040/api/mails/m01/verarbeiten)
+          test "$code" = "403"
+      - name: Containerlog und Aufräumen
+        if: always()
+        run: |
+          docker logs rauchtest || true
+          docker rm -f rauchtest || true
+      - uses: docker/setup-buildx-action@v3
+      - name: Anmelden an ghcr.io
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha
+      - name: Bauen und (nur auf main) nach ghcr.io schieben
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  terraform:
+    name: Terraform (fmt, validate, Plan gegen Mock-Provider)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/azure
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.2"
+      - run: terraform fmt -check -recursive -diff
+      - run: terraform init -backend=false
+      - run: terraform validate
+      - name: Plan gegen Mock-Provider (keine Azure-Zugangsdaten, kein Apply)
+        run: terraform test

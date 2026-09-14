@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Serviceanfragen-Assistent – Demo</title>
+<style>
+  :root { --akzent: #0b4f9c; --bg: #ffffff; --bg-alt: #f4f5f7; --rand: #d8dbe0; --text: #1c2126; --muted: #5a6472; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Arial, sans-serif; background: var(--bg-alt); color: var(--text); }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 20px; background: var(--akzent); color: #fff; }
+  header .untertitel { font-size: 12px; opacity: .85; margin-top: 2px; }
+  header h1 { font-size: 18px; margin: 0; font-weight: 600; }
+  #kopf-info { font-size: 13px; text-align: right; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 12px; color: #fff; }
+  .badge.unverarbeitet { background: #7a8290; }
+  .badge.offen { background: #2563a8; }
+  .badge.pruefung_noetig { background: #c1720a; }
+  .badge.freigegeben { background: #1a7a3c; }
+  .badge.abgelehnt { background: #b3261e; }
+  #layout { display: grid; grid-template-columns: 260px 1fr 380px; gap: 12px; padding: 12px; align-items: start; }
+  @media (max-width: 1000px) { #layout { grid-template-columns: 1fr; } }
+  .spalte { background: var(--bg); border: 1px solid var(--rand); border-radius: 4px; padding: 10px; min-width: 0; overflow-x: auto; }
+  #kopf-info .badge { white-space: normal; text-align: left; }
+  .spalte h2 { font-size: 14px; margin: 0 0 8px; color: var(--akzent); }
+  #mailliste { list-style: none; margin: 8px 0 0; padding: 0; }
+  #mailliste li { padding: 6px 4px; border-bottom: 1px solid var(--rand); cursor: pointer; font-size: 13px; }
+  #mailliste li:hover { background: var(--bg-alt); }
+  #mailliste li.aktiv { background: #e7eefa; }
+  #mailliste .kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  #mailliste .kopf .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #mailliste .badge { flex: none; }
+  #mailliste .betreff { color: var(--muted); display: block; }
+  button { font-family: inherit; font-size: 13px; padding: 6px 10px; border: 1px solid var(--akzent); background: #fff; color: var(--akzent); border-radius: 3px; cursor: pointer; }
+  button:hover { background: #e7eefa; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.primaer { background: var(--akzent); color: #fff; }
+  .knopfleiste { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .vergleich { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 700px) { .vergleich { grid-template-columns: 1fr; } }
+  .textfeld { border: 1px solid var(--rand); border-radius: 4px; padding: 8px; background: var(--bg-alt); white-space: pre-wrap; font-size: 13px; min-height: 120px; }
+  mark.orig { background: #fdeb8f; color: inherit; }
+  mark.ph { background: #cfe0f5; color: inherit; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 8px; }
+  table th, table td { border: 1px solid var(--rand); padding: 4px 6px; text-align: left; vertical-align: top; }
+  table th { background: var(--bg-alt); }
+  .fehlerkasten { border: 1px solid #b3261e; background: #fbe9e8; color: #7a1a15; padding: 8px; border-radius: 4px; margin-top: 8px; font-size: 13px; }
+  textarea { width: 100%; min-height: 180px; font-family: inherit; font-size: 13px; border: 1px solid var(--rand); border-radius: 4px; padding: 6px; }
+  .fussnote { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  input[type=text] { width: 100%; font-family: inherit; font-size: 13px; padding: 4px 6px; border: 1px solid var(--rand); border-radius: 3px; margin-bottom: 6px; }
+  label { font-size: 12px; color: var(--muted); display: block; margin-top: 4px; }
+  .hinweis { font-size: 12px; color: var(--muted); }
+  #ladefehler { display: none; margin: 12px 20px; padding: 10px; border: 1px solid #b3261e; background: #fbe9e8; color: #7a1a15; border-radius: 4px; }
+  h3 { font-size: 13px; margin: 10px 0 4px; color: var(--akzent); }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Serviceanfragen-Assistent – Demo</h1><div class="untertitel">Eigenprojekt für Bewerbungen. Alle Kundenmails und Kundendaten sind erfunden.</div></div>
+  <div id="kopf-info">lädt …</div>
+</header>
+<div id="ladefehler"></div>
+<div id="layout">
+  <section class="spalte" id="spalte-links">
+    <h2>Posteingang</h2>
+    <div class="knopfleiste">
+      <button id="btn-alle" title="Alle unverarbeiteten Mails der Reihe nach verarbeiten">Alle verarbeiten</button>
+      <button id="btn-neu">Neue Mail</button>
+    </div>
+    <div id="neue-mail-formular" style="display:none">
+      <label>Absender</label><input type="text" id="f-absender">
+      <label>Firma</label><input type="text" id="f-firma">
+      <label>Betreff</label><input type="text" id="f-betreff">
+      <label>Text</label><textarea id="f-text" style="min-height:100px"></textarea>
+      <div class="knopfleiste">
+        <button class="primaer" id="f-senden">Absenden</button>
+        <button id="f-abbrechen">Abbrechen</button>
+      </div>
+    </div>
+    <ul id="mailliste"></ul>
+  </section>
+
+  <section class="spalte" id="spalte-mitte">
+    <div id="mitte-leer" class="hinweis">Keine Mail ausgewählt.</div>
+    <div id="mitte-inhalt" style="display:none">
+      <div class="vergleich">
+        <div>
+          <h3>So sieht es der Mitarbeiter</h3>
+          <div class="textfeld" id="feld-roh"></div>
+        </div>
+        <div>
+          <h3>Das bekam das Modell</h3>
+          <div class="textfeld" id="feld-pseudonym"></div>
+        </div>
+      </div>
+      <h3>Platzhalter</h3>
+      <table id="tabelle-platzhalter"><thead><tr><th>Typ</th><th>Platzhalter</th><th>Original</th></tr></thead><tbody></tbody></table>
+      <div id="fehler-extraktion" class="fehlerkasten" style="display:none"></div>
+      <div id="extraktion-block">
+        <h3>Extrahierte Felder</h3>
+        <table id="tabelle-extraktion"><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="spalte" id="spalte-rechts">
+    <div id="rechts-leer" class="hinweis">–</div>
+    <div id="rechts-inhalt" style="display:none">
+      <h2>Einsatzvorschlag</h2>
+      <div id="termin-block"></div>
+      <h3>Antwortentwurf</h3>
+      <textarea id="antwort-text"></textarea>
+      <div class="knopfleiste">
+        <button class="primaer" id="btn-freigeben">Freigeben</button>
+        <button id="btn-ablehnen">Ablehnen</button>
+        <button id="btn-neu-verarbeiten">Neu verarbeiten</button>
+      </div>
+      <div class="fussnote" id="fussnote"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+"use strict";
+
+// ---- Zustand ----------------------------------------------------------
+var statisch = false;
+var mails = [];
+var ergebnisse = {}; // statischer Modus: id -> Ergebnis
+var aktuelleId = null;
+var aktuellesErgebnis = null;
+
+// ---- Hilfsfunktionen ----------------------------------------------------
+function esc(s) {
+  if (s === null || s === undefined) return "";
+  return String(s).replace(/[&<>"]/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+  });
+}
+
+function escRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Escaped-Text zuerst per esc() sichern, danach Markierungen einsetzen.
+// Ein einziger kombinierter Regex-Durchlauf (statt je Wert einzeln zu ersetzen)
+// verhindert verschachtelte <mark>, falls ein Wert Teilstring eines anderen ist.
+function markiereWerte(text, werte, klasse) {
+  var html = esc(text);
+  var gesehen = {};
+  var eindeutig = [];
+  (werte || []).forEach(function (w) {
+    if (w && !gesehen[w]) { gesehen[w] = true; eindeutig.push(w); }
+  });
+  if (!eindeutig.length) return html;
+  // längere zuerst, damit ein kürzerer Wert keinen längeren zerschneidet
+  eindeutig.sort(function (a, b) { return b.length - a.length; });
+  var muster = new RegExp(eindeutig.map(function (w) { return escRegex(esc(w)); }).join("|"), "g");
+  return html.replace(muster, function (treffer) { return "<mark class=\"" + klasse + "\">" + treffer + "</mark>"; });
+}
+
+function markiereOriginale(text, platzhalter) {
+  return markiereWerte(text, (platzhalter || []).map(function (p) { return p.original; }), "orig");
+}
+
+function markierePlatzhalter(text, platzhalter) {
+  return markiereWerte(text, (platzhalter || []).map(function (p) { return p.platzhalter; }), "ph");
+}
+
+function zeigeLadefehler(text) {
+  var el = document.getElementById("ladefehler");
+  el.textContent = text;
+  el.style.display = "block";
+}
+
+function anfrage(methode, url, body) {
+  return fetch(url, {
+    method: methode,
+    headers: body ? { "Content-Type": "application/json" } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  }).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status + " bei " + url);
+    return r.json();
+  });
+}
+
+// ---- Kopfzeile / Statuserkennung ---------------------------------------
+function starte() {
+  fetch("/api/status")
+    .then(function (r) { if (!r.ok) throw new Error("kein Server"); return r.json(); })
+    .then(function (s) {
+      statisch = false;
+      document.getElementById("kopf-info").textContent = s.anbieter + " / " + s.modell;
+      if (s.live_modellaufrufe === false) {
+        document.getElementById("kopf-info").innerHTML = esc(s.anbieter) + " / " + esc(s.modell) +
+          ' <span class="badge" style="background:#5a6472">Live-Modellaufrufe abgeschaltet: aufgezeichnete Ergebnisse, Freigabe und Ablehnung funktionieren</span>';
+        document.getElementById("btn-alle").disabled = true;
+        document.getElementById("btn-neu").disabled = true;
+        document.getElementById("btn-neu-verarbeiten").disabled = true;
+      }
+      ladeMailsServer();
+    })
+    .catch(function () {
+      statisch = true;
+      document.getElementById("kopf-info").innerHTML =
+        '<span class="badge" style="background:#5a6472">statischer Modus (GitHub Pages): vorberechnete Ergebnisse, keine Modellaufrufe</span>';
+      document.getElementById("btn-alle").disabled = true;
+      ladeDatenStatisch();
+    });
+}
+
+function ladeMailsServer() {
+  anfrage("GET", "/api/mails")
+    .then(function (liste) { mails = liste; renderListe(); })
+    .catch(function (e) { zeigeLadefehler("Mails konnten nicht geladen werden: " + e.message); });
+}
+
+function ladeDatenStatisch() {
+  Promise.all([
+    fetch("data/mails.json").then(function (r) { return r.json(); }),
+    fetch("data/ergebnisse.json").then(function (r) { return r.json(); }),
+  ])
+    .then(function (res) {
+      var rohMails = res[0];
+      ergebnisse = res[1];
+      mails = rohMails.map(function (m) {
+        var e = ergebnisse[m.id];
+        return { id: m.id, absender_name: m.absender_name, betreff: m.betreff, empfangen: m.empfangen,
+                 status: e ? e.status : "unverarbeitet" };
+      });
+      // Volltext-Mails für den statischen Detailaufruf zwischenspeichern
+      window.__mailsVoll = {};
+      rohMails.forEach(function (m) { window.__mailsVoll[m.id] = m; });
+      renderListe();
+    })
+    .catch(function (e) { zeigeLadefehler("Statische Daten (docs/data/) konnten nicht geladen werden: " + e.message); });
+}
+
+// ---- Linke Spalte: Mailliste -------------------------------------------
+function renderListe() {
+  var ul = document.getElementById("mailliste");
+  ul.innerHTML = "";
+  mails.forEach(function (m) {
+    var li = document.createElement("li");
+    li.className = m.id === aktuelleId ? "aktiv" : "";
+    li.innerHTML = '<span class="kopf"><span class="name">' + esc(m.absender_name) + "</span>" +
+      '<span class="badge ' + esc(m.status) + '">' + esc(m.status) + "</span></span>" +
+      '<span class="betreff">' + esc(m.betreff) + "</span>";
+    li.addEventListener("click", function () { waehleMail(m.id); });
+    ul.appendChild(li);
+  });
+}
+
+function waehleMail(id) {
+  aktuelleId = id;
+  renderListe();
+  if (statisch) {
+    var mail = window.__mailsVoll[id];
+    var ergebnis = ergebnisse[id] || null;
+    zeigeDetail(mail, ergebnis);
+  } else {
+    anfrage("GET", "/api/mails/" + id)
+      .then(function (d) { zeigeDetail(d.mail, d.ergebnis); })
+      .catch(function (e) { zeigeLadefehler("Mail konnte nicht geladen werden: " + e.message); });
+  }
+}
+
+// ---- Mittlere Spalte -----------------------------------------------------
+function feldZeile(bezeichnung, wert) {
+  return "<tr><th>" + esc(bezeichnung) + "</th><td>" + wert + "</td></tr>";
+}
+
+function renderExtraktion(ex) {
+  var tbody = document.querySelector("#tabelle-extraktion tbody");
+  tbody.innerHTML = "";
+  if (!ex) { tbody.innerHTML = feldZeile("Hinweis", "keine Extraktion vorhanden"); return; }
+  var kunde = esc(ex.kunde && ex.kunde.firma) || "–";
+  var ap = ex.ansprechpartner || {};
+  var ansprechpartner = [ap.anrede, ap.name].filter(function (x) { return x; }).map(esc).join(" ") || "–";
+  var anlage = ex.anlage || {};
+  var anlageText = [anlage.typ, anlage.nummer, anlage.baujahr]
+    .filter(function (x) { return x; }).map(esc).join(" · ") || "–";
+  var anliegen = (ex.anliegen || []).map(function (a) {
+    return "<li>" + esc(a.kategorie) + ": " + esc(a.beschreibung) + "</li>";
+  }).join("") || "<li>–</li>";
+  var wz = ex.wunschzeitraum || {};
+  var wunsch = [wz.von, wz.bis, wz.tageszeit].filter(function (x) { return x; }).map(esc).join(" – ") || "–";
+  var unklar = (ex.unklarheiten || []).map(function (u) { return "<li>" + esc(u) + "</li>"; }).join("") || "<li>keine</li>";
+  tbody.innerHTML =
+    feldZeile("Kunde", kunde) +
+    feldZeile("Ansprechpartner", ansprechpartner) +
+    feldZeile("Anlage", anlageText) +
+    feldZeile("Anliegen", "<ul>" + anliegen + "</ul>") +
+    feldZeile("Dringlichkeit", esc(ex.dringlichkeit) || "–") +
+    feldZeile("Wunschzeitraum", wunsch) +
+    feldZeile("Zuständigkeit", esc(ex.zustaendigkeit) || "–") +
+    feldZeile("Unklarheiten", "<ul>" + unklar + "</ul>");
+}
+
+function zeigeDetail(mail, ergebnis) {
+  aktuellesErgebnis = ergebnis;
+  document.getElementById("mitte-leer").style.display = "none";
+  document.getElementById("mitte-inhalt").style.display = "block";
+
+  if (ergebnis) {
+    document.getElementById("feld-roh").innerHTML = markiereOriginale(ergebnis.roh_text, ergebnis.platzhalter);
+    document.getElementById("feld-pseudonym").innerHTML = markierePlatzhalter(ergebnis.pseudonym_text, ergebnis.platzhalter);
+    var tbody = document.querySelector("#tabelle-platzhalter tbody");
+    tbody.innerHTML = (ergebnis.platzhalter || []).map(function (p) {
+      return "<tr><td>" + esc(p.typ) + "</td><td>" + esc(p.platzhalter) + "</td><td>" + esc(p.original) + "</td></tr>";
+    }).join("") || "<tr><td colspan=3>keine</td></tr>";
+
+    var fehlerBox = document.getElementById("fehler-extraktion");
+    if (ergebnis.status === "pruefung_noetig" && ergebnis.extraktion_fehler) {
+      fehlerBox.style.display = "block";
+      fehlerBox.textContent = "Prüfung nötig: " + ergebnis.extraktion_fehler;
+    } else {
+      fehlerBox.style.display = "none";
+    }
+    renderExtraktion(ergebnis.extraktion);
+  } else {
+    document.getElementById("feld-roh").innerHTML = esc(mail.text);
+    document.getElementById("feld-pseudonym").innerHTML = '<span class="hinweis">Mail wurde noch nicht verarbeitet.</span>';
+    document.querySelector("#tabelle-platzhalter tbody").innerHTML = "<tr><td colspan=3>keine</td></tr>";
+    document.getElementById("fehler-extraktion").style.display = "none";
+    renderExtraktion(null);
+  }
+
+  zeigeRechts(ergebnis);
+}
+
+// ---- Rechte Spalte -------------------------------------------------------
+function zeigeRechts(ergebnis) {
+  document.getElementById("rechts-leer").style.display = ergebnis ? "none" : "block";
+  document.getElementById("rechts-inhalt").style.display = ergebnis ? "block" : "none";
+  if (!ergebnis) return;
+
+  var terminBlock = document.getElementById("termin-block");
+  var html;
+  if (ergebnis.termin) {
+    var t = ergebnis.termin;
+    html = "<p><strong>" + esc(t.datum) + "</strong>, Techniker " + esc(t.techniker) + " (" + esc(t.qualifikation) + ")" +
+      (t.hinweis ? "<br>" + esc(t.hinweis) : "") + "</p>";
+  } else if (ergebnis.extraktion && ergebnis.extraktion.zustaendigkeit === "vertrieb") {
+    html = "<p class=\"hinweis\">kein Einsatz (Vertrieb)</p>";
+  } else {
+    html = "<p class=\"hinweis\">kein Einsatz</p>";
+  }
+  if (ergebnis.ersatzteile && ergebnis.ersatzteile.length) {
+    html += "<h3>Ersatzteile</h3><ul>" + ergebnis.ersatzteile.map(function (e) {
+      return "<li>" + esc(e.teil) + ": " + esc(e.status) + "</li>";
+    }).join("") + "</ul>";
+  }
+  terminBlock.innerHTML = html;
+
+  document.getElementById("antwort-text").value = ergebnis.antwort_entwurf || "";
+  document.getElementById("fussnote").textContent =
+    "Dauer " + ergebnis.dauer_ms + " ms, Anbieter " + ergebnis.anbieter + "/" + ergebnis.modell + ", " + ergebnis.zeitpunkt;
+}
+
+// ---- Aktionen --------------------------------------------------------
+function statischerHinweis() {
+  alert("Statischer Modus: Änderungen werden nicht gespeichert.");
+}
+
+document.getElementById("btn-alle").addEventListener("click", function () {
+  if (statisch) { statischerHinweis(); return; }
+  var offene = mails.filter(function (m) { return m.status === "unverarbeitet"; }).map(function (m) { return m.id; });
+  var kette = Promise.resolve();
+  offene.forEach(function (id) {
+    kette = kette.then(function () { return anfrage("POST", "/api/mails/" + id + "/verarbeiten"); })
+      .catch(function (e) { zeigeLadefehler("Verarbeitung von " + id + " fehlgeschlagen: " + e.message); });
+  });
+  kette.then(ladeMailsServer);
+});
+
+document.getElementById("btn-neu").addEventListener("click", function () {
+  document.getElementById("neue-mail-formular").style.display = "block";
+});
+document.getElementById("f-abbrechen").addEventListener("click", function () {
+  document.getElementById("neue-mail-formular").style.display = "none";
+});
+document.getElementById("f-senden").addEventListener("click", function () {
+  if (statisch) { statischerHinweis(); return; }
+  var absender = document.getElementById("f-absender").value.trim();
+  var firma = document.getElementById("f-firma").value.trim();
+  var betreff = document.getElementById("f-betreff").value.trim();
+  var text = document.getElementById("f-text").value.trim();
+  if (!absender || !text) { alert("Absender und Text sind erforderlich."); return; }
+  anfrage("POST", "/api/mails", { absender_name: absender, absender_firma: firma, betreff: betreff, text: text })
+    .then(function (mail) {
+      document.getElementById("neue-mail-formular").style.display = "none";
+      document.getElementById("f-absender").value = "";
+      document.getElementById("f-firma").value = "";
+      document.getElementById("f-betreff").value = "";
+      document.getElementById("f-text").value = "";
+      return anfrage("POST", "/api/mails/" + mail.id + "/verarbeiten").then(function () {
+        ladeMailsServer();
+        waehleMail(mail.id);
+      });
+    })
+    .catch(function (e) { zeigeLadefehler("Neue Mail konnte nicht angelegt werden: " + e.message); });
+});
+
+document.getElementById("btn-freigeben").addEventListener("click", function () { setzeStatus("freigegeben"); });
+document.getElementById("btn-ablehnen").addEventListener("click", function () { setzeStatus("abgelehnt"); });
+document.getElementById("btn-neu-verarbeiten").addEventListener("click", function () {
+  if (statisch) { statischerHinweis(); return; }
+  if (!aktuelleId) return;
+  anfrage("POST", "/api/mails/" + aktuelleId + "/verarbeiten")
+    .then(function () { ladeMailsServer(); waehleMail(aktuelleId); })
+    .catch(function (e) { zeigeLadefehler("Verarbeitung fehlgeschlagen: " + e.message); });
+});
+
+function setzeStatus(status) {
+  if (statisch) { statischerHinweis(); return; }
+  if (!aktuelleId) return;
+  var entwurf = document.getElementById("antwort-text").value;
+  anfrage("POST", "/api/mails/" + aktuelleId + "/status", { status: status, antwort_entwurf: entwurf })
+    .then(function () { ladeMailsServer(); waehleMail(aktuelleId); })
+    .catch(function (e) { zeigeLadefehler("Status konnte nicht geändert werden: " + e.message); });
+}
+
+starte();
+</script>
+</body>
+</html>

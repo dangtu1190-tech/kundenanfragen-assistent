@@ -1,0 +1,35 @@
+# Fly.io-Konfiguration. Vorbereitet, nicht ausgerollt.
+# Achtung: Die Fly.io-Preisseite (fly.io/docs/about/pricing, Stand 11.09.2026) nennt
+# keinen kostenlosen Plan mehr; auch gestoppte Maschinen kosten Speicher
+# (0,15 $ je GB Root-Dateisystem und Monat). Für eine kostenfreie Demo ist Render
+# die bessere Wahl (render.yaml).
+app = "serviceanfragen-assistent"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  # Live-Pfad bleibt aus: sonst zahlt der Schlüssel für jeden Besucher.
+  LIVE_MODELLAUFRUFE = "0"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  # 0 = scale-to-zero, gleiche Begründung wie in infra/azure/main.tf: bei > 0 läuft
+  # eine Maschine rund um die Uhr und wird auch ohne Traffic berechnet.
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/api/status"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

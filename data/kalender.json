@@ -1,0 +1,131 @@
+{
+  "basisdatum": "2026-09-14",
+  "techniker": [
+    {
+      "kuerzel": "T1",
+      "name": "Techniker 1",
+      "qualifikationen": [
+        "elektrik",
+        "steuerung"
+      ]
+    },
+    {
+      "kuerzel": "T2",
+      "name": "Techniker 2",
+      "qualifikationen": [
+        "vakuumtechnik",
+        "mechanik"
+      ]
+    },
+    {
+      "kuerzel": "T3",
+      "name": "Techniker 3",
+      "qualifikationen": [
+        "steuerung"
+      ]
+    },
+    {
+      "kuerzel": "T4",
+      "name": "Techniker 4",
+      "qualifikationen": [
+        "mechanik",
+        "elektrik"
+      ]
+    },
+    {
+      "kuerzel": "T5",
+      "name": "Techniker 5",
+      "qualifikationen": [
+        "vakuumtechnik"
+      ]
+    }
+  ],
+  "tage": [
+    {
+      "datum": "2026-09-14",
+      "belegt": [
+        "T1"
+      ]
+    },
+    {
+      "datum": "2026-09-15",
+      "belegt": [
+        "T1",
+        "T2"
+      ]
+    },
+    {
+      "datum": "2026-09-16",
+      "belegt": [
+        "T1",
+        "T3"
+      ]
+    },
+    {
+      "datum": "2026-09-17",
+      "belegt": [
+        "T1",
+        "T3"
+      ]
+    },
+    {
+      "datum": "2026-09-18",
+      "belegt": [
+        "T1"
+      ]
+    },
+    {
+      "datum": "2026-09-21",
+      "belegt": [
+        "T5"
+      ]
+    },
+    {
+      "datum": "2026-09-22",
+      "belegt": [
+        "T5",
+        "T2"
+      ]
+    },
+    {
+      "datum": "2026-09-23",
+      "belegt": [
+        "T5"
+      ]
+    },
+    {
+      "datum": "2026-09-24",
+      "belegt": [
+        "T5"
+      ]
+    },
+    {
+      "datum": "2026-09-25",
+      "belegt": [
+        "T5"
+      ]
+    },
+    {
+      "datum": "2026-09-28",
+      "belegt": []
+    },
+    {
+      "datum": "2026-09-29",
+      "belegt": [
+        "T2"
+      ]
+    },
+    {
+      "datum": "2026-09-30",
+      "belegt": []
+    },
+    {
+      "datum": "2026-10-01",
+      "belegt": []
+    },
+    {
+      "datum": "2026-10-02",
+      "belegt": []
+    }
+  ]
+}

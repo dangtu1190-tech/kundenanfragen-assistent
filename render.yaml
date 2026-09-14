@@ -1,0 +1,20 @@
+# Render Blueprint. Vorbereitet, nicht ausgerollt.
+# Free-Plan (Stand 11.09.2026, render.com/docs/free): Instanz schläft nach 15 Minuten
+# ohne Anfragen ein, der erste Aufruf danach dauert bis zu einer Minute; 750 Instanz-
+# stunden je Monat; Dateisystem flüchtig (Statusänderungen gehen beim Neustart verloren).
+services:
+  - type: web
+    name: serviceanfragen-assistent
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/status
+    autoDeploy: false
+    envVars:
+      # Live-Pfad bleibt aus: sonst zahlt der Schlüssel für jeden Besucher.
+      - key: LIVE_MODELLAUFRUFE
+        value: "0"
+      # Nur im Render-Dashboard setzen, nie in dieser Datei. Ohne Live-Pfad ungenutzt.
+      - key: LLM_API_KEY
+        sync: false
