@@ -6,10 +6,12 @@
     python -m app.cli --pages    zusätzlich docs/data/ für GitHub Pages aktualisieren
 
 Ohne SYSTEME_BASE_URL läuft die Systemlandschaft im Prozess: die angelegten
-CRM-Tickets landen dann in systeme/daten/tickets.json. Für einen sauberen
-Ausgangsstand vor dem Aufzeichnungslauf diese Datei auf [] zurücksetzen.
+CRM-Tickets landen dann in systeme/daten/tickets.json. `--neu` setzt diesen
+Bestand vorher selbst auf [] zurück, damit die aufgezeichneten Ergebnisse und
+der ausgelieferte Ticketbestand zueinander passen.
 """
 import argparse
+import os
 import shutil
 import sys
 from datetime import date
@@ -19,6 +21,7 @@ from app.integration import Systeme
 from app.llm_client import LLMClient, lade_konfig
 from app.pipeline import verarbeite
 from app.speicher import DATEN, lade_ergebnisse, lade_konfig as lade_daten_konfig, lade_mails, speichere_ergebnisse
+from systeme.speicher import daten_ordner, schreib as schreib_systemdatei
 
 PAGES = Path(__file__).resolve().parent.parent / "docs" / "data"
 
@@ -37,6 +40,19 @@ def kopiere_fuer_pages() -> None:
                   file=sys.stderr)
             continue
         shutil.copyfile(quelle, PAGES / name)
+
+
+def setze_ticketbestand_zurueck() -> None:
+    """Setzt den CRM-Ticketbestand vor einem Komplettlauf auf [] zurück.
+
+    Nur bei der Systemlandschaft im Prozess: dann schreibt genau dieser Lauf
+    die Tickets, und ein alter Bestand ließe die frisch aufgezeichneten
+    Ergebnisse auf Ticketnummern zeigen, die im ausgelieferten Bestand gar
+    nicht vorkommen. Läuft die Systemlandschaft woanders (SYSTEME_BASE_URL),
+    gehört uns die Datei nicht und wird nicht angefasst.
+    """
+    schreib_systemdatei("tickets.json", [])
+    print(f"Ticketbestand {daten_ordner() / 'tickets.json'} auf [] zurückgesetzt.")
 
 
 def _kurzfassung(erg: dict) -> str:
@@ -67,6 +83,12 @@ def main(argv=None) -> int:
     heute = date.fromisoformat(lade_daten_konfig()["basisdatum"])
     ergebnisse = lade_ergebnisse()
     print(f"Anbieter {konfig.provider}, Modell {konfig.model}, heute {heute}")
+
+    # Vor dem Modellaufruf, nicht danach: der Lauf soll auf einem leeren
+    # Ticketbestand aufsetzen. Mit --nur ist es kein Komplettlauf, dann würde
+    # das Zurücksetzen die Tickets der übrigen 14 Mails grundlos wegwerfen.
+    if args.neu and not args.nur and not os.getenv("SYSTEME_BASE_URL"):
+        setze_ticketbestand_zurueck()
 
     for mail in lade_mails():
         if args.nur and mail["id"] != args.nur:

@@ -12,6 +12,9 @@ def systeme(tmp_path, monkeypatch):
     # Kopie der Daten, damit Tickets nicht in systeme/daten landen
     daten = tmp_path / "daten"
     shutil.copytree("systeme/daten", daten)
+    # Leerer Ticketbestand: der ausgelieferte enthaelt die 15 Tickets des
+    # aufgezeichneten Laufs, die Tests erwarten IDs ab T-2026-0001.
+    (daten / "tickets.json").write_text("[]", encoding="utf-8")
     monkeypatch.setenv("SYSTEME_DATEN", str(daten))
     return Systeme(baue_client(None))
 

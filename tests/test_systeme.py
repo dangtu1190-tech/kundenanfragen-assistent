@@ -12,6 +12,10 @@ from systeme.main import app
 def client(tmp_path, monkeypatch):
     daten = tmp_path / "daten"
     shutil.copytree("systeme/daten", daten)
+    # Der ausgelieferte Ticketbestand enthaelt die 15 Tickets des aufgezeichneten
+    # Laufs. Die Tests zaehlen ab T-2026-0001 und brauchen deshalb einen leeren
+    # Bestand; die Kopie wird dafuer zurueckgesetzt.
+    (daten / "tickets.json").write_text("[]", encoding="utf-8")
     monkeypatch.setenv("SYSTEME_DATEN", str(daten))
     return TestClient(app)
 

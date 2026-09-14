@@ -16,15 +16,16 @@ ENV PYTHONUNBUFFERED=1 \
 RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin app
 WORKDIR /app
 COPY --from=builder /install /usr/local
-# data/ gehört dem Laufzeit-User: der Server schreibt Status, Kalender und neue
-# Mails dorthin. Im Container ist das flüchtig (siehe README, Betrieb).
+# data/ gehört dem Laufzeit-User: der Server schreibt Status und neue Mails
+# dorthin. Im Container ist das flüchtig (siehe README, Betrieb).
 COPY --chown=app:app app/ app/
 COPY --chown=app:app data/ data/
 COPY --chown=app:app docs/index.html docs/index.html
 # Dasselbe Image kann zwei Rollen: als App (app.main:app, Port 8040) oder als
 # Mock-Systemlandschaft (systeme.main:app, Port 8050, siehe docker-compose.yml
 # und infra/azure/main.tf). systeme/daten/ enthält die Ausgangsdaten der Mocks,
-# tickets.json startet leer ([]) und wird zur Laufzeit beschrieben.
+# tickets.json enthält die 15 Tickets des aufgezeichneten Laufs (data/ergebnisse.json)
+# und wird zur Laufzeit weiter beschrieben; im Container ist das flüchtig.
 COPY --chown=app:app systeme/ systeme/
 USER app
 EXPOSE 8040
