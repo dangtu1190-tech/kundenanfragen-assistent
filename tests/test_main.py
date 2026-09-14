@@ -58,6 +58,20 @@ def test_mails_liste_und_detail(client):
     assert client.get("/api/mails/gibtsnicht").status_code == 404
 
 
+def test_liste_nennt_zustaendigkeit_und_dringlichkeit(client):
+    """Die Kennzeichen der Liste kommen aus dem Ergebnis, nicht aus einem Standardwert."""
+    unverarbeitet = client.get("/api/mails").json()[0]
+    assert unverarbeitet["zustaendigkeit"] is None and unverarbeitet["dringlichkeit"] is None
+
+    client.post("/api/mails/m01/verarbeiten")
+    eintrag = client.get("/api/mails").json()[0]
+    assert eintrag["id"] == "m01"
+    assert eintrag["zustaendigkeit"] == "kundenservice"
+    assert eintrag["dringlichkeit"] in ("niedrig", "mittel", "hoch")
+    # Die übrigen Mails bleiben ohne Kennzeichen, solange sie unverarbeitet sind.
+    assert client.get("/api/mails").json()[1]["zustaendigkeit"] is None
+
+
 def test_verarbeiten_und_freigeben(client):
     r = client.post("/api/mails/m01/verarbeiten").json()
     assert r["status"] == "offen"

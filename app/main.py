@@ -81,12 +81,25 @@ def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
 
     @app.get("/api/mails")
     def mails():
+        """Liste für den Posteingang.
+
+        Zuständigkeit und Dringlichkeit stehen mit in der Liste, damit die
+        Oberfläche sie sofort als Kennzeichen anzeigen kann; sie kommen aus dem
+        ohnehin geladenen Ergebnis-Dict und kosten keinen weiteren Zugriff. Für
+        eine unverarbeitete Mail sind beide null, nicht etwa ein Standardwert:
+        eine geratene Zuständigkeit wäre in der Liste nicht von einer
+        entschiedenen zu unterscheiden."""
         ergebnisse = speicher.lade_ergebnisse()
-        return [{"id": m["id"], "absender_name": m["absender_name"],
-                 "absender_firma": m.get("absender_firma", ""), "betreff": m["betreff"],
-                 "empfangen": m["empfangen"],
-                 "status": ergebnisse.get(m["id"], {}).get("status", "unverarbeitet")}
-                for m in speicher.lade_mails()]
+        eintraege = []
+        for m in speicher.lade_mails():
+            ergebnis = ergebnisse.get(m["id"], {})
+            eintraege.append({"id": m["id"], "absender_name": m["absender_name"],
+                              "absender_firma": m.get("absender_firma", ""), "betreff": m["betreff"],
+                              "empfangen": m["empfangen"],
+                              "status": ergebnis.get("status", "unverarbeitet"),
+                              "zustaendigkeit": ergebnis.get("zustaendigkeit"),
+                              "dringlichkeit": ergebnis.get("dringlichkeit")})
+        return eintraege
 
     @app.get("/api/mails/{mail_id}")
     def mail_detail(mail_id: str):

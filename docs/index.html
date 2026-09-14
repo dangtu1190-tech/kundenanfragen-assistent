@@ -333,8 +333,13 @@ function ladeDatenStatisch() {
       rohMails.forEach(function (m) { mailsVoll[m.id] = m; });
       mails = rohMails.map(function (m) {
         var e = ergebnisse[m.id];
+        // Gleiche Form wie /api/mails, damit die Liste in beiden Betriebsarten
+        // aus denselben Feldern gebaut wird.
         return { id: m.id, absender_name: m.absender_name, absender_firma: m.absender_firma,
-                 betreff: m.betreff, empfangen: m.empfangen, status: e ? e.status : "unverarbeitet" };
+                 betreff: m.betreff, empfangen: m.empfangen,
+                 status: e ? e.status : "unverarbeitet",
+                 zustaendigkeit: e ? e.zustaendigkeit : null,
+                 dringlichkeit: e ? e.dringlichkeit : null };
       });
       renderListe();
     })
@@ -350,11 +355,16 @@ function renderListe() {
     var status = ergebnis ? ergebnis.status : (m.status || "unverarbeitet");
     var li = document.createElement("li");
     li.className = m.id === aktuelleId ? "aktiv" : "";
-    // Zuständigkeit und Dringlichkeit stehen nicht in /api/mails; im
-    // Serverbetrieb erscheinen sie, sobald das Ergebnis einmal geladen wurde.
-    var kennzeichen = ergebnis
-      ? '<div class="kennzeichen">' + badge("z-" + ergebnis.zustaendigkeit, ergebnis.zustaendigkeit) +
-        badge("d-" + ergebnis.dringlichkeit, "Dringlichkeit " + ergebnis.dringlichkeit) + "</div>"
+    // Kennzeichen aus der Liste (/api/mails liefert sie mit); ist die Mail
+    // schon einmal geöffnet worden, gilt das frischere Ergebnis. Unverarbeitet
+    // sind beide null, dann bleibt die Zeile ohne Kennzeichen statt ein
+    // "null"-Badge zu zeigen.
+    var zustaendigkeit = ergebnis ? ergebnis.zustaendigkeit : m.zustaendigkeit;
+    var dringlichkeit = ergebnis ? ergebnis.dringlichkeit : m.dringlichkeit;
+    var kennzeichen = (zustaendigkeit || dringlichkeit)
+      ? '<div class="kennzeichen">' +
+        (zustaendigkeit ? badge("z-" + zustaendigkeit, zustaendigkeit) : "") +
+        (dringlichkeit ? badge("d-" + dringlichkeit, "Dringlichkeit " + dringlichkeit) : "") + "</div>"
       : "";
     li.innerHTML =
       '<span class="kopf"><span class="name">' + esc(m.absender_name) + "</span>" +
