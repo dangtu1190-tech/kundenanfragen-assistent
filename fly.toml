@@ -3,9 +3,12 @@
 # keinen kostenlosen Plan mehr; auch gestoppte Maschinen kosten Speicher
 # (0,15 $ je GB Root-Dateisystem und Monat). Für eine kostenfreie Demo ist Render
 # die bessere Wahl (render.yaml).
-# Eine einzelne Fly-App ist eine Maschine: kein zweiter Container für die Mock-
-# Systemlandschaft. Sie läuft deshalb hier im selben Prozess wie die App
-# (SYSTEME_BASE_URL bleibt ungesetzt, siehe app/integration/__init__.py).
+# Die Mock-Systemlandschaft läuft hier absichtlich im selben Prozess wie die App
+# (SYSTEME_BASE_URL bleibt ungesetzt, siehe app/integration/__init__.py): eine
+# zweite Maschine nur für ERP/CRM/MES-Mocks würde den Fußabdruck verdoppeln
+# (zweite VM, zweiter Speicherposten) und bringt für Attrappen ohne echte Last
+# keinen Nutzen. Das Sidecar-Muster aus infra/azure/main.tf lohnt sich erst,
+# wenn ein echter zweiter Prozess nötig ist.
 app = "kundenanfragen-assistent"
 primary_region = "fra"
 

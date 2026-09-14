@@ -49,23 +49,35 @@ jobs:
         # Zwei Container aus demselben Image: "systeme" (Mock-Systemlandschaft)
         # und "app" mit SYSTEME_BASE_URL darauf. So läuft der Rauchtest gegen
         # dieselbe Aufteilung wie docker-compose.yml und infra/azure/main.tf.
+        # --no-healthcheck: das Image bringt ein HEALTHCHECK auf /api/status auf
+        # Port 8040 (app.main:app) mit. Dieser Container läuft aber systeme.main:app
+        # auf Port 8050; ohne --no-healthcheck würde "docker ps"/"docker logs" den
+        # Container fälschlich als "unhealthy" zeigen, obwohl er korrekt arbeitet.
         run: |
           docker network create rauchtest-netz
-          docker run -d --name rauchtest-systeme --network rauchtest-netz rauchtest \
+          docker run -d --name rauchtest-systeme --network rauchtest-netz \
+            --no-healthcheck -p 8050:8050 rauchtest \
             sh -c "exec python -m uvicorn systeme.main:app --host 0.0.0.0 --port 8050"
+          bereit=0
           for i in $(seq 1 20); do
-            docker exec rauchtest-systeme python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/', timeout=3)" 2>/dev/null && break
+            docker exec rauchtest-systeme python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/', timeout=3)" 2>/dev/null && { bereit=1; break; }
             sleep 1
           done
+          [ "$bereit" = "1" ] || { echo "::error::systeme-Container wurde nicht rechtzeitig bereit"; docker logs rauchtest-systeme; exit 1; }
+          # Die Mock-Systemlandschaft direkt prüfen, nicht nur über die App:
+          # /erp/docs muss von außen (publizierter Port) erreichbar sein.
+          curl -sf http://localhost:8050/erp/docs > /dev/null
       - name: Rauchtest, App-Container starten
         # Status muss antworten, die Systemlandschaft erreichbar, der Live-Pfad gesperrt (403).
         run: |
           docker run -d --name rauchtest-app --network rauchtest-netz -p 8040:8040 \
             -e SYSTEME_BASE_URL=http://rauchtest-systeme:8050 rauchtest
+          bereit=0
           for i in $(seq 1 20); do
-            curl -sf http://localhost:8040/api/status && break
+            curl -sf http://localhost:8040/api/status && { bereit=1; break; }
             sleep 1
           done
+          [ "$bereit" = "1" ] || { echo "::error::app-Container wurde nicht rechtzeitig bereit"; docker logs rauchtest-app; exit 1; }
           curl -sf http://localhost:8040/api/status | grep -q '"live_modellaufrufe":false'
           curl -sf http://localhost:8040/api/status | grep -q '"systeme_erreichbar":true'
           code=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:8040/api/mails/m01/verarbeiten)
