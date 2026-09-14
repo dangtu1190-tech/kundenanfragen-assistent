@@ -2,7 +2,7 @@ import json
 from datetime import date
 
 from app import speicher, vergleich
-from app.llm_client import Konfig
+from app.llm_client import DEFAULTS, Konfig
 
 HEUTE = date(2026, 9, 14)
 ERWARTET = json.loads((speicher.DATEN / "erwartet.json").read_text(encoding="utf-8"))
@@ -103,3 +103,55 @@ def test_schreibe_tabelle_enthaelt_modellname_zahlen_und_fussnote(tmp_path):
     assert "15/15" in text
     assert "Modell" in text and "Schemafehler" in text
     assert f"Soll-Werte: data/erwartet.json, n = 15, Stand {date.today().isoformat()}" in text
+
+
+def test_konfig_fuer_modell_openai_uebernimmt_schluessel_aus_der_umgebung(monkeypatch):
+    """Regression: --anbieter openai darf den in der .env gesetzten LLM_API_KEY
+    nicht verwerfen, sonst scheitert jeder Aufruf still als Schemafehler."""
+    monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("LLM_BASE_URL", raising=False)
+    monkeypatch.setenv("LLM_API_KEY", "x")
+    basis = Konfig(provider="ollama", base_url=DEFAULTS["ollama"]["base_url"], model="gpt-oss:20b", api_key="ollama")
+
+    konfig = vergleich.konfig_fuer_modell("gpt-4.1-mini", "openai", basis)
+
+    assert konfig.provider == "openai"
+    assert konfig.api_key == "x"
+    assert konfig.base_url == DEFAULTS["openai"]["base_url"]
+
+
+def test_konfig_fuer_modell_ollama_behaelt_platzhalterschluessel(monkeypatch):
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    monkeypatch.delenv("LLM_BASE_URL", raising=False)
+    monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    basis = Konfig(provider="openai", base_url=DEFAULTS["openai"]["base_url"], model="gpt-4.1-mini", api_key="sk-echt")
+
+    konfig = vergleich.konfig_fuer_modell("gpt-oss:20b", "ollama", basis)
+
+    assert konfig.provider == "ollama"
+    assert konfig.api_key == "ollama"
+    assert konfig.base_url == DEFAULTS["ollama"]["base_url"]
+
+
+def test_konfig_fuer_modell_ignoriert_base_url_eines_anderen_anbieters(monkeypatch):
+    """LLM_BASE_URL steht fuer den Standardanbieter; beim Wechsel auf einen
+    anderen Anbieter darf sie nicht mitreisen."""
+    monkeypatch.setenv("LLM_PROVIDER", "ollama")
+    monkeypatch.setenv("LLM_BASE_URL", "http://localhost:11434/v1")
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    basis = Konfig(provider="ollama", base_url="http://localhost:11434/v1", model="gpt-oss:20b", api_key="ollama")
+
+    konfig = vergleich.konfig_fuer_modell("gpt-4.1-mini", "openai", basis)
+
+    assert konfig.base_url == DEFAULTS["openai"]["base_url"]
+
+
+def test_warnt_bei_fehlendem_schluessel_fuer_nicht_ollama(capsys):
+    vergleich._warne_bei_fehlendem_schluessel(Konfig("openai", "https://api.openai.com/v1", "m", ""))
+    assert "LLM_API_KEY fehlt" in capsys.readouterr().err
+
+
+def test_warnt_nicht_bei_gesetztem_schluessel_oder_ollama(capsys):
+    vergleich._warne_bei_fehlendem_schluessel(Konfig("openai", "https://api.openai.com/v1", "m", "sk-x"))
+    vergleich._warne_bei_fehlendem_schluessel(Konfig("ollama", "http://localhost:11434/v1", "m", ""))
+    assert capsys.readouterr().err == ""

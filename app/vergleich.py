@@ -12,6 +12,7 @@ je Mail) und eine Markdown-Tabelle, standardmäßig nach `docs/modellvergleich.m
 """
 import argparse
 import json
+import os
 import sys
 from datetime import date
 from pathlib import Path
@@ -31,14 +32,30 @@ SPALTEN = (("Modell", None), ("Kategorien", "kategorien"), ("Zuständigkeit", "z
 def konfig_fuer_modell(modell: str, anbieter: str | None, basis: Konfig) -> Konfig:
     """Konfiguration für einen Modelllauf: `model` wird immer überschrieben.
 
-    Ist `--anbieter` gesetzt, kommen Basis-URL und Schlüssel-Standard aus
-    `DEFAULTS` für diesen Anbieter, nicht aus der Umgebung der Basiskonfiguration
-    (ein Vergleich gegen Ollama braucht keinen OpenAI-Schlüssel und umgekehrt).
+    Ist `--anbieter` gesetzt und weicht er vom Anbieter der Basiskonfiguration
+    ab, kommen Basis-URL und Schlüssel-Standard aus `DEFAULTS` für diesen
+    Anbieter. LLM_API_KEY aus der Umgebung gilt trotzdem weiter (ein Schlüssel
+    in der .env ist nicht an einen bestimmten Anbieter gebunden, ohne ihn
+    scheitert sonst jeder Aufruf an einen Schlüssel-Anbieter wie OpenAI still
+    als Schemafehler). LLM_BASE_URL dagegen gilt nur, wenn LLM_PROVIDER in der
+    Umgebung auch wirklich dem angeforderten Anbieter entspricht, sonst würde
+    eine für den Standardanbieter gesetzte URL beim Wechsel fälschlich mitreisen.
     """
     if anbieter and anbieter != basis.provider:
         d = DEFAULTS.get(anbieter, DEFAULTS["openai"])
-        return Konfig(provider=anbieter, base_url=d["base_url"], model=modell, api_key=d.get("api_key", ""))
+        base_url = d["base_url"]
+        if os.getenv("LLM_BASE_URL") and os.getenv("LLM_PROVIDER", "").lower() == anbieter:
+            base_url = os.environ["LLM_BASE_URL"]
+        api_key = os.getenv("LLM_API_KEY", d.get("api_key", ""))
+        return Konfig(provider=anbieter, base_url=base_url, model=modell, api_key=api_key)
     return Konfig(provider=basis.provider, base_url=basis.base_url, model=modell, api_key=basis.api_key)
+
+
+def _warne_bei_fehlendem_schluessel(konfig: Konfig) -> None:
+    """Ollama braucht keinen echten Schlüssel; jeder andere Anbieter ohne
+    LLM_API_KEY würde sonst erst mitten im Lauf als Schemafehler auffallen."""
+    if konfig.provider != "ollama" and not konfig.api_key:
+        print(f"LLM_API_KEY fehlt, Aufrufe an {konfig.provider} werden scheitern", file=sys.stderr)
 
 
 def _kurzfassung(erg: dict) -> str:
@@ -140,6 +157,7 @@ def main(argv=None) -> int:
     bewertungen: dict[str, dict] = {}
     for modell in [m.strip() for m in args.modelle.split(",") if m.strip()]:
         konfig = konfig_fuer_modell(modell, args.anbieter, basis)
+        _warne_bei_fehlendem_schluessel(konfig)
         print(f"Modell {modell} (Anbieter {konfig.provider})")
         client = LLMClient(konfig)
         ergebnisse = laufe_modell(client, mails, heute)
