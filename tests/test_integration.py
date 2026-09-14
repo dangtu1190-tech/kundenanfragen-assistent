@@ -44,3 +44,13 @@ def test_fake_ausfall():
     f.ausgefallen.add("mes")
     with pytest.raises(SystemNichtErreichbar):
         f.mes.maschinen()
+
+
+def test_crm_ticket_lesen(systeme):
+    daten = {"externe_referenz": "m98", "kundennummer": "K-10234", "kontakt_email": "y@example.org",
+             "betreff": "t", "kategorien": ["bestellstatus"], "prioritaet": "mittel",
+             "zustaendigkeit": "kundenservice", "zusammenfassung": "z"}
+    angelegt = systeme.crm.ticket_anlegen(daten)
+    gelesen = systeme.crm.ticket(angelegt["ticket_id"])
+    assert gelesen["externe_referenz"] == "m98" and gelesen["status"] == "offen"
+    assert systeme.crm.ticket("T-2026-9999") is None

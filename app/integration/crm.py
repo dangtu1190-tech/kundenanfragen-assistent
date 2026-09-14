@@ -16,5 +16,8 @@ class CRM:
     def ticket_anlegen(self, daten: dict) -> dict:
         return _post(self._client, "crm", "/crm/tickets", json=daten)
 
+    def ticket(self, ticket_id: str) -> dict | None:
+        return _get(self._client, "crm", f"/crm/tickets/{ticket_id}")
+
     def ticket_status(self, ticket_id: str, status: str) -> dict | None:
         return _patch(self._client, "crm", f"/crm/tickets/{ticket_id}", json={"status": status})

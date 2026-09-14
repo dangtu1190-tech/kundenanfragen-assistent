@@ -41,7 +41,7 @@ class FakeCRM:
         return ticket
 
     def ticket(self, ticket_id):
-        """Nur fuer Tests: Blick in den Ticketbestand ohne ihn zu veraendern."""
+        """Liest ein Ticket, wie CRM.ticket() gegen GET /crm/tickets/{id}."""
         return self._tickets.get(ticket_id)
 
     def ticket_status(self, ticket_id, status):

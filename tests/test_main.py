@@ -157,3 +157,14 @@ def test_verarbeiten_liefert_systemdaten_und_ticket(client):
     assert erg["systemdaten"]["bestellung"]["status"] == "versendet"
     assert erg["ticket"]["ticket_id"].startswith("T-")
     assert erg["integrationsfehler"] == []
+
+
+def test_statuswechsel_bei_unbekanntem_ticket_ist_409(client, fake_systeme):
+    """Ticket im CRM verschwunden: lieber ein Konflikt als ein Status, der
+    nur im Assistenten weiterläuft."""
+    client.post("/api/mails/m01/verarbeiten")
+    fake_systeme.crm._tickets.clear()  # im CRM geloescht
+
+    r = client.post("/api/mails/m01/status", json={"status": "freigegeben"})
+    assert r.status_code == 409 and "im CRM unbekannt" in r.json()["detail"]
+    assert client.get("/api/mails/m01").json()["ergebnis"]["status"] == "offen"

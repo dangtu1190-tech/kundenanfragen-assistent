@@ -42,23 +42,53 @@ def _offene_positionen(bestellung: dict) -> list[str]:
     return zeilen
 
 
+def _liefertermin_zusatz(termin: str | None) -> str:
+    if termin:
+        return f", geplanter Liefertermin ist der {termin}."
+    return "; den Liefertermin nennen wir Ihnen, sobald er feststeht."
+
+
+def _versendet(nr, bestellung: dict, termin: str | None) -> str:
+    """Aus Bausteinen, weil Sendungsnummer und Liefertermin leer sein dürfen.
+
+    Ein ungeprüftes Feld stünde sonst als "None" im Kundenbrief.
+    """
+    satz = f"Ihre Bestellung {nr}"
+    if bestellung.get("bestelldatum"):
+        satz += f" vom {bestellung['bestelldatum']}"
+    satz += " ist versendet"
+    if bestellung.get("sendungsnummer"):
+        satz += f", Sendungsnummer {bestellung['sendungsnummer']}"
+    return satz + (f", voraussichtliche Zustellung am {termin}." if termin
+                   else ", voraussichtliche Zustellung folgt.")
+
+
+def _teilgeliefert(nr, bestellung: dict) -> str:
+    offen = _offene_positionen(bestellung)
+    if not offen:
+        # Keine leere Aufzählung: der Kopf allein wäre eine Ankündigung, der
+        # nichts folgt.
+        return (f"Ihre Bestellung {nr} ist bisher nur teilweise geliefert; welche Positionen noch "
+                "offen sind, klären wir und melden uns.")
+    return "\n".join([f"Ihre Bestellung {nr} ist bisher nur teilweise geliefert. Offen sind noch:"] + offen)
+
+
 def bestellstatus(ex: dict, systemdaten: dict) -> list[str]:
     b = systemdaten.get("bestellung")
     if not b:
         return []
     nr, status, termin = b.get("bestellnummer"), b.get("status"), b.get("liefertermin")
     if status == "versendet":
-        saetze = [f"Ihre Bestellung {nr} vom {b.get('bestelldatum')} ist versendet, Sendungsnummer "
-                  f"{b.get('sendungsnummer')}, voraussichtliche Zustellung am {termin}."]
+        saetze = [_versendet(nr, b, termin)]
     elif status == "zugestellt":
-        saetze = [f"Ihre Bestellung {nr} ist am {termin} bei Ihnen eingetroffen."]
+        saetze = [f"Ihre Bestellung {nr} ist am {termin} bei Ihnen eingetroffen." if termin
+                  else f"Ihre Bestellung {nr} ist bei Ihnen eingetroffen."]
     elif status == "teilgeliefert":
-        saetze = ["\n".join([f"Ihre Bestellung {nr} ist bisher nur teilweise geliefert. Offen sind noch:"]
-                            + _offene_positionen(b))]
+        saetze = [_teilgeliefert(nr, b)]
     elif status == "kommissionierung":
-        saetze = [f"Ihre Bestellung {nr} wird gerade kommissioniert, geplanter Liefertermin ist der {termin}."]
+        saetze = [f"Ihre Bestellung {nr} wird gerade kommissioniert" + _liefertermin_zusatz(termin)]
     else:
-        saetze = [f"Ihre Bestellung {nr} ist bei uns erfasst, geplanter Liefertermin ist der {termin}."]
+        saetze = [f"Ihre Bestellung {nr} ist bei uns erfasst" + _liefertermin_zusatz(termin)]
     frist = ex.get("frist")
     if termin and frist and termin > frist:
         # Derselbe Konflikt steht als Hinweis im Ergebnis; hier gehoert er in

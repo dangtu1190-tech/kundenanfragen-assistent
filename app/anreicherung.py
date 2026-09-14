@@ -114,6 +114,9 @@ def _variante(artikel: dict, groesse: str | None, farbe: str | None) -> dict | N
 
     Ohne beide Angaben gibt es keine belastbare Bestandsaussage; dann bleibt
     der Bestand leer, statt die erstbeste Variante als Antwort auszugeben.
+    Ist nur eines von beiden genannt, gewinnt die erste passende Variante; der
+    Aufrufer haelt deren Groesse und Farbe fest, damit die Antwort benennt,
+    worauf sie sich bezieht.
     """
     if groesse is None and farbe is None:
         return None
@@ -139,7 +142,12 @@ def _artikel(s: _Sammler, genannte: list[dict]) -> None:
         if not artikel:
             continue
         variante = _variante(artikel, groesse, farbe) or {}
-        eintraege.append({"artikelnummer": nummer, "groesse": groesse, "farbe": farbe,
+        # Groesse und Farbe kommen aus der gewaehlten Variante: nennt der Kunde
+        # nur die Groesse, muss im Ergebnis stehen, fuer welche Farbe der
+        # Bestand gilt. Ohne Treffer bleibt es bei dem, was genannt wurde.
+        eintraege.append({"artikelnummer": nummer,
+                          "groesse": variante.get("groesse", groesse),
+                          "farbe": variante.get("farbe", farbe),
                           "bestand": variante.get("bestand"), "nachfolger": variante.get("nachfolger")})
     if eintraege:
         s.systemdaten["artikel"] = eintraege

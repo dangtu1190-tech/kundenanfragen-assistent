@@ -42,7 +42,7 @@ def _anrede(person: dict) -> str:
 
 
 def _anliegen_zeilen(ex: dict) -> list[str]:
-    return [f"- {KATEGORIE_TEXT.get(a['kategorie'], a['kategorie'])}: {a['beschreibung']}"
+    return [f"- {KATEGORIE_TEXT.get(a.get('kategorie'), a.get('kategorie'))}: {a.get('beschreibung')}"
             for a in ex.get("anliegen") or []]
 
 

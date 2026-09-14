@@ -217,3 +217,23 @@ def test_anreicherung_ohne_extraktionsfelder_stuerzt_nicht(fake_systeme, mail_id
     mail = {"id": mail_id, "absender_email": "unbekannt@example.org", "betreff": "", "text": ""}
     systemdaten, hinweise, fehler, unklar = anreichere({}, mail, fake_systeme, HEUTE)
     assert systemdaten == {} and hinweise == [] and fehler == [] and unklar == []
+
+
+def test_artikel_nennt_die_gewaehlte_variante(fake_systeme):
+    """m01 nennt nur die Größe L; A-4305 gibt es in gelb und orange. Die Antwort
+    muss festhalten, für welche Variante der Bestand gilt."""
+    ex = extraktion(artikel=[{"artikelnummer": "A-4305", "bezeichnung": "Warnschutzjacke", "groesse": "L",
+                              "farbe": None, "menge": 6}],
+                    anliegen=anliegen("verfuegbarkeit"))
+    systemdaten, _, _, _ = anreichere(ex, MAIL_M01, fake_systeme, HEUTE)
+    assert systemdaten["artikel"] == [{"artikelnummer": "A-4305", "groesse": "L", "farbe": "gelb",
+                                       "bestand": 70, "nachfolger": None}]
+
+
+def test_artikel_ohne_passende_variante_bleibt_ohne_bestand(fake_systeme):
+    ex = extraktion(artikel=[{"artikelnummer": "A-4305", "bezeichnung": "Warnschutzjacke", "groesse": "3XL",
+                              "farbe": None, "menge": 1}],
+                    anliegen=anliegen("verfuegbarkeit"))
+    systemdaten, _, _, _ = anreichere(ex, MAIL_M01, fake_systeme, HEUTE)
+    assert systemdaten["artikel"] == [{"artikelnummer": "A-4305", "groesse": "3XL", "farbe": None,
+                                       "bestand": None, "nachfolger": None}]

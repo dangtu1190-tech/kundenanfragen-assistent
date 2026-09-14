@@ -129,8 +129,10 @@ def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
                 aktuell = systeme_bauen().crm.ticket_status(ticket["ticket_id"], CRM_STATUS[aenderung.status])
             except SystemNichtErreichbar as e:
                 raise HTTPException(502, f"Ticketstatus konnte nicht gesetzt werden ({e.system}: {e.grund})") from e
-            if aktuell:
-                ticket["status"] = aktuell["status"]
+            if aktuell is None:
+                raise HTTPException(409, f"Ticket {ticket['ticket_id']} im CRM unbekannt, "
+                                         "Status wurde nicht geändert")
+            ticket["status"] = aktuell["status"]
         if aenderung.antwort_entwurf is not None:
             ergebnis["antwort_entwurf"] = aenderung.antwort_entwurf
         ergebnis["status"] = aenderung.status

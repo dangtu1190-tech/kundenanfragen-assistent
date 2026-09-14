@@ -163,3 +163,44 @@ def test_ohne_systemdaten_generischer_satz_genau_einmal():
     t = baue_antwort(ex, {}, "kundenservice", "Lieferung", VERSENDER)
     assert t.count("Wir prüfen den Stand und melden uns heute noch.") == 1
     assert "B-2026-04711" not in t
+
+
+def test_bestellstatus_ohne_sendungsnummer_und_ohne_liefertermin():
+    """Nullbare ERP-Felder dürfen nicht als "None" im Brief landen."""
+    b = dict(_eintrag("bestellungen.json", "bestellnummer", "B-2026-04711"),
+             sendungsnummer=None, liefertermin=None)
+    t = baue_antwort(dict(EX, frist=None), {"bestellung": b}, "kundenservice", "x", VERSENDER)
+    assert "Ihre Bestellung B-2026-04711 vom 2026-09-09 ist versendet, voraussichtliche Zustellung folgt." in t
+    assert "None" not in t
+    assert "Sendungsnummer" not in t
+
+
+def test_bestellstatus_ohne_liefertermin_in_den_uebrigen_zustaenden():
+    for status in ("zugestellt", "kommissionierung", "offen"):
+        b = dict(_eintrag("bestellungen.json", "bestellnummer", "B-2026-04733"),
+                 status=status, liefertermin=None)
+        t = baue_antwort(dict(EX, frist=None), {"bestellung": b}, "kundenservice", "x", VERSENDER)
+        assert "None" not in t, status
+        assert "B-2026-04733" in t, status
+    b = dict(_eintrag("bestellungen.json", "bestellnummer", "B-2026-04733"), bestelldatum=None, status="versendet")
+    assert "None" not in baue_antwort(dict(EX, frist=None), {"bestellung": b}, "kundenservice", "x", VERSENDER)
+
+
+def test_teilgeliefert_ohne_offene_positionen_bleibt_neutral():
+    """Alles geliefert, Kopf trotzdem teilgeliefert: keine leere Aufzählung."""
+    b = dict(_eintrag("bestellungen.json", "bestellnummer", "B-2026-04702"),
+             positionen=[dict(p, status="geliefert")
+                         for p in _eintrag("bestellungen.json", "bestellnummer", "B-2026-04702")["positionen"]])
+    t = baue_antwort(dict(EX, frist=None), {"bestellung": b}, "kundenservice", "x", VERSENDER)
+    assert "Offen sind noch:" not in t
+    assert "B-2026-04702 ist bisher nur teilweise geliefert" in t
+    assert "None" not in t
+
+
+def test_verfuegbarkeit_nennt_die_beantwortete_variante():
+    """Nur die Größe genannt: der Brief muss sagen, für welche Farbe er antwortet."""
+    ex = dict(EX, anliegen=[{"kategorie": "verfuegbarkeit", "beschreibung": "Lieferbar?"}], frist=None)
+    sd = {"artikel": [{"artikelnummer": "A-4305", "groesse": "L", "farbe": "gelb",
+                       "bestand": 70, "nachfolger": None}]}
+    t = baue_antwort(ex, sd, "kundenservice", "x", VERSENDER)
+    assert "Artikel A-4305 in Größe L, gelb ist lieferbar, Bestand 70 Stück." in t
