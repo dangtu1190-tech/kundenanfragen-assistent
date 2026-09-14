@@ -274,8 +274,9 @@ qwen2.5:14b-instruct trifft die Dringlichkeit öfter.
   Reklamationsregel (m03, m12, m13). Zwei davon treffen den Soll-Wert; bei m12
   hebt die Regel die Dringlichkeit auf `hoch`, obwohl `mittel` richtig wäre,
   weil schon die Kategorie falsch war. Die Fristregel greift in diesen 15 Mails
-  gar nicht: die einzige genannte Frist (2026-09-18) liegt vier Werktage nach
-  dem Basisdatum, die Schwelle sind drei. In den übrigen 12 Mails steht also
+  gar nicht: die Mails nennen zwei Fristen, den 2026-09-18 (m01 und m08) und
+  den 2026-09-22 (m04, Messetermin). Vom Basisdatum aus sind das vier und sechs
+  Werktage, die Schwelle sind drei. In den übrigen 12 Mails steht also
   die Einschätzung des Modells unverändert im Ergebnis. Die Regeln sind ein
   Sicherheitsnetz für Fristen und Reklamationen, keine Korrektur des Feldes
   insgesamt. Wer sich auf die Dringlichkeit verlassen will, braucht entweder

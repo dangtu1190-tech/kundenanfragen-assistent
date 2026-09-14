@@ -33,9 +33,10 @@ Bestell- und Kundennummer dagegen 15 von 15.
 Dazu gehört die ehrliche Einschränkung: die Regeln reparieren die Dringlichkeit
 nicht flächendeckend. Im aufgezeichneten Lauf greift überhaupt nur in 3 von 15
 Mails eine Regel, und zwar immer die Reklamationsregel (m03, m12, m13); die
-Fristregel greift nie, weil die einzige genannte Frist vier Werktage entfernt
-liegt und die Schwelle bei drei steht. In 12 von 15 Mails steht also die
-Einschätzung des Modells unverändert im Ergebnis. Die Regeln sind ein
+Fristregel greift nie. In den Mails stehen zwei Fristen, der 2026-09-18 (m01
+und m08) und der 2026-09-22 (m04, Messetermin); vom Basisdatum aus sind das
+vier und sechs Werktage, die Schwelle steht bei drei. In 12 von 15 Mails steht
+also die Einschätzung des Modells unverändert im Ergebnis. Die Regeln sind ein
 Sicherheitsnetz für zwei klar benennbare Fälle, nicht die Lösung für ein
 schwaches Feld. Für die Zuständigkeit gilt das Argument dagegen ohne
 Einschränkung: sie wird immer aus den Kategorien abgeleitet.
