@@ -1,0 +1,288 @@
+[
+  {
+    "bestellnummer": "B-2026-04120",
+    "kundennummer": "K-10802",
+    "status": "zugestellt",
+    "bestelldatum": "2026-06-24",
+    "liefertermin": "2026-06-30",
+    "sendungsnummer": "SN-3H8KD2PA",
+    "positionen": [
+      {
+        "artikelnummer": "A-4101",
+        "bezeichnung": "Bundhose Basic",
+        "groesse": "52",
+        "farbe": "anthrazit",
+        "menge": 3,
+        "status": "zugestellt"
+      },
+      {
+        "artikelnummer": "A-4210",
+        "bezeichnung": "Softshelljacke",
+        "groesse": "L",
+        "farbe": "navy",
+        "menge": 3,
+        "status": "zugestellt"
+      },
+      {
+        "artikelnummer": "A-4410",
+        "bezeichnung": "Sicherheitsschuh S3",
+        "groesse": "43",
+        "farbe": "schwarz",
+        "menge": 3,
+        "status": "zugestellt"
+      },
+      {
+        "artikelnummer": "A-4520",
+        "bezeichnung": "Poloshirt",
+        "groesse": "L",
+        "farbe": "navy",
+        "menge": 6,
+        "status": "zugestellt"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04555",
+    "kundennummer": "K-10234",
+    "status": "zugestellt",
+    "bestelldatum": "2026-07-30",
+    "liefertermin": "2026-08-04",
+    "sendungsnummer": "SN-9Q2LM7XC",
+    "positionen": [
+      {
+        "artikelnummer": "A-4801",
+        "bezeichnung": "Knieschutz-Polster",
+        "groesse": "Einheitsgröße",
+        "farbe": null,
+        "menge": 10,
+        "status": "zugestellt"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04590",
+    "kundennummer": "K-10620",
+    "status": "zugestellt",
+    "bestelldatum": "2026-08-12",
+    "liefertermin": "2026-08-20",
+    "sendungsnummer": "SN-5TZ4WB8N",
+    "positionen": [
+      {
+        "artikelnummer": "A-4530",
+        "bezeichnung": "T-Shirt",
+        "groesse": "L",
+        "farbe": "weiß",
+        "menge": 12,
+        "status": "zugestellt"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04688",
+    "kundennummer": "K-10311",
+    "status": "zugestellt",
+    "bestelldatum": "2026-09-02",
+    "liefertermin": "2026-09-08",
+    "sendungsnummer": "SN-2KP8RD4V",
+    "positionen": [
+      {
+        "artikelnummer": "A-4101",
+        "bezeichnung": "Bundhose Basic",
+        "groesse": "52",
+        "farbe": "anthrazit",
+        "menge": 4,
+        "status": "zugestellt"
+      },
+      {
+        "artikelnummer": "A-4520",
+        "bezeichnung": "Poloshirt",
+        "groesse": "L",
+        "farbe": "navy",
+        "menge": 4,
+        "status": "zugestellt"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04699",
+    "kundennummer": "K-10930",
+    "status": "zugestellt",
+    "bestelldatum": "2026-09-03",
+    "liefertermin": "2026-09-09",
+    "sendungsnummer": "SN-7C4NQ1HE",
+    "positionen": [
+      {
+        "artikelnummer": "A-4610",
+        "bezeichnung": "Regenjacke",
+        "groesse": "M",
+        "farbe": "gelb",
+        "menge": 6,
+        "status": "zugestellt"
+      },
+      {
+        "artikelnummer": "A-4610",
+        "bezeichnung": "Regenjacke",
+        "groesse": "L",
+        "farbe": "gelb",
+        "menge": 6,
+        "status": "zugestellt"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04702",
+    "kundennummer": "K-10402",
+    "status": "teilgeliefert",
+    "bestelldatum": "2026-09-04",
+    "liefertermin": "2026-09-10",
+    "sendungsnummer": "SN-8VD3JS6R",
+    "positionen": [
+      {
+        "artikelnummer": "A-4410",
+        "bezeichnung": "Sicherheitsschuh S3",
+        "groesse": "43",
+        "farbe": "schwarz",
+        "menge": 2,
+        "status": "geliefert"
+      },
+      {
+        "artikelnummer": "A-4210",
+        "bezeichnung": "Softshelljacke",
+        "groesse": "XL",
+        "farbe": "navy",
+        "menge": 2,
+        "status": "offen"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04711",
+    "kundennummer": "K-10234",
+    "status": "versendet",
+    "bestelldatum": "2026-09-09",
+    "liefertermin": "2026-09-15",
+    "sendungsnummer": "SN-7F3K9Q2L",
+    "positionen": [
+      {
+        "artikelnummer": "A-4305",
+        "bezeichnung": "Warnschutzjacke Klasse 3",
+        "groesse": "L",
+        "farbe": "gelb",
+        "menge": 6,
+        "status": "versendet"
+      },
+      {
+        "artikelnummer": "A-4305",
+        "bezeichnung": "Warnschutzjacke Klasse 3",
+        "groesse": "XL",
+        "farbe": "gelb",
+        "menge": 6,
+        "status": "versendet"
+      },
+      {
+        "artikelnummer": "A-4101",
+        "bezeichnung": "Bundhose Basic",
+        "groesse": "54",
+        "farbe": "anthrazit",
+        "menge": 6,
+        "status": "versendet"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04733",
+    "kundennummer": "K-10688",
+    "status": "kommissionierung",
+    "bestelldatum": "2026-09-08",
+    "liefertermin": "2026-09-18",
+    "sendungsnummer": null,
+    "positionen": [
+      {
+        "artikelnummer": "A-4210",
+        "bezeichnung": "Softshelljacke",
+        "groesse": "L",
+        "farbe": "navy",
+        "menge": 8,
+        "status": "kommissionierung"
+      },
+      {
+        "artikelnummer": "A-4101",
+        "bezeichnung": "Bundhose Basic",
+        "groesse": "50",
+        "farbe": "schwarz",
+        "menge": 8,
+        "status": "kommissionierung"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04750",
+    "kundennummer": "K-10715",
+    "status": "offen",
+    "bestelldatum": "2026-09-12",
+    "liefertermin": "2026-09-19",
+    "sendungsnummer": null,
+    "positionen": [
+      {
+        "artikelnummer": "A-4305",
+        "bezeichnung": "Warnschutzjacke Klasse 3",
+        "groesse": "L",
+        "farbe": "orange",
+        "menge": 10,
+        "status": "offen"
+      },
+      {
+        "artikelnummer": "A-4101",
+        "bezeichnung": "Bundhose Basic",
+        "groesse": "54",
+        "farbe": "anthrazit",
+        "menge": 10,
+        "status": "offen"
+      },
+      {
+        "artikelnummer": "A-4410",
+        "bezeichnung": "Sicherheitsschuh S3",
+        "groesse": "44",
+        "farbe": "schwarz",
+        "menge": 10,
+        "status": "offen"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04760",
+    "kundennummer": "K-11045",
+    "status": "offen",
+    "bestelldatum": "2026-09-12",
+    "liefertermin": "2026-09-24",
+    "sendungsnummer": null,
+    "positionen": [
+      {
+        "artikelnummer": "A-4520",
+        "bezeichnung": "Poloshirt",
+        "groesse": "M",
+        "farbe": "grün",
+        "menge": 6,
+        "status": "offen"
+      }
+    ]
+  },
+  {
+    "bestellnummer": "B-2026-04761",
+    "kundennummer": "K-11045",
+    "status": "zugestellt",
+    "bestelldatum": "2026-09-05",
+    "liefertermin": "2026-09-11",
+    "sendungsnummer": "SN-4RX2ME9T",
+    "positionen": [
+      {
+        "artikelnummer": "A-4305",
+        "bezeichnung": "Warnschutzjacke Klasse 3",
+        "groesse": "L",
+        "farbe": "gelb",
+        "menge": 4,
+        "status": "zugestellt"
+      }
+    ]
+  }
+]

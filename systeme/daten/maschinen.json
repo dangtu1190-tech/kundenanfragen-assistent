@@ -1,0 +1,30 @@
+[
+  {
+    "maschine": "STK-01",
+    "typ": "Stickmaschine 12-Kopf",
+    "zustand": "laeuft",
+    "meldung": null,
+    "seit": "2026-09-14T06:05"
+  },
+  {
+    "maschine": "STK-02",
+    "typ": "Stickmaschine 6-Kopf",
+    "zustand": "stoerung",
+    "meldung": "Fadenbruch Kopf 4",
+    "seit": "2026-09-14T06:40"
+  },
+  {
+    "maschine": "DRK-01",
+    "typ": "Transferdruck",
+    "zustand": "laeuft",
+    "meldung": null,
+    "seit": "2026-09-14T06:00"
+  },
+  {
+    "maschine": "DRK-02",
+    "typ": "Textildirektdruck",
+    "zustand": "stillstand",
+    "meldung": "Rüsten",
+    "seit": "2026-09-14T07:15"
+  }
+]

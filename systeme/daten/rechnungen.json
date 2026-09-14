@@ -1,0 +1,20 @@
+[
+  {
+    "rechnungsnummer": "R-2026-07688",
+    "kundennummer": "K-10311",
+    "bestellnummer": "B-2026-04688",
+    "betrag": 612.4,
+    "faellig": "2026-10-08",
+    "status": "offen",
+    "kostenstelle": null
+  },
+  {
+    "rechnungsnummer": "R-2026-07731",
+    "kundennummer": "K-10930",
+    "bestellnummer": "B-2026-04699",
+    "betrag": 1284.5,
+    "faellig": "2026-10-09",
+    "status": "offen",
+    "kostenstelle": null
+  }
+]

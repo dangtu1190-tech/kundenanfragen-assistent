@@ -1,0 +1,536 @@
+[
+  {
+    "artikelnummer": "A-4101",
+    "bezeichnung": "Bundhose Basic",
+    "varianten": [
+      {
+        "groesse": "48",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "50",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "52",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "54",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "56",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "58",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "60",
+        "farbe": "anthrazit",
+        "bestand": 120,
+        "nachfolger": null
+      },
+      {
+        "groesse": "48",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      },
+      {
+        "groesse": "50",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      },
+      {
+        "groesse": "52",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      },
+      {
+        "groesse": "54",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      },
+      {
+        "groesse": "56",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      },
+      {
+        "groesse": "58",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      },
+      {
+        "groesse": "60",
+        "farbe": "schwarz",
+        "bestand": 80,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4102",
+    "bezeichnung": "Bundhose Stretch",
+    "varianten": [
+      {
+        "groesse": "48",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      },
+      {
+        "groesse": "50",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      },
+      {
+        "groesse": "52",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      },
+      {
+        "groesse": "54",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      },
+      {
+        "groesse": "56",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      },
+      {
+        "groesse": "58",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      },
+      {
+        "groesse": "60",
+        "farbe": "anthrazit",
+        "bestand": 60,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4210",
+    "bezeichnung": "Softshelljacke",
+    "varianten": [
+      {
+        "groesse": "S",
+        "farbe": "navy",
+        "bestand": 40,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "navy",
+        "bestand": 40,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "navy",
+        "bestand": 40,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "navy",
+        "bestand": 0,
+        "nachfolger": "A-4211"
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "navy",
+        "bestand": 15,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4211",
+    "bezeichnung": "Softshelljacke Pro",
+    "varianten": [
+      {
+        "groesse": "S",
+        "farbe": "navy",
+        "bestand": 50,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "navy",
+        "bestand": 50,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "navy",
+        "bestand": 50,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "navy",
+        "bestand": 50,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "navy",
+        "bestand": 50,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4305",
+    "bezeichnung": "Warnschutzjacke Klasse 3",
+    "varianten": [
+      {
+        "groesse": "M",
+        "farbe": "gelb",
+        "bestand": 70,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "gelb",
+        "bestand": 70,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "gelb",
+        "bestand": 70,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "gelb",
+        "bestand": 70,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "orange",
+        "bestand": 30,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "orange",
+        "bestand": 30,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "orange",
+        "bestand": 30,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "orange",
+        "bestand": 30,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4410",
+    "bezeichnung": "Sicherheitsschuh S3",
+    "varianten": [
+      {
+        "groesse": "39",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "40",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "41",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "42",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "43",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "44",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "45",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "46",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "47",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      },
+      {
+        "groesse": "48",
+        "farbe": "schwarz",
+        "bestand": 25,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4520",
+    "bezeichnung": "Poloshirt",
+    "varianten": [
+      {
+        "groesse": "S",
+        "farbe": "navy",
+        "bestand": 200,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "navy",
+        "bestand": 200,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "navy",
+        "bestand": 200,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "navy",
+        "bestand": 200,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "navy",
+        "bestand": 200,
+        "nachfolger": null
+      },
+      {
+        "groesse": "3XL",
+        "farbe": "navy",
+        "bestand": 200,
+        "nachfolger": null
+      },
+      {
+        "groesse": "S",
+        "farbe": "grün",
+        "bestand": 90,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "grün",
+        "bestand": 90,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "grün",
+        "bestand": 90,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "grün",
+        "bestand": 90,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "grün",
+        "bestand": 90,
+        "nachfolger": null
+      },
+      {
+        "groesse": "3XL",
+        "farbe": "grün",
+        "bestand": 90,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4530",
+    "bezeichnung": "T-Shirt",
+    "varianten": [
+      {
+        "groesse": "S",
+        "farbe": "weiß",
+        "bestand": 300,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "weiß",
+        "bestand": 300,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "weiß",
+        "bestand": 300,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "weiß",
+        "bestand": 300,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "weiß",
+        "bestand": 300,
+        "nachfolger": null
+      },
+      {
+        "groesse": "3XL",
+        "farbe": "weiß",
+        "bestand": 300,
+        "nachfolger": null
+      },
+      {
+        "groesse": "S",
+        "farbe": "schwarz",
+        "bestand": 250,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "schwarz",
+        "bestand": 250,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "schwarz",
+        "bestand": 250,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "schwarz",
+        "bestand": 250,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "schwarz",
+        "bestand": 250,
+        "nachfolger": null
+      },
+      {
+        "groesse": "3XL",
+        "farbe": "schwarz",
+        "bestand": 250,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4610",
+    "bezeichnung": "Regenjacke",
+    "varianten": [
+      {
+        "groesse": "S",
+        "farbe": "gelb",
+        "bestand": 35,
+        "nachfolger": null
+      },
+      {
+        "groesse": "M",
+        "farbe": "gelb",
+        "bestand": 35,
+        "nachfolger": null
+      },
+      {
+        "groesse": "L",
+        "farbe": "gelb",
+        "bestand": 35,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XL",
+        "farbe": "gelb",
+        "bestand": 35,
+        "nachfolger": null
+      },
+      {
+        "groesse": "XXL",
+        "farbe": "gelb",
+        "bestand": 35,
+        "nachfolger": null
+      }
+    ]
+  },
+  {
+    "artikelnummer": "A-4801",
+    "bezeichnung": "Knieschutz-Polster",
+    "varianten": [
+      {
+        "groesse": "Einheitsgröße",
+        "farbe": null,
+        "bestand": 400,
+        "nachfolger": null
+      }
+    ]
+  }
+]

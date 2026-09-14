@@ -1,0 +1,72 @@
+[
+  {
+    "kontakt_id": "C-501",
+    "name": "Jens Brandt",
+    "email": "j.brandt@dachdeckerei-brandt.example",
+    "kundennummer": "K-10234",
+    "firma": "Dachdeckerei Brandt GmbH"
+  },
+  {
+    "kontakt_id": "C-502",
+    "name": "Martina Kessler",
+    "email": "m.kessler@elektro-kessler.example",
+    "kundennummer": "K-10311",
+    "firma": "Elektro Kessler & Sohn GmbH & Co. KG"
+  },
+  {
+    "kontakt_id": "C-503",
+    "name": "Torben Mertens",
+    "email": "t.mertens@shk-mertens.example",
+    "kundennummer": "K-10402",
+    "firma": "SHK Mertens GmbH"
+  },
+  {
+    "kontakt_id": "C-504",
+    "name": "Anke Wille",
+    "email": "info@gartenbau-wille.example",
+    "kundennummer": "K-10577",
+    "firma": "Gartenbau Wille"
+  },
+  {
+    "kontakt_id": "C-505",
+    "name": "Cem Yilmaz",
+    "email": "c.yilmaz@maler-yilmaz.example",
+    "kundennummer": "K-10620",
+    "firma": "Malerbetrieb Yilmaz GmbH"
+  },
+  {
+    "kontakt_id": "C-506",
+    "name": "Sabine Reuter",
+    "email": "s.reuter@metallbau-reuter.example",
+    "kundennummer": "K-10688",
+    "firma": "Metallbau Reuter AG"
+  },
+  {
+    "kontakt_id": "C-507",
+    "name": "Ole Hansen",
+    "email": "o.hansen@hansen-petersen.example",
+    "kundennummer": "K-10715",
+    "firma": "Tiefbau Hansen & Petersen GmbH"
+  },
+  {
+    "kontakt_id": "C-508",
+    "name": "Frank Lorenz",
+    "email": "f.lorenz@zimmerei-lorenz.example",
+    "kundennummer": "K-10802",
+    "firma": "Zimmerei Lorenz GmbH"
+  },
+  {
+    "kontakt_id": "C-509",
+    "name": "Petra Nowak",
+    "email": "p.nowak@sauber-co.example",
+    "kundennummer": "K-10930",
+    "firma": "Gebäudereinigung Sauber & Co. GmbH"
+  },
+  {
+    "kontakt_id": "C-510",
+    "name": "Daniel Adler",
+    "email": "d.adler@kfz-adler.example",
+    "kundennummer": "K-11045",
+    "firma": "Kfz-Werkstatt Adler GmbH"
+  }
+]

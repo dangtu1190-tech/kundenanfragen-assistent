@@ -1,0 +1,46 @@
+[
+  {
+    "auftrag": "V-2026-118",
+    "bestellnummer": "B-2026-04590",
+    "kundennummer": "K-10620",
+    "art": "druck",
+    "motiv": "Logo Malerbetrieb Yilmaz, Brust links",
+    "status": "fertig",
+    "maschine": "DRK-01",
+    "geplantes_ende": "2026-08-18",
+    "hinweis": null
+  },
+  {
+    "auftrag": "V-2026-131",
+    "bestellnummer": "B-2026-04733",
+    "kundennummer": "K-10688",
+    "art": "stick",
+    "motiv": "Logo Metallbau Reuter, Brust links, 3 Farben",
+    "status": "in_produktion",
+    "maschine": "STK-01",
+    "geplantes_ende": "2026-09-16",
+    "hinweis": null
+  },
+  {
+    "auftrag": "V-2026-140",
+    "bestellnummer": "B-2026-04760",
+    "kundennummer": "K-11045",
+    "art": "stick",
+    "motiv": "Logo Kfz-Werkstatt Adler",
+    "status": "freigabe_offen",
+    "maschine": null,
+    "geplantes_ende": null,
+    "hinweis": "Stickdatei fehlt"
+  },
+  {
+    "auftrag": "V-2026-142",
+    "bestellnummer": "B-2026-04750",
+    "kundennummer": "K-10715",
+    "art": "druck",
+    "motiv": "Firmenname Rücken",
+    "status": "eingeplant",
+    "maschine": "DRK-02",
+    "geplantes_ende": "2026-09-17",
+    "hinweis": null
+  }
+]

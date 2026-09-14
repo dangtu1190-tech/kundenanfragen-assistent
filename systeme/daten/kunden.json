@@ -1,0 +1,72 @@
+[
+  {
+    "kundennummer": "K-10234",
+    "firma": "Dachdeckerei Brandt GmbH",
+    "ort": "23552 Lübeck",
+    "kundenseit": "2019-03-12",
+    "zahlungsziel_tage": 30
+  },
+  {
+    "kundennummer": "K-10311",
+    "firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+    "ort": "34117 Kassel",
+    "kundenseit": "2017-08-01",
+    "zahlungsziel_tage": 30
+  },
+  {
+    "kundennummer": "K-10402",
+    "firma": "SHK Mertens GmbH",
+    "ort": "28195 Bremen",
+    "kundenseit": "2021-01-20",
+    "zahlungsziel_tage": 14
+  },
+  {
+    "kundennummer": "K-10577",
+    "firma": "Gartenbau Wille",
+    "ort": "26122 Oldenburg",
+    "kundenseit": "2023-04-03",
+    "zahlungsziel_tage": 14
+  },
+  {
+    "kundennummer": "K-10620",
+    "firma": "Malerbetrieb Yilmaz GmbH",
+    "ort": "30159 Hannover",
+    "kundenseit": "2020-06-15",
+    "zahlungsziel_tage": 30
+  },
+  {
+    "kundennummer": "K-10688",
+    "firma": "Metallbau Reuter AG",
+    "ort": "24103 Kiel",
+    "kundenseit": "2016-11-02",
+    "zahlungsziel_tage": 30
+  },
+  {
+    "kundennummer": "K-10715",
+    "firma": "Tiefbau Hansen & Petersen GmbH",
+    "ort": "24937 Flensburg",
+    "kundenseit": "2018-02-27",
+    "zahlungsziel_tage": 30
+  },
+  {
+    "kundennummer": "K-10802",
+    "firma": "Zimmerei Lorenz GmbH",
+    "ort": "49074 Osnabrück",
+    "kundenseit": "2022-09-09",
+    "zahlungsziel_tage": 14
+  },
+  {
+    "kundennummer": "K-10930",
+    "firma": "Gebäudereinigung Sauber & Co. GmbH",
+    "ort": "20095 Hamburg",
+    "kundenseit": "2015-05-05",
+    "zahlungsziel_tage": 30
+  },
+  {
+    "kundennummer": "K-11045",
+    "firma": "Kfz-Werkstatt Adler GmbH",
+    "ort": "18055 Rostock",
+    "kundenseit": "2024-02-14",
+    "zahlungsziel_tage": 14
+  }
+]
