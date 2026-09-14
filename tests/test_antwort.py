@@ -120,15 +120,16 @@ def test_verfuegbarkeit_mit_bestand_und_nachfolger():
 def test_veredelung_mit_maschine_und_stoerung():
     ex = dict(EX, anliegen=[{"kategorie": "veredelung", "beschreibung": "Stand der Stickerei?"}], frist=None)
     auftrag = _eintrag("veredelung.json", "auftrag", "V-2026-131")
-    sd = {"veredelung": auftrag, "maschine": _eintrag("maschinen.json", "maschine", "STK-01")}
+    maschine = _eintrag("maschinen.json", "maschine", "STK-02")  # in den Mockdaten in Störung
+    sd = {"veredelung": auftrag, "maschine": dict(maschine, zustand="laeuft", meldung=None)}
     t = baue_antwort(ex, sd, "veredelung", "Stickerei", VERSENDER)
     assert "Ihr Veredelungsauftrag V-2026-131 (Stick) ist in Produktion." in t
-    assert "Maschine STK-01, geplantes Ende ist der 2026-09-16." in t
+    assert "Maschine STK-02, geplantes Ende ist der 2026-09-16." in t
     assert "Störung" not in t
 
-    sd["maschine"] = dict(sd["maschine"], zustand="stoerung", meldung="Fadenbruch Kopf 2")
+    sd["maschine"] = maschine
     t = baue_antwort(ex, sd, "veredelung", "Stickerei", VERSENDER)
-    assert "Maschine STK-01 meldet derzeit eine Störung" in t
+    assert "Maschine STK-02 meldet derzeit eine Störung" in t
     assert "geplante Ende ist dadurch gefährdet" in t
 
 

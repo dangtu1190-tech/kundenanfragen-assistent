@@ -140,7 +140,7 @@ oder einem Pluszeichen:
 | Veredelungsauftrag | `V-2026-xxx` | V-2026-131 |
 | Artikelnummer | `A-4xxx` | A-4520 |
 | Sendungsnummer | `SN-` und acht Zeichen | SN-7F3K9Q2L |
-| Maschine | `STK-0x`, `DRK-0x` | STK-01 |
+| Maschine | `STK-0x`, `DRK-0x`, `LAS-0x` | STK-01 |
 
 `tests/test_kennungen.py` belegt für jede Kennungsart, dass sie die
 Pseudonymisierung buchstabengetreu übersteht.

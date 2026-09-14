@@ -120,8 +120,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 7854,
-    "zeitpunkt": "2026-09-14T11:30:40"
+    "dauer_ms": 7187,
+    "zeitpunkt": "2026-09-14T17:11:15"
   },
   "m02": {
     "mail_id": "m02",
@@ -253,8 +253,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 2232,
-    "zeitpunkt": "2026-09-14T11:30:48"
+    "dauer_ms": 2223,
+    "zeitpunkt": "2026-09-14T17:11:22"
   },
   "m03": {
     "mail_id": "m03",
@@ -358,8 +358,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1584,
-    "zeitpunkt": "2026-09-14T11:30:50"
+    "dauer_ms": 1598,
+    "zeitpunkt": "2026-09-14T17:11:24"
   },
   "m04": {
     "mail_id": "m04",
@@ -471,24 +471,26 @@
         "art": "stick",
         "motiv": "Logo Metallbau Reuter, Brust links, 3 Farben",
         "status": "in_produktion",
-        "maschine": "STK-01",
+        "maschine": "STK-02",
         "geplantes_ende": "2026-09-16",
         "hinweis": null
       },
       "maschine": {
-        "maschine": "STK-01",
-        "typ": "Stickmaschine 12-Kopf",
-        "zustand": "laeuft",
-        "meldung": null,
-        "seit": "2026-09-14T06:05"
+        "maschine": "STK-02",
+        "typ": "Stickmaschine 6-Kopf",
+        "zustand": "stoerung",
+        "meldung": "Fadenbruch Kopf 4",
+        "seit": "2026-09-14T06:40"
       }
     },
-    "hinweise": [],
+    "hinweise": [
+      "Maschine STK-02 meldet Störung, geplantes Ende gefährdet"
+    ],
     "integrationsfehler": [],
     "zustaendigkeit": "veredelung",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Sabine Reuter,\n\nvielen Dank für Ihre Nachricht „Stickerei Auftrag V-2026-131“.\n\nWir haben notiert:\n- Veredelung: Stand der Stickerei\n- Bestellstatus: Lieferstatus der Softshelljacken\n\nIhr Veredelungsauftrag V-2026-131 (Stick) ist in Produktion.\n\nDie Arbeit läuft auf Maschine STK-01, geplantes Ende ist der 2026-09-16.\n\nIhre Bestellung B-2026-04733 wird gerade kommissioniert, geplanter Liefertermin ist der 2026-09-18.\n\nUnsere Veredelung prüft Ihren Auftrag.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Sabine Reuter,\n\nvielen Dank für Ihre Nachricht „Stickerei Auftrag V-2026-131“.\n\nWir haben notiert:\n- Veredelung: Stand der Stickerei\n- Bestellstatus: Lieferstatus der Softshelljacken\n\nIhr Veredelungsauftrag V-2026-131 (Stick) ist in Produktion.\n\nDie Arbeit läuft auf Maschine STK-02, geplantes Ende ist der 2026-09-16.\n\nMaschine STK-02 meldet derzeit eine Störung, das geplante Ende ist dadurch gefährdet; wir melden uns unaufgefordert, sobald wir mehr wissen.\n\nIhre Bestellung B-2026-04733 wird gerade kommissioniert, geplanter Liefertermin ist der 2026-09-18.\n\nUnsere Veredelung prüft Ihren Auftrag.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0004",
       "status": "offen"
@@ -496,8 +498,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 2362,
-    "zeitpunkt": "2026-09-14T11:30:51"
+    "dauer_ms": 2346,
+    "zeitpunkt": "2026-09-14T17:11:26"
   },
   "m05": {
     "mail_id": "m05",
@@ -630,8 +632,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1138,
-    "zeitpunkt": "2026-09-14T11:30:54"
+    "dauer_ms": 1152,
+    "zeitpunkt": "2026-09-14T17:11:28"
   },
   "m06": {
     "mail_id": "m06",
@@ -738,8 +740,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1763,
-    "zeitpunkt": "2026-09-14T11:30:55"
+    "dauer_ms": 1794,
+    "zeitpunkt": "2026-09-14T17:11:30"
   },
   "m07": {
     "mail_id": "m07",
@@ -877,8 +879,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1724,
-    "zeitpunkt": "2026-09-14T11:30:57"
+    "dauer_ms": 1746,
+    "zeitpunkt": "2026-09-14T17:11:31"
   },
   "m08": {
     "mail_id": "m08",
@@ -1003,8 +1005,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1579,
-    "zeitpunkt": "2026-09-14T11:30:58"
+    "dauer_ms": 1669,
+    "zeitpunkt": "2026-09-14T17:11:33"
   },
   "m09": {
     "mail_id": "m09",
@@ -1116,8 +1118,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1555,
-    "zeitpunkt": "2026-09-14T11:31:00"
+    "dauer_ms": 1637,
+    "zeitpunkt": "2026-09-14T17:11:35"
   },
   "m10": {
     "mail_id": "m10",
@@ -1230,8 +1232,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1445,
-    "zeitpunkt": "2026-09-14T11:31:02"
+    "dauer_ms": 1444,
+    "zeitpunkt": "2026-09-14T17:11:36"
   },
   "m11": {
     "mail_id": "m11",
@@ -1349,8 +1351,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 2652,
-    "zeitpunkt": "2026-09-14T11:31:03"
+    "dauer_ms": 2752,
+    "zeitpunkt": "2026-09-14T17:11:38"
   },
   "m12": {
     "mail_id": "m12",
@@ -1500,8 +1502,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 3375,
-    "zeitpunkt": "2026-09-14T11:31:06"
+    "dauer_ms": 3343,
+    "zeitpunkt": "2026-09-14T17:11:41"
   },
   "m13": {
     "mail_id": "m13",
@@ -1608,8 +1610,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1588,
-    "zeitpunkt": "2026-09-14T11:31:09"
+    "dauer_ms": 1583,
+    "zeitpunkt": "2026-09-14T17:11:44"
   },
   "m14": {
     "mail_id": "m14",
@@ -1678,8 +1680,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 1227,
-    "zeitpunkt": "2026-09-14T11:31:11"
+    "dauer_ms": 1213,
+    "zeitpunkt": "2026-09-14T17:11:46"
   },
   "m15": {
     "mail_id": "m15",
@@ -1780,7 +1782,7 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 2079,
-    "zeitpunkt": "2026-09-14T11:31:12"
+    "dauer_ms": 2123,
+    "zeitpunkt": "2026-09-14T17:11:47"
   }
 }

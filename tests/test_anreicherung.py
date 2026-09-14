@@ -93,26 +93,28 @@ def test_m08_liefertermin_nach_frist(fake_systeme):
     assert fehler == [] and unklar == []
 
 
-def test_m04_veredelung_mit_laufender_maschine(fake_systeme):
+def test_m04_veredelung_auf_maschine_in_stoerung(fake_systeme):
+    """Die Mockdaten legen V-2026-131 auf STK-02, die eine Störung meldet: der Hinweis muss kommen."""
     ex = extraktion(bezug={"bestellnummer": "B-2026-04733", "rechnungsnummer": None,
                            "veredelungsauftrag": "V-2026-131"}, anliegen=anliegen("veredelung"), frist="2026-09-22")
     systemdaten, hinweise, fehler, unklar = anreichere(ex, MAIL_M04, fake_systeme, HEUTE)
 
     assert systemdaten["veredelung"]["status"] == "in_produktion"
-    assert systemdaten["maschine"]["maschine"] == "STK-01" and systemdaten["maschine"]["zustand"] == "laeuft"
+    assert systemdaten["maschine"]["maschine"] == "STK-02" and systemdaten["maschine"]["zustand"] == "stoerung"
     assert systemdaten["bestellung"]["bestellnummer"] == "B-2026-04733"
-    assert hinweise == [] and fehler == [] and unklar == []
+    assert hinweise == ["Maschine STK-02 meldet Störung, geplantes Ende gefährdet"]
+    assert fehler == [] and unklar == []
 
 
-def test_m04_maschine_in_stoerung_gefaehrdet_das_ende():
-    maschinen = [dict(m, zustand="stoerung", meldung="Fadenbruch Kopf 2") if m["maschine"] == "STK-01" else m
+def test_m04_laufende_maschine_ohne_hinweis():
+    maschinen = [dict(m, zustand="laeuft", meldung=None) if m["maschine"] == "STK-02" else m
                  for m in lies_systemdatei("maschinen.json")]
     systeme = baue_fake_systeme(maschinen=maschinen)
     ex = extraktion(bezug={"bestellnummer": None, "rechnungsnummer": None, "veredelungsauftrag": "V-2026-131"},
                     anliegen=anliegen("veredelung"))
     _, hinweise, fehler, _ = anreichere(ex, MAIL_M04, systeme, HEUTE)
 
-    assert hinweise == ["Maschine STK-01 meldet Störung, geplantes Ende gefährdet"]
+    assert hinweise == []
     assert fehler == []
 
 
@@ -184,7 +186,8 @@ def test_erp_ausfall_bricht_nicht_ab(fake_systeme):
     assert systemdaten["kontakt"]["kundennummer"] == "K-10234"  # CRM laeuft weiter
     assert systemdaten["veredelung"]["auftrag"] == "V-2026-131"  # MES laeuft weiter
     assert "bestellung" not in systemdaten and "kunde" not in systemdaten
-    assert unklar == [] and hinweise == []  # ein Ausfall ist keine Rückfrage an den Kunden
+    assert unklar == []  # ein Ausfall ist keine Rückfrage an den Kunden
+    assert hinweise == ["Maschine STK-02 meldet Störung, geplantes Ende gefährdet"]  # MES läuft weiter
 
 
 def test_ticket_ist_idempotent(fake_systeme):

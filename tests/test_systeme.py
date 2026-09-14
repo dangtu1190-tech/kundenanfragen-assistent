@@ -94,10 +94,10 @@ def test_crm_ticket_parallel_gleiche_referenz_erzeugt_nur_ein_ticket(client, tmp
 
 def test_mes(client):
     v = client.get("/mes/veredelungsauftraege/V-2026-131").json()
-    assert v["status"] == "in_produktion" and v["maschine"] == "STK-01"
+    assert v["status"] == "in_produktion" and v["maschine"] == "STK-02"
     m = client.get("/mes/maschinen/STK-02").json()
     assert m["zustand"] == "stoerung"
-    assert len(client.get("/mes/maschinen").json()) == 4
+    assert len(client.get("/mes/maschinen").json()) == 5
 
 
 def test_openapi_je_system(client):

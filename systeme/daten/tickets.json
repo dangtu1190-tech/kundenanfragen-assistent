@@ -2,7 +2,7 @@
   {
     "ticket_id": "T-2026-0001",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:40",
+    "angelegt": "2026-09-14T17:11:22",
     "externe_referenz": "m01",
     "kundennummer": "K-10234",
     "kontakt_email": "j.brandt@dachdeckerei-brandt.example",
@@ -17,7 +17,7 @@
   {
     "ticket_id": "T-2026-0002",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:48",
+    "angelegt": "2026-09-14T17:11:24",
     "externe_referenz": "m02",
     "kundennummer": "K-10311",
     "kontakt_email": "m.kessler@elektro-kessler.example",
@@ -32,7 +32,7 @@
   {
     "ticket_id": "T-2026-0003",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:50",
+    "angelegt": "2026-09-14T17:11:26",
     "externe_referenz": "m03",
     "kundennummer": "K-10620",
     "kontakt_email": "c.yilmaz@maler-yilmaz.example",
@@ -47,7 +47,7 @@
   {
     "ticket_id": "T-2026-0004",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:51",
+    "angelegt": "2026-09-14T17:11:28",
     "externe_referenz": "m04",
     "kundennummer": "K-10688",
     "kontakt_email": "s.reuter@metallbau-reuter.example",
@@ -63,7 +63,7 @@
   {
     "ticket_id": "T-2026-0005",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:54",
+    "angelegt": "2026-09-14T17:11:30",
     "externe_referenz": "m05",
     "kundennummer": "K-10802",
     "kontakt_email": "f.lorenz@zimmerei-lorenz.example",
@@ -78,7 +78,7 @@
   {
     "ticket_id": "T-2026-0006",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:55",
+    "angelegt": "2026-09-14T17:11:31",
     "externe_referenz": "m06",
     "kundennummer": "K-10930",
     "kontakt_email": "p.nowak@sauber-co.example",
@@ -94,7 +94,7 @@
   {
     "ticket_id": "T-2026-0007",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:57",
+    "angelegt": "2026-09-14T17:11:33",
     "externe_referenz": "m07",
     "kundennummer": "K-10402",
     "kontakt_email": "t.mertens@shk-mertens.example",
@@ -110,7 +110,7 @@
   {
     "ticket_id": "T-2026-0008",
     "status": "offen",
-    "angelegt": "2026-09-14T11:30:58",
+    "angelegt": "2026-09-14T17:11:35",
     "externe_referenz": "m08",
     "kundennummer": "K-10715",
     "kontakt_email": "o.hansen@hansen-petersen.example",
@@ -125,7 +125,7 @@
   {
     "ticket_id": "T-2026-0009",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:00",
+    "angelegt": "2026-09-14T17:11:36",
     "externe_referenz": "m09",
     "kundennummer": "K-11045",
     "kontakt_email": "d.adler@kfz-adler.example",
@@ -140,7 +140,7 @@
   {
     "ticket_id": "T-2026-0010",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:02",
+    "angelegt": "2026-09-14T17:11:38",
     "externe_referenz": "m10",
     "kundennummer": "K-10234",
     "kontakt_email": "j.brandt@dachdeckerei-brandt.example",
@@ -155,7 +155,7 @@
   {
     "ticket_id": "T-2026-0011",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:03",
+    "angelegt": "2026-09-14T17:11:41",
     "externe_referenz": "m11",
     "kundennummer": "K-10577",
     "kontakt_email": "info@gartenbau-wille.example",
@@ -170,7 +170,7 @@
   {
     "ticket_id": "T-2026-0012",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:06",
+    "angelegt": "2026-09-14T17:11:44",
     "externe_referenz": "m12",
     "kundennummer": "K-10930",
     "kontakt_email": "p.nowak@sauber-co.example",
@@ -186,7 +186,7 @@
   {
     "ticket_id": "T-2026-0013",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:09",
+    "angelegt": "2026-09-14T17:11:46",
     "externe_referenz": "m13",
     "kundennummer": "K-11045",
     "kontakt_email": "d.adler@kfz-adler.example",
@@ -201,7 +201,7 @@
   {
     "ticket_id": "T-2026-0014",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:11",
+    "angelegt": "2026-09-14T17:11:47",
     "externe_referenz": "m14",
     "kundennummer": null,
     "kontakt_email": "m.ferreira@texnorte.example",
@@ -216,7 +216,7 @@
   {
     "ticket_id": "T-2026-0015",
     "status": "offen",
-    "angelegt": "2026-09-14T11:31:12",
+    "angelegt": "2026-09-14T17:11:49",
     "externe_referenz": "m15",
     "kundennummer": "K-10311",
     "kontakt_email": "m.kessler@elektro-kessler.example",
