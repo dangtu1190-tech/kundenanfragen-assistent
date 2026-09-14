@@ -5,8 +5,8 @@ Mails verlassen die Maschine nicht. Jeder andere OpenAI-kompatible Anbieter
 läuft über LLM_BASE_URL mit eigenem Schlüssel.
 
 Konfiguration über Umgebungsvariablen LLM_PROVIDER, LLM_BASE_URL, LLM_MODEL,
-LLM_API_KEY, LLM_NUM_CTX; eine .env im Projektordner wird vorher eingelesen
-(ohne Überschreiben gesetzter Variablen). FakeClient dient den Tests.
+LLM_API_KEY, LLM_NUM_CTX, LLM_TIMEOUT; eine .env im Projektordner wird vorher
+eingelesen (ohne Überschreiben gesetzter Variablen). FakeClient dient den Tests.
 """
 import json
 import os
@@ -19,6 +19,7 @@ DEFAULTS = {
 }
 
 STANDARD_NUM_CTX = 8192
+STANDARD_ZEITLIMIT = 120.0
 
 
 class AntwortAbgeschnitten(Exception):
@@ -42,6 +43,25 @@ def num_ctx() -> int:
     except ValueError:
         return STANDARD_NUM_CTX
     return wert if wert > 0 else STANDARD_NUM_CTX
+
+
+def zeitlimit() -> float:
+    """Zeitlimit des Modellaufrufs in Sekunden aus LLM_TIMEOUT, Standard 120.
+
+    Ohne eigenes Zeitlimit gilt der Standard des openai-SDK von 600 Sekunden.
+    Ein hängender Anbieter würde die Verarbeitung dann zehn Minuten blockieren,
+    und im Server hinge die HTTP-Anfrage genauso lange. 120 Sekunden sind
+    großzügig für ein lokales Modell (gemessen rund 2 s je Mail mit
+    gpt-oss:20b) und trotzdem eine Grenze. Wie num_ctx bewusst eine Funktion
+    und kein Feld in `Konfig`: `app.vergleich` baut je Modell eine neue
+    `Konfig` aus einzelnen Feldern zusammen, ein zusätzliches Feld ginge dort
+    beim Modellwechsel still verloren.
+    """
+    try:
+        wert = float(os.getenv("LLM_TIMEOUT", STANDARD_ZEITLIMIT))
+    except ValueError:
+        return STANDARD_ZEITLIMIT
+    return wert if wert > 0 else STANDARD_ZEITLIMIT
 
 
 @dataclass
@@ -97,16 +117,26 @@ class LLMClient:
     def __init__(self, konfig: Konfig):
         from openai import OpenAI  # Import hier, damit Tests ohne Netz kein SDK brauchen
         self.konfig = konfig
-        self._client = OpenAI(api_key=konfig.api_key or "leer", base_url=konfig.base_url)
+        self._client = OpenAI(api_key=konfig.api_key or "leer", base_url=konfig.base_url,
+                              timeout=zeitlimit())
 
     def _zusatzargumente(self) -> dict:
-        """Anbieterspezifische Zusätze; für alles außer Ollama leer."""
+        """Anbieterspezifische Zusätze; für alles außer Ollama leer.
+
+        `reasoning_effort` steht bewusst in `extra_body` und nicht als eigenes
+        Schlüsselwort. requirements.txt lässt openai ab 1.40 zu; benannt gibt
+        es den Parameter erst in neueren Fassungen (hier installiert: 2.31.0);
+        mit einer älteren, aber erlaubten Version wäre der Aufruf ein
+        TypeError, statt den Wert an Ollama durchzureichen. Über `extra_body`
+        landet er in jeder SDK-Version unverändert im Anfragekörper, und genau
+        dort erwartet ihn Ollamas OpenAI-kompatibler Endpunkt.
+        """
         if self.konfig.provider != "ollama":
             return {}
-        zusatz: dict = {"extra_body": {"options": {"num_ctx": num_ctx()}}}
+        koerper: dict = {"options": {"num_ctx": num_ctx()}}
         if self.konfig.model.startswith("gpt-oss"):
-            zusatz["reasoning_effort"] = "low"
-        return zusatz
+            koerper["reasoning_effort"] = "low"
+        return {"extra_body": koerper}
 
     def frage_json(self, system: str, user: str) -> str:
         nachrichten = [{"role": "system", "content": system}, {"role": "user", "content": user}]

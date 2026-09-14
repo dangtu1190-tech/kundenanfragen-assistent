@@ -11,6 +11,14 @@ from systeme.main import app as systeme_app
 
 ZEITLIMIT = 3.0
 
+# Fehler, die einen zweiten Versuch rechtfertigen: die Verbindung kam nicht
+# zustande oder lief in ein Zeitlimit. Das kann ein Neustart des Fachsystems
+# sein, der beim nächsten Versuch vorbei ist. Ein Zeitlimit beim
+# Verbindungsaufbau (ConnectTimeout) oder beim Warten auf eine freie
+# Verbindung aus dem Pool (PoolTimeout) gehört fachlich in dieselbe Gruppe wie
+# ConnectError; ohne diese Aufnahme flogen beide als RequestError sofort durch.
+WIEDERHOLBAR = (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.PoolTimeout)
+
 
 class SystemNichtErreichbar(Exception):
     """Ein Fachsystem war auch nach dem Wiederholungsversuch nicht erreichbar."""
@@ -53,7 +61,7 @@ def _sende(anfrage, client: httpx.Client, system: str):
         try:
             antwort = anfrage(client)
             break
-        except (httpx.ConnectError, httpx.ReadTimeout) as exc:
+        except WIEDERHOLBAR as exc:
             fehler = exc
         except httpx.RequestError as exc:
             raise SystemNichtErreichbar(system, str(exc)) from exc
@@ -61,9 +69,13 @@ def _sende(anfrage, client: httpx.Client, system: str):
         raise SystemNichtErreichbar(system, str(fehler)) from fehler
     if antwort.status_code == 404:
         return None
-    if antwort.status_code >= 500:
-        raise SystemNichtErreichbar(system, f"Serverfehler {antwort.status_code}")
-    antwort.raise_for_status()
+    if not antwort.is_success:
+        # Alles außer 2xx und 404 ist ein Systemfehler, nicht "gibt es nicht".
+        # Eine Drosselung (429) oder ein abgelaufener Zugang (401) darf nicht
+        # still als fehlender Datensatz durchgehen: die Anreicherung würde den
+        # Schritt überspringen, statt den Ausfall in integrationsfehler zu
+        # melden und den Status auf pruefung_noetig zu setzen.
+        raise SystemNichtErreichbar(system, f"HTTP {antwort.status_code}")
     return antwort.json()
 
 

@@ -180,14 +180,19 @@ Pipeline kennt Methodennamen, keine URLs.
 
 **Zeitlimit und ein Wiederholungsversuch.** Drei Sekunden je Aufruf
 (`app/integration/verbindung.py`, `ZEITLIMIT`), bei Verbindungsfehler oder
-Zeitüberschreitung ein zweiter Versuch. Danach ist Schluss. Mehr
-Wiederholungen verlängern nur die Zeit bis zur Meldung, denn ein Fachsystem,
-das zweimal nicht antwortet, ist selten beim dritten Mal da.
+Zeitüberschreitung ein zweiter Versuch (`ConnectError`, `ConnectTimeout`,
+`ReadTimeout`, `PoolTimeout`). Danach ist Schluss. Mehr Wiederholungen
+verlängern nur die Zeit bis zur Meldung, denn ein Fachsystem, das zweimal
+nicht antwortet, ist selten beim dritten Mal da.
 
 **Fehlerabbildung an genau einer Stelle.** HTTP 404 wird zu `None`, also "gibt
-es nicht", ein normaler fachlicher Fall. Serverfehler und Verbindungsabbrüche
-werden zu `SystemNichtErreichbar(system, grund)`. Die aufrufende Schicht muss
-keine Statuscodes kennen.
+es nicht", ein normaler fachlicher Fall. Jede andere Antwort außerhalb von 2xx
+wird zu `SystemNichtErreichbar(system, "HTTP <code>")`, Verbindungsabbrüche
+ebenso. Auch 401 und 429 gehören dorthin und nicht zu `None`: ein abgelaufener
+Zugang oder eine Drosselung ist kein fehlender Datensatz, und als `None` würde
+die Anreicherung den Schritt still überspringen, statt den Ausfall in
+`integrationsfehler` zu melden. Die aufrufende Schicht muss keine Statuscodes
+kennen.
 
 **Degradation statt Abbruch.** Fällt ein System aus, läuft die Verarbeitung
 weiter. Der betroffene Schritt wird übersprungen, `integrationsfehler` im

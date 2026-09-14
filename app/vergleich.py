@@ -148,6 +148,12 @@ def main(argv=None) -> int:
     p.add_argument("--ausgabe", default=str(AUSGABE_STANDARD))
     args = p.parse_args(argv)
 
+    # Anbietername normalisieren: "OpenAI " aus der Kommandozeile muss dieselbe
+    # Konfiguration ergeben wie "openai". Ungetrimmt ginge der Name weder durch
+    # den Vergleich mit basis.provider (der ist immer klein) noch durch DEFAULTS
+    # und landete still beim OpenAI-Fallback.
+    anbieter = args.anbieter.strip().lower() if args.anbieter else None
+
     basis = lade_konfig()
     heute = date.fromisoformat(speicher.lade_konfig()["basisdatum"])
     mails = speicher.lade_mails()
@@ -156,7 +162,7 @@ def main(argv=None) -> int:
     rohdaten: dict[str, dict] = {}
     bewertungen: dict[str, dict] = {}
     for modell in [m.strip() for m in args.modelle.split(",") if m.strip()]:
-        konfig = konfig_fuer_modell(modell, args.anbieter, basis)
+        konfig = konfig_fuer_modell(modell, anbieter, basis)
         _warne_bei_fehlendem_schluessel(konfig)
         print(f"Modell {modell} (Anbieter {konfig.provider})")
         client = LLMClient(konfig)

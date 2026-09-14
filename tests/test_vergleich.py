@@ -155,3 +155,48 @@ def test_warnt_nicht_bei_gesetztem_schluessel_oder_ollama(capsys):
     vergleich._warne_bei_fehlendem_schluessel(Konfig("openai", "https://api.openai.com/v1", "m", "sk-x"))
     vergleich._warne_bei_fehlendem_schluessel(Konfig("ollama", "http://localhost:11434/v1", "m", ""))
     assert capsys.readouterr().err == ""
+
+
+def test_anbieter_wird_normalisiert(tmp_path, monkeypatch):
+    """--anbieter " OpenAI " muss dieselbe Konfiguration ergeben wie "openai".
+
+    Ungetrimmt geht der Name weder durch den Vergleich mit basis.provider noch
+    durch DEFAULTS und landet still beim OpenAI-Fallback, aber mit falschem
+    provider-Feld im Ergebnis.
+    """
+    gesehen: list[str | None] = []
+
+    def merke(modell, anbieter, basis):
+        gesehen.append(anbieter)
+        return Konfig("fake", "", modell, "x")
+
+    monkeypatch.setattr(vergleich, "konfig_fuer_modell", merke)
+    monkeypatch.setattr(vergleich, "LLMClient", lambda konfig: None)
+    monkeypatch.setattr(vergleich, "laufe_modell", lambda client, mails, heute: {})
+    monkeypatch.setattr(vergleich.speicher, "DATEN", tmp_path)
+    (tmp_path / "erwartet.json").write_text(json.dumps(ERWARTET, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(vergleich.speicher, "lade_mails", lambda: MAILS)
+    monkeypatch.setattr(vergleich.speicher, "lade_konfig", lambda: {"basisdatum": "2026-09-14"})
+
+    assert vergleich.main(["--modelle", "gpt-4.1-mini", "--anbieter", " OpenAI ",
+                           "--ausgabe", str(tmp_path / "tabelle.md")]) == 0
+    assert gesehen == ["openai"]
+
+
+def test_ohne_anbieter_bleibt_none(tmp_path, monkeypatch):
+    gesehen: list[str | None] = []
+
+    def merke(modell, anbieter, basis):
+        gesehen.append(anbieter)
+        return Konfig("fake", "", modell, "x")
+
+    monkeypatch.setattr(vergleich, "konfig_fuer_modell", merke)
+    monkeypatch.setattr(vergleich, "LLMClient", lambda konfig: None)
+    monkeypatch.setattr(vergleich, "laufe_modell", lambda client, mails, heute: {})
+    monkeypatch.setattr(vergleich.speicher, "DATEN", tmp_path)
+    (tmp_path / "erwartet.json").write_text(json.dumps(ERWARTET, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(vergleich.speicher, "lade_mails", lambda: MAILS)
+    monkeypatch.setattr(vergleich.speicher, "lade_konfig", lambda: {"basisdatum": "2026-09-14"})
+
+    assert vergleich.main(["--modelle", "gpt-oss:20b", "--ausgabe", str(tmp_path / "t.md")]) == 0
+    assert gesehen == [None]

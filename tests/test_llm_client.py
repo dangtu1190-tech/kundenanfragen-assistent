@@ -3,9 +3,20 @@
 Kein Netz: `LLMClient._client` wird durch ein Fake-Objekt ersetzt, das die
 Aufrufargumente mitschreibt und eine vorgegebene Antwort zurückgibt.
 """
+import sys
+import types
+
 import pytest
 
-from app.llm_client import STANDARD_NUM_CTX, AntwortAbgeschnitten, Konfig, LLMClient, num_ctx
+from app.llm_client import (
+    STANDARD_NUM_CTX,
+    STANDARD_ZEITLIMIT,
+    AntwortAbgeschnitten,
+    Konfig,
+    LLMClient,
+    num_ctx,
+    zeitlimit,
+)
 
 
 class FakeNachricht:
@@ -76,17 +87,24 @@ def test_abgeschnittene_antwort_ist_eigener_fehler(monkeypatch):
 
 
 def test_ollama_bekommt_num_ctx_und_reasoning_effort(monkeypatch):
+    """reasoning_effort geht im Anfragekoerper mit, nicht als SDK-Schluesselwort.
+
+    requirements.txt laesst openai ab 1.40 zu; benannt kennt create() den
+    Parameter erst in neueren Fassungen, mit einer aelteren erlaubten Version
+    waere der Aufruf ein TypeError. Im Koerper kommt er immer durch.
+    """
     monkeypatch.delenv("LLM_NUM_CTX", raising=False)
     client, fake = baue_client(OLLAMA, monkeypatch)
     client.frage_json("system", "user")
     argumente = fake.completions.aufrufe[0]
-    assert argumente["extra_body"] == {"options": {"num_ctx": STANDARD_NUM_CTX}}
-    assert argumente["reasoning_effort"] == "low"
+    assert argumente["extra_body"] == {"options": {"num_ctx": STANDARD_NUM_CTX},
+                                       "reasoning_effort": "low"}
+    assert "reasoning_effort" not in argumente
 
 
 def test_num_ctx_aus_umgebung(monkeypatch):
     monkeypatch.setenv("LLM_NUM_CTX", "16384")
-    client, fake = baue_client(OLLAMA, monkeypatch)
+    client, fake = baue_client(OLLAMA_QWEN, monkeypatch)
     client.frage_json("system", "user")
     assert fake.completions.aufrufe[0]["extra_body"] == {"options": {"num_ctx": 16384}}
 
@@ -103,7 +121,8 @@ def test_reasoning_effort_nur_fuer_gpt_oss(monkeypatch):
     client.frage_json("system", "user")
     argumente = fake.completions.aufrufe[0]
     assert "reasoning_effort" not in argumente
-    assert "extra_body" in argumente
+    assert "reasoning_effort" not in argumente["extra_body"]
+    assert argumente["extra_body"] == {"options": {"num_ctx": num_ctx()}}
 
 
 def test_openai_bekommt_keine_ollama_zusaetze(monkeypatch):
@@ -131,7 +150,8 @@ def test_response_format_fallback_behaelt_zusaetze(monkeypatch):
     client.frage_json("system", "user")
     argumente = fake.completions.aufrufe[-1]
     assert "response_format" not in argumente
-    assert argumente["extra_body"] == {"options": {"num_ctx": num_ctx()}}
+    assert argumente["extra_body"] == {"options": {"num_ctx": num_ctx()},
+                                       "reasoning_effort": "low"}
 
 
 def test_anderer_fehler_wird_durchgereicht(monkeypatch):
@@ -143,3 +163,39 @@ def test_anderer_fehler_wird_durchgereicht(monkeypatch):
     fake.completions.create = create
     with pytest.raises(RuntimeError):
         client.frage_json("system", "user")
+
+
+def test_zeitlimit_standard(monkeypatch):
+    monkeypatch.delenv("LLM_TIMEOUT", raising=False)
+    assert zeitlimit() == STANDARD_ZEITLIMIT
+
+
+def test_zeitlimit_aus_umgebung(monkeypatch):
+    monkeypatch.setenv("LLM_TIMEOUT", "30")
+    assert zeitlimit() == 30.0
+
+
+@pytest.mark.parametrize("wert", ["keine Zahl", "0", "-5"])
+def test_unbrauchbares_zeitlimit_faellt_auf_standard(monkeypatch, wert):
+    monkeypatch.setenv("LLM_TIMEOUT", wert)
+    assert zeitlimit() == STANDARD_ZEITLIMIT
+
+
+def test_client_bekommt_zeitlimit(monkeypatch):
+    """Ohne eigenes Zeitlimit haengt ein Aufruf bis zum SDK-Standard (600 s).
+
+    LLMClient importiert OpenAI erst in __init__ aus dem Modul openai; hier
+    wird genau dieses Modul durch eine Attrappe ersetzt, die die
+    Konstruktorargumente mitschreibt.
+    """
+    monkeypatch.setenv("LLM_TIMEOUT", "45")
+    gesehen = {}
+
+    class FakeSDK:
+        def __init__(self, **kwargs):
+            gesehen.update(kwargs)
+
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=FakeSDK))
+    LLMClient(OPENAI)
+    assert gesehen["timeout"] == 45.0
+    assert gesehen["base_url"] == OPENAI.base_url
