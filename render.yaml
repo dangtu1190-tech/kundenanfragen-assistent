@@ -2,9 +2,12 @@
 # Free-Plan (Stand 11.09.2026, render.com/docs/free): Instanz schläft nach 15 Minuten
 # ohne Anfragen ein, der erste Aufruf danach dauert bis zu einer Minute; 750 Instanz-
 # stunden je Monat; Dateisystem flüchtig (Statusänderungen gehen beim Neustart verloren).
+# Der Free-Plan erlaubt einen Dienst je Blueprint-Eintrag: kein zweiter Container
+# für die Mock-Systemlandschaft. Sie läuft deshalb hier im selben Prozess wie die
+# App (SYSTEME_BASE_URL bleibt ungesetzt, siehe app/integration/__init__.py).
 services:
   - type: web
-    name: serviceanfragen-assistent
+    name: kundenanfragen-assistent
     runtime: docker
     plan: free
     region: frankfurt

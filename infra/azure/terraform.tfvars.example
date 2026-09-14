@@ -2,10 +2,10 @@
 # der Modellschlüssel kommt nach dem apply per az cli in den Key Vault.
 subscription_id  = "00000000-0000-0000-0000-000000000000"
 location         = "germanywestcentral"
-name_prefix      = "svcanfragen"
+name_prefix      = "kanfragen"
 environment_name = "demo"
-key_vault_name   = "kv-svcanfragen-demo-01" # weltweit eindeutig, ggf. Suffix ändern
-container_image  = "ghcr.io/dangtu1190-tech/serviceanfragen-assistent:latest"
+key_vault_name   = "kv-kanfragen-demo-01" # weltweit eindeutig, ggf. Suffix ändern
+container_image  = "ghcr.io/dangtu1190-tech/kundenanfragen-assistent:latest"
 max_replicas     = 2
 
 # Budget-Alarm: Platzhalter-Adresse und Beispielbetrag, vor einem echten apply anpassen.

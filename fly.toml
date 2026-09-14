@@ -3,7 +3,10 @@
 # keinen kostenlosen Plan mehr; auch gestoppte Maschinen kosten Speicher
 # (0,15 $ je GB Root-Dateisystem und Monat). Für eine kostenfreie Demo ist Render
 # die bessere Wahl (render.yaml).
-app = "serviceanfragen-assistent"
+# Eine einzelne Fly-App ist eine Maschine: kein zweiter Container für die Mock-
+# Systemlandschaft. Sie läuft deshalb hier im selben Prozess wie die App
+# (SYSTEME_BASE_URL bleibt ungesetzt, siehe app/integration/__init__.py).
+app = "kundenanfragen-assistent"
 primary_region = "fra"
 
 [build]

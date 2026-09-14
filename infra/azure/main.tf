@@ -1,4 +1,4 @@
-# Azure Container Apps für den Serviceanfragen-Assistenten.
+# Azure Container Apps für den Kundenanfragen-Assistenten.
 # Vollständig und validierbar, bewusst nie angewendet: es soll nichts laufen,
 # das Geld kostet. Prüfung nur über fmt, validate und terraform test (Mock).
 
@@ -152,6 +152,13 @@ resource "azurerm_container_app" "app" {
         name        = "LLM_API_KEY"
         secret_name = "llm-api-key"
       }
+      env {
+        # Der zweite Container läuft im selben Replikat und teilt sich mit
+        # diesem den Netzwerk-Namespace (localhost), genau wie ein Sidecar in
+        # Kubernetes. Kein DNS-Name wie im Compose-Setup nötig.
+        name  = "SYSTEME_BASE_URL"
+        value = "http://localhost:8050"
+      }
 
       liveness_probe {
         transport = "HTTP"
@@ -163,6 +170,23 @@ resource "azurerm_container_app" "app" {
         transport = "HTTP"
         port      = 8040
         path      = "/api/status"
+      }
+    }
+
+    # Sidecar aus demselben Image: die Mock-Systemlandschaft (ERP, CRM, MES).
+    # Kein eigener Ingress, kein eigenes Scaling; sie läuft mit im Replikat des
+    # App-Containers und ist für die App nur über localhost:8050 erreichbar.
+    container {
+      name    = "systeme"
+      image   = var.container_image
+      cpu     = 0.25
+      memory  = "0.5Gi"
+      command = ["sh", "-c", "exec python -m uvicorn systeme.main:app --host 0.0.0.0 --port 8050"]
+
+      liveness_probe {
+        transport = "HTTP"
+        port      = 8050
+        path      = "/"
       }
     }
   }

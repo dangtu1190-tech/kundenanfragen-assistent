@@ -12,7 +12,7 @@ variable "location" {
 variable "name_prefix" {
   description = "Namenspräfix aller Ressourcen (Kleinbuchstaben und Ziffern)."
   type        = string
-  default     = "svcanfragen"
+  default     = "kanfragen"
   validation {
     condition     = can(regex("^[a-z][a-z0-9]{2,11}$", var.name_prefix))
     error_message = "name_prefix: 3 bis 12 Zeichen, Kleinbuchstaben und Ziffern, beginnt mit Buchstabe."
@@ -49,9 +49,9 @@ variable "key_vault_secret_name" {
 # bei revision_mode "Single" keine neue Revision. Für einen echten Rollout
 # diese Variable auf den "sha-<kurz>"-Tag der Pipeline setzen und apply ausführen.
 variable "container_image" {
-  description = "Öffentliches Image aus der GitHub Container Registry (von der CI gebaut)."
+  description = "Öffentliches Image aus der GitHub Container Registry (von der CI gebaut). Dasselbe Image liefert beide Container (app und systeme, siehe main.tf)."
   type        = string
-  default     = "ghcr.io/dangtu1190-tech/serviceanfragen-assistent:latest"
+  default     = "ghcr.io/dangtu1190-tech/kundenanfragen-assistent:latest"
 }
 
 variable "max_replicas" {
@@ -110,7 +110,7 @@ variable "tags" {
   description = "Tags aller Ressourcen."
   type        = map(string)
   default = {
-    projekt = "serviceanfragen-assistent"
+    projekt = "kundenanfragen-assistent"
     zweck   = "demo"
   }
 }

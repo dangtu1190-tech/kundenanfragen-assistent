@@ -21,9 +21,15 @@ COPY --from=builder /install /usr/local
 COPY --chown=app:app app/ app/
 COPY --chown=app:app data/ data/
 COPY --chown=app:app docs/index.html docs/index.html
+# Dasselbe Image kann zwei Rollen: als App (app.main:app, Port 8040) oder als
+# Mock-Systemlandschaft (systeme.main:app, Port 8050, siehe docker-compose.yml
+# und infra/azure/main.tf). systeme/daten/ enthält die Ausgangsdaten der Mocks,
+# tickets.json startet leer ([]) und wird zur Laufzeit beschrieben.
+COPY --chown=app:app systeme/ systeme/
 USER app
 EXPOSE 8040
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD python -c "import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/api/status' % os.environ.get('PORT', '8040'), timeout=3)" || exit 1
-# exec, damit uvicorn PID 1 ist und Stopp-Signale direkt bekommt.
+# exec, damit uvicorn PID 1 ist und Stopp-Signale direkt bekommt. Der Compose-
+# Dienst "systeme" überschreibt dieses CMD mit dem uvicorn-Aufruf für systeme.main:app.
 CMD ["sh", "-c", "exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8040}"]

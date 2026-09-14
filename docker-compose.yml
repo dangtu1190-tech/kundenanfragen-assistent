@@ -1,12 +1,41 @@
 # Lokaler Start mit einem Befehl: docker compose up --build
 # Konfiguration nur über Umgebungsvariablen; .env ist optional (siehe .env.example).
+# Zwei Dienste aus einem Image: "systeme" ist die Mock-Systemlandschaft (ERP, CRM,
+# MES), "app" der Kundenanfragen-Assistent. Ohne Compose läuft die Systemlandschaft
+# im selben Prozess wie die App (SYSTEME_BASE_URL leer); hier laufen sie als zwei
+# Container, damit die Trennung auch lokal geprüft werden kann.
 services:
+  systeme:
+    build: .
+    image: kundenanfragen-assistent:local
+    command: ["sh", "-c", "exec python -m uvicorn systeme.main:app --host 0.0.0.0 --port 8050"]
+    expose:
+      - "8050"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      start_period: 5s
+      retries: 5
+    restart: unless-stopped
+
   app:
     build: .
-    image: serviceanfragen-assistent:local
+    image: kundenanfragen-assistent:local
     ports:
       - "8040:8040"
+    environment:
+      SYSTEME_BASE_URL: http://systeme:8050
+      # Ollama läuft normalerweise auf dem Host, nicht im Container. Vom
+      # App-Container aus ist der Host über host.docker.internal erreichbar
+      # (Docker Desktop unter Windows/Mac; unter Linux ggf. extra_hosts nötig).
+      # Der Live-Pfad ist ohnehin standardmäßig aus (LIVE_MODELLAUFRUFE=0), diese
+      # Variable wirkt erst, wenn er absichtlich eingeschaltet wird.
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
     env_file:
       - path: .env
         required: false
+    depends_on:
+      systeme:
+        condition: service_healthy
     restart: unless-stopped

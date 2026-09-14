@@ -26,7 +26,7 @@ jobs:
         # den main-Lauf rot färben, ohne dass wir selbst etwas geändert haben.
         run: python -m pip install -r requirements.txt "ruff==0.16.*"
       - name: Linter (Ruff)
-        run: ruff check app tests
+        run: ruff check app systeme tests
       - name: Pseudonymisierung, kein Originalwert erreicht das Modell
         # Eigener Schritt, damit dieser Test im Lauf sichtbar ist. Schlägt er
         # fehl, ist der Lauf rot und das Image wird nicht gebaut.
@@ -45,22 +45,41 @@ jobs:
       - uses: actions/checkout@v4
       - name: Image bauen
         run: docker build -t rauchtest .
-      - name: Rauchtest, Container starten
-        # Status muss antworten, der Live-Pfad muss gesperrt sein (403).
+      - name: Rauchtest, Netz und Systeme-Container starten
+        # Zwei Container aus demselben Image: "systeme" (Mock-Systemlandschaft)
+        # und "app" mit SYSTEME_BASE_URL darauf. So läuft der Rauchtest gegen
+        # dieselbe Aufteilung wie docker-compose.yml und infra/azure/main.tf.
         run: |
-          docker run -d --name rauchtest -p 8040:8040 rauchtest
+          docker network create rauchtest-netz
+          docker run -d --name rauchtest-systeme --network rauchtest-netz rauchtest \
+            sh -c "exec python -m uvicorn systeme.main:app --host 0.0.0.0 --port 8050"
+          for i in $(seq 1 20); do
+            docker exec rauchtest-systeme python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/', timeout=3)" 2>/dev/null && break
+            sleep 1
+          done
+      - name: Rauchtest, App-Container starten
+        # Status muss antworten, die Systemlandschaft erreichbar, der Live-Pfad gesperrt (403).
+        run: |
+          docker run -d --name rauchtest-app --network rauchtest-netz -p 8040:8040 \
+            -e SYSTEME_BASE_URL=http://rauchtest-systeme:8050 rauchtest
           for i in $(seq 1 20); do
             curl -sf http://localhost:8040/api/status && break
             sleep 1
           done
           curl -sf http://localhost:8040/api/status | grep -q '"live_modellaufrufe":false'
+          curl -sf http://localhost:8040/api/status | grep -q '"systeme_erreichbar":true'
           code=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:8040/api/mails/m01/verarbeiten)
           test "$code" = "403"
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8040/)
+          test "$code" = "200"
       - name: Containerlog und Aufräumen
         if: always()
         run: |
-          docker logs rauchtest || true
-          docker rm -f rauchtest || true
+          docker logs rauchtest-app || true
+          docker logs rauchtest-systeme || true
+          docker rm -f rauchtest-app || true
+          docker rm -f rauchtest-systeme || true
+          docker network rm rauchtest-netz || true
       - uses: docker/setup-buildx-action@v3
       - name: Anmelden an ghcr.io
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

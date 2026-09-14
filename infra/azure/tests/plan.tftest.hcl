@@ -4,7 +4,7 @@ mock_provider "azurerm" {}
 
 variables {
   subscription_id = "00000000-0000-0000-0000-000000000000"
-  key_vault_name  = "kv-svcanfragen-test"
+  key_vault_name  = "kv-kanfragen-test"
 }
 
 # Der Mock-Provider erzeugt für berechnete Attribute zufällige Zeichenketten.
@@ -58,6 +58,26 @@ run "plan_ohne_zugangsdaten" {
   assert {
     condition     = azurerm_key_vault.kv.rbac_authorization_enabled
     error_message = "Key Vault muss RBAC nutzen; die App liest über ihre Managed Identity."
+  }
+
+  assert {
+    condition     = length(azurerm_container_app.app.template[0].container) == 2
+    error_message = "Es müssen genau zwei Container im Template stehen: app und der systeme-Sidecar."
+  }
+
+  assert {
+    condition     = azurerm_container_app.app.ingress[0].target_port == 8040
+    error_message = "Der Ingress muss auf Port 8040 (app) zeigen; der systeme-Sidecar bekommt keinen eigenen Ingress."
+  }
+
+  assert {
+    condition = alltrue([
+      for e in azurerm_container_app.app.template[0].container[0].env :
+      e.value == "http://localhost:8050" if e.name == "SYSTEME_BASE_URL"
+      ]) && length([
+      for e in azurerm_container_app.app.template[0].container[0].env : e if e.name == "SYSTEME_BASE_URL"
+    ]) == 1
+    error_message = "Der app-Container muss SYSTEME_BASE_URL=http://localhost:8050 gesetzt haben (Sidecar teilt sich localhost)."
   }
 
   assert {
