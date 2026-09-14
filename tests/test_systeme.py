@@ -1,3 +1,5 @@
+import concurrent.futures
+import json
 import shutil
 
 import pytest
@@ -48,6 +50,42 @@ def test_crm_ticket_idempotent(client):
     assert r1.json()["ticket_id"] == r2.json()["ticket_id"] == "T-2026-0001"
     assert client.patch("/crm/tickets/T-2026-0001", json={"status": "beantwortet"}).json()["status"] == "beantwortet"
     assert client.patch("/crm/tickets/T-2026-0001", json={"status": "kaputt"}).status_code == 422
+
+
+def _ticket_body(externe_referenz):
+    return {"externe_referenz": externe_referenz, "kundennummer": "K-10234",
+            "kontakt_email": "j.brandt@dachdeckerei-brandt.example", "betreff": "Test",
+            "kategorien": ["bestellstatus"], "prioritaet": "hoch", "zustaendigkeit": "kundenservice",
+            "zusammenfassung": "Parallele Anfrage"}
+
+
+def test_crm_ticket_parallel_anlage_vergibt_eindeutige_ids(client, tmp_path):
+    """FastAPI fuehrt synchrone Routen im Threadpool aus: acht parallele POSTs mit
+    unterschiedlicher externe_referenz duerfen wegen der Sperre in crm.py keine
+    doppelte ticket_id vergeben."""
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        antworten = list(pool.map(
+            lambda i: client.post("/crm/tickets", json=_ticket_body(f"parallel-{i}")), range(8)))
+    assert all(a.status_code == 201 for a in antworten)
+    ids = sorted(a.json()["ticket_id"] for a in antworten)
+    assert ids == [f"T-2026-{n:04d}" for n in range(1, 9)]
+    tickets = json.loads((tmp_path / "daten" / "tickets.json").read_text(encoding="utf-8"))
+    assert len(tickets) == 8
+
+
+def test_crm_ticket_parallel_gleiche_referenz_erzeugt_nur_ein_ticket(client, tmp_path):
+    """Die Idempotenz ueber externe_referenz muss auch unter Parallelitaet gelten:
+    acht gleichzeitige POSTs mit derselben externe_referenz duerfen nur ein
+    Ticket anlegen."""
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        antworten = list(pool.map(
+            lambda _: client.post("/crm/tickets", json=_ticket_body("gleiche-referenz")), range(8)))
+    status_codes = sorted(a.status_code for a in antworten)
+    assert status_codes == [200] * 7 + [201]
+    ids = {a.json()["ticket_id"] for a in antworten}
+    assert len(ids) == 1
+    tickets = json.loads((tmp_path / "daten" / "tickets.json").read_text(encoding="utf-8"))
+    assert len(tickets) == 1
 
 
 def test_mes(client):
