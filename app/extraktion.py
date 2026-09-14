@@ -173,7 +173,7 @@ def baue_prompt(heute: date) -> str:
         "Jeden Anhang, den der Kunde ankündigt oder erwähnt (Foto, Stickdatei, Logo, "
         "Lieferschein, 'anbei', 'im Anhang'), trägst du deshalb als fehlend in "
         "unklarheiten ein; ebenso alles andere, was für die Bearbeitung fehlt. "
-        "Keine Erklärungen außerhalb des JSON. Antworte ohne langes Nachdenken direkt mit dem JSON."
+        "Keine Erklärungen außerhalb des JSON."
     )
 
 
