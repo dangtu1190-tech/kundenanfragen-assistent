@@ -1,0 +1,1267 @@
+{
+  "ergebnisse": {
+    "gpt-oss:20b": {
+      "m01": {
+        "mail_id": "m01",
+        "extraktion": {
+          "kunde": {
+            "firma": "Dachdeckerei Brandt GmbH",
+            "kundennummer": "K-10234"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Jens Brandt"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04711",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Warnschutzjacken",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Lieferzeit der Bestellung B-2026-04711"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-09-18",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 9525
+      },
+      "m02": {
+        "mail_id": "m02",
+        "extraktion": {
+          "kunde": {
+            "firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Martina Kessler"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04688",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4101",
+              "bezeichnung": "Bundhosen",
+              "groesse": "52",
+              "farbe": null,
+              "menge": 4
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "ruecksendung",
+              "beschreibung": "Größentausch von Bundhosen"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 5899
+      },
+      "m03": {
+        "mail_id": "m03",
+        "extraktion": {
+          "kunde": {
+            "firma": "Malerbetrieb Yilmaz GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Cem Yilmaz"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04590",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "T-Shirts",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "reklamation",
+              "beschreibung": "Druck löst sich ab, fehlende Buchstaben"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": null,
+          "unklarheiten": [
+            "Foto fehlt"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 7512
+      },
+      "m04": {
+        "mail_id": "m04",
+        "extraktion": {
+          "kunde": {
+            "firma": "Metallbau Reuter AG",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Sabine Reuter"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04733",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": "V-2026-131"
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Softshelljacken",
+              "groesse": null,
+              "farbe": null,
+              "menge": 8
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "veredelung",
+              "beschreibung": "Status der Stickerei zu Auftrag V-2026-131"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-09-22",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "veredelung",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 8373
+      },
+      "m05": {
+        "mail_id": "m05",
+        "extraktion": {
+          "kunde": {
+            "firma": "Zimmerei Lorenz GmbH",
+            "kundennummer": "K-10802"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Frank Lorenz"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "angebot",
+              "beschreibung": "Angebot für neue Mitarbeiter"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-10-01",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "vertrieb",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 4017
+      },
+      "m06": {
+        "mail_id": "m06",
+        "extraktion": {
+          "kunde": {
+            "firma": "Gebäudereinigung Sauber & Co. GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Petra Nowak"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": "R-2026-07731",
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "rechnung",
+              "beschreibung": "Kopie Rechnung mit Kostenstelle und Zahlungsziel erfragen"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "buchhaltung",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 5925
+      },
+      "m07": {
+        "mail_id": "m07",
+        "extraktion": {
+          "kunde": {
+            "firma": "SHK Mertens GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Torben Mertens"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04702",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Sicherheitsschuhe",
+              "groesse": null,
+              "farbe": null,
+              "menge": 2
+            },
+            {
+              "artikelnummer": "A-4210",
+              "bezeichnung": "Softshelljacken",
+              "groesse": "XL",
+              "farbe": "navy",
+              "menge": 2
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Teillieferung angekommen, fehlende Softshelljacken"
+            },
+            {
+              "kategorie": "verfuegbarkeit",
+              "beschreibung": "Verfügbarkeit Softshelljacken A-4210 XL navy"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 11964
+      },
+      "m08": {
+        "mail_id": "m08",
+        "extraktion": {
+          "kunde": {
+            "firma": "Tiefbau Hansen & Petersen GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Ole Hansen"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04750",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Lieferstatus und Vollständigkeit der Bestellung"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-09-18",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 3893
+      },
+      "m09": {
+        "mail_id": "m09",
+        "extraktion": {
+          "kunde": {
+            "firma": "Kfz-Werkstatt Adler GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Daniel Adler"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": "V-2026-140"
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "veredelung",
+              "beschreibung": "Veredelungsauftrag freigeben"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": [
+            "Fehlendes Anhang: Stickdatei fehlt"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "veredelung",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 3599
+      },
+      "m10": {
+        "mail_id": "m10",
+        "extraktion": {
+          "kunde": {
+            "firma": null,
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": null
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04711",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "wo bleibt die Lieferung"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 4964
+      },
+      "m11": {
+        "mail_id": "m11",
+        "extraktion": {
+          "kunde": {
+            "firma": "Gartenbau Wille",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Anke Wille"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4520",
+              "bezeichnung": "Poloshirts",
+              "groesse": "M",
+              "farbe": "grün",
+              "menge": 10
+            },
+            {
+              "artikelnummer": "A-4520",
+              "bezeichnung": "Poloshirts",
+              "groesse": "L",
+              "farbe": "grün",
+              "menge": 10
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "angebot",
+              "beschreibung": "Angebot für 20 Poloshirts A-4520 mit Logo"
+            }
+          ],
+          "dringlichkeit": "niedrig",
+          "frist": null,
+          "unklarheiten": [
+            "Logo fehlt im Anhang"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "vertrieb",
+        "dringlichkeit": "niedrig",
+        "dauer_ms": 9847
+      },
+      "m12": {
+        "mail_id": "m12",
+        "extraktion": {
+          "kunde": {
+            "firma": "Gebäudereinigung Sauber & Co. GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Petra Nowak"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04699",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4610",
+              "bezeichnung": "Regenjacken",
+              "groesse": "M",
+              "farbe": null,
+              "menge": 6
+            },
+            {
+              "artikelnummer": "A-4610",
+              "bezeichnung": "Regenjacken",
+              "groesse": "L",
+              "farbe": null,
+              "menge": 6
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "reklamation",
+              "beschreibung": "Regenjacken A-4610 Größe M fallen kleiner aus, Rücksendung"
+            },
+            {
+              "kategorie": "verfuegbarkeit",
+              "beschreibung": "Lieferbarkeit der Regenjacken A-4610 Größe L"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 13858
+      },
+      "m13": {
+        "mail_id": "m13",
+        "extraktion": {
+          "kunde": {
+            "firma": "Kfz-Werkstatt Adler GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Daniel Adler"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04761",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Warnschutzjacken",
+              "groesse": null,
+              "farbe": "orange",
+              "menge": 4
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "reklamation",
+              "beschreibung": "falsche Farbe gelb statt orange"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 4982
+      },
+      "m14": {
+        "mail_id": "m14",
+        "extraktion": {
+          "kunde": {
+            "firma": "TexNorte Confecções Lda",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Miguel Ferreira"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "sonstiges",
+              "beschreibung": "Lieferantenangebot"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 3749
+      },
+      "m15": {
+        "mail_id": "m15",
+        "extraktion": {
+          "kunde": {
+            "firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Martina Kessler"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-4688",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Poloshirts",
+              "groesse": null,
+              "farbe": null,
+              "menge": 4
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "fehlende Poloshirts"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 7393
+      }
+    },
+    "qwen2.5:14b-instruct": {
+      "m01": {
+        "mail_id": "m01",
+        "extraktion": {
+          "kunde": {
+            "firma": "Dachdeckerei Brandt GmbH",
+            "kundennummer": "K-10234"
+          },
+          "ansprechpartner": {
+            "anrede": "Herr",
+            "name": "Jens Brandt"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04711",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Warnschutzjacken",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Wunsch nach Liefertermin für Bestellung B-2026-04711 mit Warnschutzjacken, da Bauleiter am 18.09.2026 ohne diese Ware nicht auf das Baustellengelände gelassen wird."
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-09-18",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 9161
+      },
+      "m02": {
+        "mail_id": "m02",
+        "extraktion": {
+          "kunde": {
+            "firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+            "kundennummer": "null"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Martina Kessler"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04688",
+            "rechnungsnummer": "null",
+            "veredelungsauftrag": "null"
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4101",
+              "bezeichnung": "Bundhose",
+              "groesse": "52",
+              "farbe": "null",
+              "menge": 4
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "ruecksendung",
+              "beschreibung": "Größentausch von Bundhosen A-4101 von Größe 52 auf 54"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": [
+            "Aufkleber für Rücksendung"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [
+          "anrede 'null' ungültig, auf null gesetzt",
+          "frist 'null' ungültig, auf null gesetzt"
+        ],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 2948
+      },
+      "m03": {
+        "mail_id": "m03",
+        "extraktion": null,
+        "extraktion_fehler": "Antwort passt nicht zum Schema: Input should be a valid integer, unable to parse string as an integer bei ('artikel', 0, 'menge')",
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 2896
+      },
+      "m04": {
+        "mail_id": "m04",
+        "extraktion": {
+          "kunde": {
+            "firma": "Metallbau Reuter AG",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": "Herr",
+            "name": "Sabine Reuter"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04733",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": "V-2026-131"
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Softshelljacke",
+              "groesse": null,
+              "farbe": null,
+              "menge": 8
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Stand der Stickerei für acht Softshelljacken aus Bestellung B-2026-04733, die für Messe am 2026-09-22 benötigt werden"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": "2026-09-22",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 3189
+      },
+      "m05": {
+        "mail_id": "m05",
+        "extraktion": {
+          "kunde": {
+            "firma": "Zimmerei Lorenz GmbH",
+            "kundennummer": "K-10802"
+          },
+          "ansprechpartner": {
+            "anrede": "Herr",
+            "name": "Frank Lorenz"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Bundhosen",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            },
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Softshelljacken",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            },
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Sicherheitsschuhe",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            },
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Poloshirts",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "angebot",
+              "beschreibung": "Preisanfrage für ein Paket von Berufsbekleidung für fünf neue Mitarbeiter zum 1. Oktober 2026"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": "2026-10-01",
+          "unklarheiten": [
+            "Größenangaben fehlen"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "vertrieb",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 4268
+      },
+      "m06": {
+        "mail_id": "m06",
+        "extraktion": {
+          "kunde": {
+            "firma": "Gebäudereinigung Sauber & Co. GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": "Herr",
+            "name": "Petra Nowak"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": "R-2026-07731",
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "rechnung",
+              "beschreibung": "Kopie der Rechnung R-2026-07731 mit ausgewiesener Kostenstelle HH-Reinigung-12"
+            },
+            {
+              "kategorie": "rechnung",
+              "beschreibung": "Zahlungsziel für Rechnungen"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "buchhaltung",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 2673
+      },
+      "m07": {
+        "mail_id": "m07",
+        "extraktion": {
+          "kunde": {
+            "firma": "SHK Mertens GmbH",
+            "kundennummer": "null"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Torben Mertens"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04702",
+            "rechnungsnummer": "null",
+            "veredelungsauftrag": "null"
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4210",
+              "bezeichnung": "Softshelljacke",
+              "groesse": "XL",
+              "farbe": "navy",
+              "menge": 2
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Bestellung B-2026-04702 fehlt Teillieferung"
+            },
+            {
+              "kategorie": "verfuegbarkeit",
+              "beschreibung": "Nachfolger oder Nachlieferung der Softshelljacke A-4210 in XL, navy"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": [
+            "null"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [
+          "anrede 'null' ungültig, auf null gesetzt",
+          "frist 'null' ungültig, auf null gesetzt"
+        ],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 3316
+      },
+      "m08": {
+        "mail_id": "m08",
+        "extraktion": {
+          "kunde": {
+            "firma": "Tiefbau Hansen & Petersen GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": "Herr",
+            "name": "Ole Hansen"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04750",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "jackets, trousers and boots",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Bestätigung der Lieferung bis Freitag, 18. September 2026, und Meldung von fehlenden Artikeln"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-09-18",
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 2942
+      },
+      "m09": {
+        "mail_id": "m09",
+        "extraktion": {
+          "kunde": {
+            "firma": "Kfz-Werkstatt Adler GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Daniel Adler"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": "V-2026-140"
+          },
+          "artikel": [
+            {
+              "artikelnummer": null,
+              "bezeichnung": "Poloshirt",
+              "groesse": null,
+              "farbe": null,
+              "menge": null
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "veredelung",
+              "beschreibung": "Freigabe des Veredelungsauftrags V-2026-140 mit der Stickdatei für die Poloshirts"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": [
+            "Stickdatei fehlt im Anhang"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "veredelung",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 2817
+      },
+      "m10": {
+        "mail_id": "m10",
+        "extraktion": {
+          "kunde": {
+            "firma": null,
+            "kundennummer": "B-2026-04711"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Jens Brandt"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Abfrage des Lieferstands einer bestehenden Bestellung"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 1905
+      },
+      "m11": {
+        "mail_id": "m11",
+        "extraktion": {
+          "kunde": {
+            "firma": "Gartenbau Wille",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Anke Wille"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4520",
+              "bezeichnung": "Poloshirt",
+              "groesse": "M",
+              "farbe": "grün",
+              "menge": 10
+            },
+            {
+              "artikelnummer": "A-4520",
+              "bezeichnung": "Poloshirt",
+              "groesse": "L",
+              "farbe": "grün",
+              "menge": 10
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "angebot",
+              "beschreibung": "Preisanfrage für 20 Poloshirts A-4520 in grün, davon zehn in M und zehn in L mit gedrucktem Logo"
+            }
+          ],
+          "dringlichkeit": "niedrig",
+          "frist": null,
+          "unklarheiten": [
+            "Logo im Anhang fehlt"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "vertrieb",
+        "dringlichkeit": "niedrig",
+        "dauer_ms": 3459
+      },
+      "m12": {
+        "mail_id": "m12",
+        "extraktion": {
+          "kunde": {
+            "firma": "Gebäudereinigung Sauber & Co. GmbH",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": "Frau",
+            "name": "Petra Nowak"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04699",
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [
+            {
+              "artikelnummer": "A-4610",
+              "bezeichnung": "Regenjacke",
+              "groesse": "M",
+              "farbe": null,
+              "menge": 6
+            },
+            {
+              "artikelnummer": "A-4610",
+              "bezeichnung": "Regenjacke",
+              "groesse": "L",
+              "farbe": null,
+              "menge": 6
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "reklamation",
+              "beschreibung": "Regenjacken A-4610 Größe M fallen kleiner aus als erwartet, daher Rücksendung gewünscht."
+            },
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Bestellung von sechs Regenjacken A-4610 in Größe L, sofern lieferbar."
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": []
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 3854
+      },
+      "m13": {
+        "mail_id": "m13",
+        "extraktion": {
+          "kunde": {
+            "firma": "Kfz-Werkstatt Adler GmbH",
+            "kundennummer": "null"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Daniel Adler"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-04761",
+            "rechnungsnummer": "null",
+            "veredelungsauftrag": "null"
+          },
+          "artikel": [
+            {
+              "artikelnummer": "null",
+              "bezeichnung": "Warnschutzjacke",
+              "groesse": "null",
+              "farbe": "orange",
+              "menge": 4
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "ruecksendung",
+              "beschreibung": "Tausch von vier orange Warnschutzjacken gegen gelbe"
+            }
+          ],
+          "dringlichkeit": "hoch",
+          "frist": "2026-09-19",
+          "unklarheiten": [
+            "fehlende Artikelnummer für die Warnschutzjacke"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [
+          "anrede 'null' ungültig, auf null gesetzt"
+        ],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "hoch",
+        "dauer_ms": 2905
+      },
+      "m14": {
+        "mail_id": "m14",
+        "extraktion": {
+          "kunde": {
+            "firma": "TexNorte Confecções Lda",
+            "kundennummer": null
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Miguel Ferreira"
+          },
+          "bezug": {
+            "bestellnummer": null,
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
+          },
+          "artikel": [],
+          "anliegen": [
+            {
+              "kategorie": "angebot",
+              "beschreibung": "Preisanfrage und Angebot für die Produktion von Berufsbekleidung, Polo-Shirts und Jacken"
+            }
+          ],
+          "dringlichkeit": "niedrig",
+          "frist": null,
+          "unklarheiten": [
+            "Fehlender Name und Kontakt für den Einkauf"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [],
+        "zustaendigkeit": "vertrieb",
+        "dringlichkeit": "niedrig",
+        "dauer_ms": 2181
+      },
+      "m15": {
+        "mail_id": "m15",
+        "extraktion": {
+          "kunde": {
+            "firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+            "kundennummer": "null"
+          },
+          "ansprechpartner": {
+            "anrede": null,
+            "name": "Martina Kessler"
+          },
+          "bezug": {
+            "bestellnummer": "B-2026-4688",
+            "rechnungsnummer": "null",
+            "veredelungsauftrag": "null"
+          },
+          "artikel": [
+            {
+              "artikelnummer": "null",
+              "bezeichnung": "Poloshirt",
+              "groesse": "null",
+              "farbe": "null",
+              "menge": 4
+            }
+          ],
+          "anliegen": [
+            {
+              "kategorie": "bestellstatus",
+              "beschreibung": "Fehlen der Poloshirts in der Lieferung zur Bestellung B-2026-4688"
+            }
+          ],
+          "dringlichkeit": "mittel",
+          "frist": null,
+          "unklarheiten": [
+            "null"
+          ]
+        },
+        "extraktion_fehler": null,
+        "extraktion_hinweise": [
+          "anrede 'null' ungültig, auf null gesetzt",
+          "frist 'null' ungültig, auf null gesetzt"
+        ],
+        "zustaendigkeit": "kundenservice",
+        "dringlichkeit": "mittel",
+        "dauer_ms": 2714
+      }
+    }
+  },
+  "bewertungen": {
+    "gpt-oss:20b": {
+      "kategorien": 13,
+      "zustaendigkeit": 14,
+      "dringlichkeit": 9,
+      "bestellnummer": 15,
+      "kundennummer": 15,
+      "frist": 14,
+      "schemafehler": 0,
+      "mittlere_dauer_ms": 7033.3,
+      "n": 15
+    },
+    "qwen2.5:14b-instruct": {
+      "kategorien": 9,
+      "zustaendigkeit": 11,
+      "dringlichkeit": 11,
+      "bestellnummer": 13,
+      "kundennummer": 9,
+      "frist": 12,
+      "schemafehler": 1,
+      "mittlere_dauer_ms": 3415.2,
+      "n": 15
+    }
+  }
+}

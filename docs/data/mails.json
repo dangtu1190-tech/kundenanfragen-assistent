@@ -1,0 +1,137 @@
+[
+  {
+    "id": "m01",
+    "absender_name": "Jens Brandt",
+    "absender_firma": "Dachdeckerei Brandt GmbH",
+    "absender_email": "j.brandt@dachdeckerei-brandt.example",
+    "betreff": "Warnschutzjacken Bestellung B-2026-04711",
+    "empfangen": "2026-09-11T08:14:00",
+    "text": "Guten Tag,\n\nwir warten auf unsere Bestellung B-2026-04711 mit den Warnschutzjacken. Am Donnerstag, den 18.09., fangen wir auf einer Autobahnbaustelle an, und ohne die Jacken lässt uns der Bauleiter gar nicht erst auf das Gelände.\n\nKönnen Sie mir bitte sagen, wann die Sendung bei uns ist? Unsere Kundennummer lautet K-10234.\n\nMit freundlichen Grüßen\nJens Brandt\nDachdeckerei Brandt GmbH\nZiegeleiweg 18\n23552 Lübeck\nTel. 0451 / 88 12 34"
+  },
+  {
+    "id": "m02",
+    "absender_name": "Martina Kessler",
+    "absender_firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+    "absender_email": "m.kessler@elektro-kessler.example",
+    "betreff": "Größentausch Bundhosen",
+    "empfangen": "2026-09-11T09:40:00",
+    "text": "Guten Tag,\n\naus der Bestellung B-2026-04688 sind vier Bundhosen A-4101 in Größe 52 bei uns angekommen. Die Kollegen kommen damit nicht zurecht, die Hosen sind schlicht zu klein. Wir würden sie gern gegen Größe 54 tauschen.\n\nAlle vier Hosen sind ungetragen, die Etiketten hängen noch dran. Sagen Sie mir bitte, wie wir die Rücksendung anstoßen und ob Sie uns einen Aufkleber schicken.\n\nMit freundlichen Grüßen\nMartina Kessler\nElektro Kessler & Sohn GmbH & Co. KG\nSpannweg 7\n34117 Kassel\nTel. 0561 / 44 21 90"
+  },
+  {
+    "id": "m03",
+    "absender_name": "Cem Yilmaz",
+    "absender_firma": "Malerbetrieb Yilmaz GmbH",
+    "absender_email": "c.yilmaz@maler-yilmaz.example",
+    "betreff": "Reklamation bedruckte T-Shirts",
+    "empfangen": "2026-09-11T11:05:00",
+    "text": "Sehr geehrte Damen und Herren,\n\ndie bedruckten T-Shirts aus der Bestellung B-2026-04590 halten leider nicht, was wir erwartet haben. Nach drei Wäschen bei 40 Grad löst sich der Druck an mehreren Shirts an den Rändern ab, bei zweien fehlen schon ganze Buchstaben.\n\nFotos davon habe ich angehängt, darauf sieht man es deutlich. Wir hätten gern Ersatz, so können unsere Leute nicht zum Kunden fahren.\n\nMit freundlichen Grüßen\nCem Yilmaz\nMalerbetrieb Yilmaz GmbH\nFarbenweg 3\n30159 Hannover"
+  },
+  {
+    "id": "m04",
+    "absender_name": "Sabine Reuter",
+    "absender_firma": "Metallbau Reuter AG",
+    "absender_email": "s.reuter@metallbau-reuter.example",
+    "betreff": "Stickerei Auftrag V-2026-131",
+    "empfangen": "2026-09-11T14:22:00",
+    "text": "Guten Tag,\n\nwie ist der Stand bei der Stickerei zu unserem Auftrag V-2026-131? Es geht um die acht Softshelljacken aus der Bestellung B-2026-04733.\n\nWir brauchen die Jacken zur Messe am 22.09., unsere Leute sollen dort einheitlich auftreten. Wenn es eng wird, sagen Sie bitte rechtzeitig Bescheid, dann behelfen wir uns anders.\n\nMit freundlichen Grüßen\nSabine Reuter\nMetallbau Reuter AG\nSchmiedeallee 22\n24103 Kiel\nTel. 0431 / 77 05 62"
+  },
+  {
+    "id": "m05",
+    "absender_name": "Frank Lorenz",
+    "absender_firma": "Zimmerei Lorenz GmbH",
+    "absender_email": "f.lorenz@zimmerei-lorenz.example",
+    "betreff": "Ausstattung neue Mitarbeiter",
+    "empfangen": "2026-09-11T16:48:00",
+    "text": "Guten Tag,\n\nwir stellen zum 1. Oktober fünf neue Leute ein und möchten sie von Anfang an komplett ausstatten: Bundhosen, Softshelljacken, Sicherheitsschuhe und ein paar Poloshirts, im Grunde dasselbe Paket wie bei unserer letzten Bestellung. Das Logo soll wie gehabt auf die Jacken.\n\nSchicken Sie uns dazu bitte ein Angebot. Unsere Kundennummer lautet K-10802. Die Größen reiche ich nach, sobald die Verträge unterschrieben sind.\n\nMit freundlichen Grüßen\nFrank Lorenz\nZimmerei Lorenz GmbH\nHolzmarktweg 4\n49074 Osnabrück\nTel. 0541 / 32 86 11"
+  },
+  {
+    "id": "m06",
+    "absender_name": "Petra Nowak",
+    "absender_firma": "Gebäudereinigung Sauber & Co. GmbH",
+    "absender_email": "p.nowak@sauber-co.example",
+    "betreff": "Rechnung R-2026-07731",
+    "empfangen": "2026-09-12T07:31:00",
+    "text": "Guten Tag,\n\nzu unserer Rechnung R-2026-07731 fehlt uns in der Buchhaltung noch eine Kopie mit ausgewiesener Kostenstelle. Bitte tragen Sie dort HH-Reinigung-12 ein und senden Sie die Kopie an p.nowak@sauber-co.example.\n\nAußerdem eine Frage: Wie lang ist bei uns eigentlich das Zahlungsziel? Die Kollegin in der Buchhaltung ist sich da nicht sicher.\n\nMit freundlichen Grüßen\nPetra Nowak\nGebäudereinigung Sauber & Co. GmbH\nBesenweg 9\n20095 Hamburg\nTel. 040 / 55 71 20"
+  },
+  {
+    "id": "m07",
+    "absender_name": "Torben Mertens",
+    "absender_firma": "SHK Mertens GmbH",
+    "absender_email": "t.mertens@shk-mertens.example",
+    "betreff": "Teillieferung B-2026-04702",
+    "empfangen": "2026-09-12T08:57:00",
+    "text": "Guten Tag,\n\ndie Teillieferung zur Bestellung B-2026-04702 ist gestern angekommen. Die beiden Paar Sicherheitsschuhe sind da, die zwei Softshelljacken A-4210 in navy XL fehlen aber.\n\nSind die Jacken in dieser Größe überhaupt noch lieferbar, oder gibt es inzwischen einen Nachfolger? Wenn ja, nehmen wir auch den, Hauptsache die Kollegen haben etwas Warmes.\n\nMit freundlichen Grüßen\nTorben Mertens\nSHK Mertens GmbH\nRohrleitungsweg 5\n28195 Bremen\nTel. 0421 / 61 39 47"
+  },
+  {
+    "id": "m08",
+    "absender_name": "Ole Hansen",
+    "absender_firma": "Tiefbau Hansen & Petersen GmbH",
+    "absender_email": "o.hansen@hansen-petersen.example",
+    "betreff": "Order B-2026-04750 delivery date",
+    "empfangen": "2026-09-12T10:12:00",
+    "text": "Hello,\n\nwe placed order B-2026-04750 last Friday. Our crew starts on a new site on Monday, 21 September, and we need the complete kit (jackets, trousers and boots) by Friday, 18 September at the latest.\n\nPlease confirm that the delivery reaches us in time. If anything is missing, tell us now, then we can still rent replacements.\n\nBest regards\nOle Hansen\nTiefbau Hansen & Petersen GmbH\nDeichweg 11\n24937 Flensburg\nTel. 0461 / 90 24 18"
+  },
+  {
+    "id": "m09",
+    "absender_name": "Daniel Adler",
+    "absender_firma": "Kfz-Werkstatt Adler GmbH",
+    "absender_email": "d.adler@kfz-adler.example",
+    "betreff": "WG: Logo für Polos",
+    "empfangen": "2026-09-12T13:44:00",
+    "text": "Guten Tag,\n\nmein Kollege hat mir die Stickdatei für unsere neuen Poloshirts geschickt, seine Mail hänge ich unten an. Bitte geben Sie damit den Veredelungsauftrag V-2026-140 frei, damit es weitergeht.\n\nMit freundlichen Grüßen\nDaniel Adler\nKfz-Werkstatt Adler GmbH\nAchsenring 6\n18055 Rostock\nTel. 0381 / 24 90 55\n\n> Von: Kevin Braun\n> Gesendet: Freitag, 11. September 2026 16:20\n> An: Daniel Adler\n> Betreff: Logo für Polos\n>\n>> hier ist die Stickdatei im Anhang, in der abgestimmten Fassung.\n>> Das Logo kommt auf die linke Brust, die Größe haben wir gelassen wie beim letzten Mal.\n>> Melde dich, wenn noch etwas fehlt.\n>> Kevin Braun\n>> k.braun@kfz-adler.example"
+  },
+  {
+    "id": "m10",
+    "absender_name": "Jens Brandt",
+    "absender_firma": "Dachdeckerei Brandt GmbH",
+    "absender_email": "j.brandt@dachdeckerei-brandt.example",
+    "betreff": "",
+    "empfangen": "2026-09-12T17:55:00",
+    "text": "B-2026-04711 wo bleibt die Lieferung? Rückruf 0451 / 88 12 34."
+  },
+  {
+    "id": "m11",
+    "absender_name": "Anke Wille",
+    "absender_firma": "Gartenbau Wille",
+    "absender_email": "info@gartenbau-wille.example",
+    "betreff": "Poloshirts mit Logo",
+    "empfangen": "2026-09-13T09:18:00",
+    "text": "Hallo,\n\nwir hätten gern 20 Poloshirts A-4520 in grün, davon zehn in M und zehn in L. Auf die Brust soll unser Logo gedruckt werden.\n\nUnser Logo hänge ich an; die druckfähige Fassung schicke ich nach, sobald unsere Grafikerin sie freigegeben hat. Können Sie mir bis dahin schon ein Angebot machen? Eilig ist es nicht, wir brauchen die Shirts erst im Frühjahr.\n\nMit freundlichen Grüßen\nAnke Wille\nGartenbau Wille\nRosenweg 14\n26122 Oldenburg"
+  },
+  {
+    "id": "m12",
+    "absender_name": "Petra Nowak",
+    "absender_firma": "Gebäudereinigung Sauber & Co. GmbH",
+    "absender_email": "p.nowak@sauber-co.example",
+    "betreff": "Regenjacken Rücksendung und Nachbestellung",
+    "empfangen": "2026-09-13T11:36:00",
+    "text": "Guten Tag,\n\ndie sechs Regenjacken A-4610 in Größe M aus der Bestellung B-2026-04699 fallen deutlich kleiner aus als gedacht, unsere Kolleginnen bekommen darunter nichts Warmes an. Die Jacken möchten wir zurückschicken.\n\nGleichzeitig bestellen wir sechs Stück in Größe L nach, sofern die Jacken lieferbar sind. Passt das so für Sie?\n\nMit freundlichen Grüßen\nPetra Nowak\nGebäudereinigung Sauber & Co. GmbH\nBesenweg 9\n20095 Hamburg\nTel. 040 / 55 71 20"
+  },
+  {
+    "id": "m13",
+    "absender_name": "Daniel Adler",
+    "absender_firma": "Kfz-Werkstatt Adler GmbH",
+    "absender_email": "d.adler@kfz-adler.example",
+    "betreff": "Falsche Farbe geliefert",
+    "empfangen": "2026-09-13T15:02:00",
+    "text": "Guten Tag,\n\naus der Bestellung B-2026-04761 haben wir vier Warnschutzjacken bekommen, allerdings in orange. Bestellt hatten wir gelb, und gelb brauchen wir auch: unsere Leute sind damit auf dem Hof und an der Unfallstelle unterwegs, der Auftraggeber schreibt uns die gelbe Ausführung vor.\n\nBitte tauschen Sie die vier Jacken kurzfristig um. Die falschen schicken wir sofort zurück.\n\nMit freundlichen Grüßen\nDaniel Adler\nKfz-Werkstatt Adler GmbH\nAchsenring 6\n18055 Rostock\nTel. 0381 / 24 90 55"
+  },
+  {
+    "id": "m14",
+    "absender_name": "Miguel Ferreira",
+    "absender_firma": "TexNorte Confecções Lda",
+    "absender_email": "m.ferreira@texnorte.example",
+    "betreff": "Partnership proposal",
+    "empfangen": "2026-09-14T06:29:00",
+    "text": "Dear Sir or Madam,\n\nmy name is Miguel Ferreira and I am writing on behalf of TexNorte Confecções Lda, a textile manufacturer near Porto. We produce workwear, polo shirts and jackets for several European brands and we have free capacity for the coming season.\n\nWe would be glad to send you our catalogue and a sample package. Could you tell me who is responsible for purchasing at your company?\n\nBest regards\nMiguel Ferreira\nTexNorte Confecções Lda\nRua da Fabrica 40\n4400-123 Vila Nova de Gaia\nPortugal\nTel. +351 22 900 41 88\nm.ferreira@texnorte.example"
+  },
+  {
+    "id": "m15",
+    "absender_name": "Martina Kessler",
+    "absender_firma": "Elektro Kessler & Sohn GmbH & Co. KG",
+    "absender_email": "m.kessler@elektro-kessler.example",
+    "betreff": "Lieferung B-2026-4688",
+    "empfangen": "2026-09-14T08:47:00",
+    "text": "Guten Tag,\n\nin der Lieferung zur Bestellung B-2026-4688 fehlen die vier Poloshirts. Die Bundhosen sind vollständig angekommen, die Polos nicht, obwohl sie auf dem Lieferschein stehen.\n\nBitte prüfen Sie das und schicken Sie die fehlenden Teile nach.\n\nMit freundlichen Grüßen\nMartina Kessler\nElektro Kessler & Sohn GmbH & Co. KG\nSpannweg 7\n34117 Kassel\nTel. 0561 / 44 21 90"
+  }
+]
