@@ -24,9 +24,11 @@ ANREDEN = ("Herr", "Frau")
 WOCHENTAGE = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
 
 KATEGORIE_BEDEUTUNG = [
-    ("bestellstatus", "Lieferstand einer bestehenden Bestellung"),
-    ("ruecksendung", "Rückgabe oder Größentausch"),
-    ("reklamation", "Mangel an gelieferter Ware oder Falschlieferung"),
+    ("bestellstatus", "Lieferstand einer bestehenden Bestellung, auch wenn aus einer Lieferung "
+                      "noch etwas fehlt oder eine Teillieferung unvollständig ist"),
+    ("ruecksendung", "Rückgabe einwandfreier Ware oder Größentausch"),
+    ("reklamation", "die gelieferte Ware selbst ist mangelhaft oder falsch, etwa beschädigt, "
+                    "falscher Artikel oder falsche Farbe"),
     ("veredelung", "Logo, Stick, Druck, Stickdatei, Freigabe"),
     ("angebot", "Preisanfrage oder Ausstattung neuer Mitarbeiter"),
     ("rechnung", "Rechnungskopie, Kostenstelle, Zahlungsziel"),
@@ -142,9 +144,25 @@ def baue_prompt(heute: date) -> str:
         "Antworte ausschließlich mit einem JSON-Objekt nach diesem Schema:\n" + SCHEMA_TEXT + "\n"
         "Diese Kategorien gibt es:\n" + _kategorienliste() + "\n"
         "Regeln: Jedes eigenständige Anliegen ist ein eigener Listeneintrag; eine Mail kann "
-        "mehrere Anliegen und mehrere Artikel enthalten. "
+        "mehrere Anliegen und mehrere Artikel enthalten. Trage auch ein Anliegen ein, das der "
+        "Kunde nur nebenbei stellt. "
+        "Schreibe den Kategorienamen genau so, wie er links in der Liste steht, klein und ohne "
+        "Umlaute. Nenne jede Kategorie höchstens einmal. sonstiges nur, wenn keine andere "
+        "Kategorie passt; eine Bitte um Rückruf, eine Telefonnummer, ein Gruß oder eine "
+        "Signatur ist kein eigenes Anliegen. "
         "In ansprechpartner.name steht nur der Personenname, also ein Platzhalter der Form "
         "[NAME_n], nie eine Firma. "
+        "Hat der Kunde etwas anderes bekommen, als er bestellt hat, ist das reklamation, auch "
+        "wenn er die falsche Ware zurückschickt oder getauscht haben will. "
+        "Eine Nachbestellung ist kein angebot; angebot nur, wenn der Kunde nach einem Preis oder "
+        "einem Angebot fragt. Fragt er, ob Ware lieferbar ist oder ob es einen Nachfolger gibt, "
+        "ist das verfuegbarkeit. "
+        "Bietet nicht ein Kunde etwas an, sondern ein Lieferant oder Hersteller, ist das sonstiges. "
+        "Unter artikel steht nur Ware, die der Kunde konkret benennt; was er nicht nennt, bleibt "
+        "null, und nennt er gar nichts, bleibt die Liste leer. "
+        "dringlichkeit ist hoch, wenn die Arbeit stillsteht, Arbeitsschutz fehlt oder ein "
+        "genannter Termin unmittelbar bevorsteht; niedrig, wenn der Kunde selbst sagt, dass es "
+        "Zeit hat, oder es um Planung, eine Auskunft oder Werbung geht; sonst mittel. "
         "Setze frist nur, wenn der Kunde selbst einen Termin nennt, bis zu dem er die Ware oder "
         "eine Antwort braucht; nimm dann genau den Tag, den er nennt, und rechne nicht von dir "
         "aus auf einen früheren Tag zurück. Nennt er keinen Termin, bleibt frist null. "
@@ -155,7 +173,7 @@ def baue_prompt(heute: date) -> str:
         "Jeden Anhang, den der Kunde ankündigt oder erwähnt (Foto, Stickdatei, Logo, "
         "Lieferschein, 'anbei', 'im Anhang'), trägst du deshalb als fehlend in "
         "unklarheiten ein; ebenso alles andere, was für die Bearbeitung fehlt. "
-        "Keine Erklärungen außerhalb des JSON."
+        "Keine Erklärungen außerhalb des JSON. Antworte ohne langes Nachdenken direkt mit dem JSON."
     )
 
 
