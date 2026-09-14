@@ -316,7 +316,7 @@ function zeigeKopf(s) {
 
 function ladeMailsServer() {
   return anfrage("GET", "/api/mails")
-    .then(function (liste) { mails = liste; renderListe(); })
+    .then(function (liste) { mails = liste; renderListe(); waehleAusUrl(); })
     .catch(function (e) { zeigeLadefehler("Mails konnten nicht geladen werden: " + e.message); });
 }
 
@@ -342,6 +342,7 @@ function ladeDatenStatisch() {
                  dringlichkeit: e ? e.dringlichkeit : null };
       });
       renderListe();
+      waehleAusUrl();
     })
     .catch(function (e) { zeigeLadefehler("Statische Daten (docs/data/) konnten nicht geladen werden: " + e.message); });
 }
@@ -377,8 +378,15 @@ function renderListe() {
   });
 }
 
+// Mail per URL vorwaehlen (z. B. .../#m15), damit sich ein Fall direkt verlinken laesst.
+function waehleAusUrl() {
+  var id = (location.hash || "").replace("#", "");
+  if (id && mails.some(function (m) { return m.id === id; })) waehleMail(id);
+}
+
 function waehleMail(id) {
   aktuelleId = id;
+  if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
   if (statisch) {
     zeigeDetail(mailsVoll[id], ergebnisse[id] || null);
     renderListe();

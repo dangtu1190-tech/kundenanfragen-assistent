@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/dangtu1190-tech/kundenanfragen-assistent/actions/workflows/ci.yml/badge.svg)](https://github.com/dangtu1190-tech/kundenanfragen-assistent/actions/workflows/ci.yml)
 
+![Oberfläche des Kundenanfragen-Assistenten: Mail mit Tippfehler in der Bestellnummer, Platzhaltertabelle, extrahierte Felder, Hinweis aus dem ERP und Antwortentwurf](docs/screenshot.png)
+
 ## 1. Was das ist
 
 Ein Assistent, der eingehende Kundenmails eines Berufsbekleidungs-Versenders
@@ -30,7 +32,8 @@ Modellaufrufe. Alle 15 Testmails lassen sich anklicken und zeigen den
 kompletten Ablauf, also Pseudonymisierung mit Platzhaltertabelle, extrahierte
 Felder, Systemdaten aus ERP, CRM und MES, Hinweise, Antwortentwurf und Ticket,
 so wie sie beim letzten Echtlauf entstanden sind. Eine neue Mail live gegen ein
-Modell rechnen zu lassen geht nur lokal (Abschnitt 7).
+Modell rechnen zu lassen geht nur lokal (Abschnitt 7). Einzelne Fälle lassen sich
+direkt verlinken, zum Beispiel `.../#m15` für den Tippfehler in der Bestellnummer.
 
 ## 3. Architektur
 
