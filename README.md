@@ -171,6 +171,16 @@ steht. Firmennamen ohne Rechtsform im Namen (also ohne GmbH, AG, KG und
 Mail-Metadaten bekannt sind. Taucht ein solcher Name nur im Fließtext auf, etwa
 in einer Weiterleitung, bleibt er stehen.
 
+Adress- und Ortsmuster zielen auf deutsche Schreibweisen: Straße mit
+Hausnummer, fünfstellige PLZ vor dem Ort. Eine ausländische Anschrift fällt
+durch. In m14 (Anfrage eines portugiesischen Herstellers) bleiben deshalb
+"Rua da Fabrica 40", "4400-123 Vila Nova de Gaia" und "Portugal" im Klartext
+stehen; Name, Firma, Telefonnummer und E-Mail-Adresse derselben Mail werden
+weiterhin ersetzt. Ein Muster, das jede internationale Adressform trifft, gibt
+es nicht. Der ehrliche Weg wäre, die Länderformate zu benennen, die tatsächlich
+vorkommen, und alles andere vor der Weitergabe an ein Modell von einem Menschen
+prüfen zu lassen, statt eine Abdeckung zu behaupten, die kein Regex hat.
+
 ## 5. Integrationsentscheidungen
 
 **Dünne Adapter statt verstreuter HTTP-Aufrufe.** `app/integration/erp.py`,
@@ -207,6 +217,20 @@ antwortet das CRM mit 200 und dem vorhandenen Ticket statt mit 201 und einem
 zweiten. Dieselbe Mail zweimal zu verarbeiten erzeugt also kein Duplikat. Das
 ist die entscheidende Eigenschaft, wenn ein Wiederholungsversuch in einem
 Zustand endet, in dem man nicht weiß, ob der erste Aufruf angekommen ist.
+
+**"Neu verarbeiten" legt kein zweites Ticket an, aktualisiert aber auch
+keins.** Das CRM ist beim Anlegen idempotent, nicht beim Ändern: ein zweiter
+Lauf derselben Mail bekommt über `externe_referenz` das vorhandene Ticket
+zurück (HTTP 200 statt 201), dessen Betreff, Kategorien, Priorität und
+Zusammenfassung aber vom ersten Lauf stammen. Auch der Ticketstatus im CRM
+bleibt, wo ihn der Bearbeiter zuletzt hingesetzt hat, während der Status im
+Assistenten wieder auf `offen` fällt. Das ist eine bewusste
+Insert-only-Entscheidung: ein Ticket, an dem im CRM schon jemand gearbeitet
+hat, soll ein erneuter Lauf des Assistenten nicht unter seinen Händen
+umschreiben. Die Alternative wäre ein `PATCH` auf die fachlichen Felder oder
+ein echtes Upsert beim Anlegen, das den Inhalt nachzieht und den Status in Ruhe
+lässt. Das ist der erste Punkt, den ich für einen Produktivbetrieb ändern
+würde (`docs/GESPRAECH.md`, Frage 11).
 
 **Regeln im Code, nicht im Modell.** Zuständigkeit und Dringlichkeit stehen in
 `app/regeln.py`. Die Zuordnung "Reklamation geht an den Kundenservice,
@@ -255,7 +279,9 @@ Ergebnis).
 Mittelwert über mehrere Läufe, und n = 15 ist eine kleine Stichprobe.
 Unterschiede von einem oder zwei Punkten in einem Feld sind Rauschen: drei
 Läufe von `gpt-oss:20b` mit demselben Prompt ergaben bei den Kategorien 13, 11
-und 11 von 15. Die Tabellenzeile zeigt den Lauf mit 13 (`data/vergleich.json`),
+und 11 von 15. Für `qwen2.5:14b-instruct` gibt es nur diesen einen Lauf, seine
+Streuung ist also gar nicht gemessen; die Zeile ist eine Stichprobe von eins und
+keine Kennzahl des Modells. Die Tabellenzeile zeigt den Lauf mit 13 (`data/vergleich.json`),
 die Ergebnisse hinter der Browser-Demo (`data/ergebnisse.json`) stammen aus
 einem Lauf mit 11. Die ehrliche Erwartung für dieses Modell und diesen Prompt
 ist also 11 bis 13 von 15, nicht 13. Dazu kommt: der Prompt wurde in zwei
@@ -303,7 +329,8 @@ qwen2.5:14b-instruct trifft die Dringlichkeit öfter.
   zusätzlich `reasoning_effort=low` mit: das macht den Lauf von rund 7,8 auf
   rund 2,0 Sekunden je Mail schneller, ohne die Trefferzahlen zu verschlechtern
   (ohne den Parameter gemessen: Kategorien 10/15, Zuständigkeit 12/15,
-  Frist 14/15). Es kostet allerdings Wiederholbarkeit: mit vollem Reasoning
+  Frist 14/15; dieser Lauf ist ein Zwischenstand aus der Entwicklung und liegt
+  nicht in `data/vergleich.json`, dort stehen nur die beiden Läufe der Tabelle). Es kostet allerdings Wiederholbarkeit: mit vollem Reasoning
   lieferten zwei Läufe noch identische Ergebnisse, mit `low` streuen sie.
 - **Keine Beispielwerte im Prompt.** In einem früheren Vergleich setzte ein
   Modell die Beispielkennung aus dem Prompt als echten Wert ein. Der Prompt

@@ -60,7 +60,7 @@ def test_eindeutiger_nachname_wird_weiter_ersetzt():
 
     "Elektro Wittmann GmbH" (das frühere Beispiel hier) ist seit der
     Firmenerkennung selbst ein FIRMA-Treffer (siehe
-    test_firma_in_signatur_und_email_domain) — dieser Test prueft die reine
+    test_firma_in_signatur_und_email_domain); dieser Test prueft die reine
     Namensteil-Ersetzung deshalb an einem Satz ohne Rechtsform."""
     text, tab = anonymisiere("Anruf von Wittmann wegen der Anlage.", absender_name="Andrea Wittmann")
     assert text == "Anruf von [NAME_1] wegen der Anlage."

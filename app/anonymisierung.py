@@ -7,7 +7,7 @@ Modell braucht sie). Bereits gesetzte Platzhalter werden nie erneut angefasst
 (Text wird an ihnen zerlegt).
 Bekannte Grenzen: Namen im Fließtext ohne Anrede/Absender/Signatur bleiben.
 Ein allein stehender Nachname, den sich zwei bekannte Personen teilen, bleibt
-ebenfalls stehen — er lässt sich nicht zuordnen (siehe `_mehrdeutige_teile`).
+ebenfalls stehen, denn er lässt sich nicht zuordnen (siehe `_mehrdeutige_teile`).
 Das Modul heißt aus historischen Gründen weiter `anonymisierung`.
 """
 import re
@@ -32,7 +32,7 @@ _RECHTSFORM_WOERTER = {"gmbh", "ag", "kg", "kgaa", "se", "ohg", "co", "co.", "&"
 _RECHTSFORM_ZEILE = re.compile(r"\b" + _RECHTSFORM + r"(?![\wäöüß])")
 # Trennzeichen bewusst ohne \n: eine Nummer am Zeilenende darf die Folgezeile
 # (PLZ+Ort, Datum) nicht mitfressen. Landesvorwahl beliebig (+44, +33, ...),
-# nicht nur +49 — der Lookbehind und die Pflicht auf "+"/"0" am Anfang
+# nicht nur +49; der Lookbehind und die Pflicht auf "+"/"0" am Anfang
 # verhindern trotzdem einen Treffer mitten in Anlagen-/Seriennummern.
 _TELEFON = re.compile(r"(?<![\d.])(?:\+\d{1,3}|0)[ \t\-/()]*\d(?:[\d \t\-/()]{4,}\d)")
 # "Musterstraße 12a", "Am Alten Weg 3", "Am Bahndamm 7": Vorworte mit Großbuchstaben,
@@ -51,7 +51,7 @@ _ADRESSE = re.compile(
 # Muster dafür fraß den Folgetext, weil am/an/bei/im gewöhnliche Präpositionen
 # sind. "63739 Aschaffenburg bei Herrn Mueller" wurde bis "Herrn" verschluckt,
 # danach fand _ANREDE die Anrede nicht mehr und der Nachname blieb offen.
-# "Frankfurt am Main" wird deshalb zu "[ORT_1] am Main" — Rest, kein Leck.
+# "Frankfurt am Main" wird deshalb zu "[ORT_1] am Main": Rest, kein Leck.
 _ORT = re.compile(r"\b\d{5}\s+[A-ZÄÖÜ][a-zäöüß]+(?:[- ][A-ZÄÖÜ][a-zäöüß]+)*")
 _ANREDE = re.compile(r"\b(?:Herrn?|Frau|Hr\.|Fr\.)\s+([A-ZÄÖÜ][\wäöüß\-]+(?:\s+[A-ZÄÖÜ][\wäöüß\-]+)?)")
 _HALLO = re.compile(r"^\s*(?:Hallo|Hi|Servus|Moin|Guten Tag)\s+([A-ZÄÖÜ][\wäöüß\-]+)\s*[,!]?\s*$", re.MULTILINE)
@@ -115,7 +115,7 @@ def _namenskandidaten(text: str, absender_name: str | None, roh_text: str | None
     """`roh_text`: der Text vor Firmen-/Telefon-/Adress-Ersetzung. Die Von:-Zeile
     braucht ihn, weil ein Nachname, der zugleich Firmen-Kurzform ist (z. B.
     "Von: Bernd Kolb" bei Firma "Kolb ..."), bis hierher schon zu
-    "Bernd [FIRMA_1]" geworden ist — das Namensmuster faende dort keinen
+    "Bernd [FIRMA_1]" geworden ist; das Namensmuster faende dort keinen
     zweiten Namensteil mehr und liesse den Vornamen ungeschuetzt stehen."""
     kandidaten = []
     if absender_name and absender_name.strip():
