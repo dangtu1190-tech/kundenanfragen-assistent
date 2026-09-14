@@ -67,6 +67,14 @@ def test_parse_kategorie_grossgeschrieben_wird_sonstiges():
     assert any("kategorie" in h for h in hinweise), hinweise
 
 
+def test_parse_frist_mit_zeitanteil_wird_datum():
+    """Modelle hängen gern 'T00:00:00' an: das ist ein lesbares Datum, kein Fehler."""
+    for roh in ("2026-09-18T00:00:00", "2026-09-18 09:00:00"):
+        e, hinweise = parse_antwort(json.dumps(dict(GUELTIG, frist=roh)))
+        assert e.frist == "2026-09-18", roh
+        assert hinweise == [], roh
+
+
 def test_parse_frist_als_text_wird_none():
     e, hinweise = parse_antwort(json.dumps(dict(GUELTIG, frist="nächste Woche")))
     assert e.frist is None
@@ -111,6 +119,10 @@ def test_prompt_enthaelt_datum_und_regeln():
     assert "Berufsbekleidung" in p
     assert "Vakuum" not in p and "Techniker" not in p
     assert "|" not in p  # keine a|b|c-Schreibweise, die Modelle woertlich kopieren
+    # Das Modell sieht nur Text und kann Anhaenge nicht pruefen: der Prompt sagt das
+    assert "immer ohne Anhänge" in p and "unklarheiten" in p
+    # m09 traegt die Anfrage ueber den Zitaten, nicht darin
+    assert "der ganze Verlauf" in p
 
 
 def test_extrahiere_sendet_nur_uebergebenen_text():

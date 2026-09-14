@@ -91,7 +91,7 @@ def test_ungueltige_modellantwort_wird_pruefung_noetig():
     assert "Jens Brandt" not in erg["pseudonym_text"]
 
 
-_GENERISCH = {"gmbh", "ag", "kg", "kgaa", "se", "ohg", "co.", "co", "&", "ltd.", "ltd", "inc.", "und", "e.k.", "lda"}
+_GENERISCH = {"gmbh", "ag", "kg", "kgaa", "se", "ohg", "co.", "co", "&", "ltd.", "ltd", "inc.", "und", "e.k."}
 
 
 def _woerter(wert: str) -> set[str]:

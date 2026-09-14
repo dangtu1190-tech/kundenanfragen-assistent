@@ -24,9 +24,19 @@ PAGES = Path(__file__).resolve().parent.parent / "docs" / "data"
 
 
 def kopiere_fuer_pages() -> None:
+    """Kopiert die Dateien für die statische Seite.
+
+    Ohne Ergebnisse (noch kein Lauf gegen ein Modell) wird nur gemeldet und
+    übersprungen: ein Abbruch mitten im Kopieren wäre hier keine Hilfe.
+    """
     PAGES.mkdir(parents=True, exist_ok=True)
     for name in ("mails.json", "ergebnisse.json"):
-        shutil.copyfile(DATEN / name, PAGES / name)
+        quelle = DATEN / name
+        if not quelle.is_file():
+            print(f"{name} fehlt in data/, wird nicht kopiert (erst einen Lauf ohne --pages machen).",
+                  file=sys.stderr)
+            continue
+        shutil.copyfile(quelle, PAGES / name)
 
 
 def _kurzfassung(erg: dict) -> str:

@@ -92,10 +92,19 @@ class Extraktion(BaseModel):
     @field_validator("frist", mode="before")
     @classmethod
     def _frist(cls, v):
-        try:
-            return date.fromisoformat(v).isoformat() if v else None
-        except (TypeError, ValueError):
+        """Nimmt auch einen Zeitstempel an: Modelle hängen gern 'T00:00:00' an.
+
+        Dann zählt der führende Datumsteil; nur wirklich unlesbare Angaben
+        ('nächste Woche') werden null.
+        """
+        if not v:
             return None
+        for kandidat in ([v, v[:10]] if isinstance(v, str) else [v]):
+            try:
+                return date.fromisoformat(kandidat).isoformat()
+            except (TypeError, ValueError):
+                continue
+        return None
 
 
 class ExtraktionsFehler(Exception):
@@ -139,9 +148,13 @@ def baue_prompt(heute: date) -> str:
         "Setze frist nur, wenn der Kunde selbst einen Termin nennt, bis zu dem er die Ware oder "
         "eine Antwort braucht; nimm dann genau den Tag, den er nennt, und rechne nicht von dir "
         "aus auf einen früheren Tag zurück. Nennt er keinen Termin, bleibt frist null. "
-        "Bei weitergeleiteten Mails gilt die eigentliche Kundenanfrage in den Zitaten. "
-        "Kündigt der Kunde einen Anhang an, den es nicht gibt, gehört das in unklarheiten; "
-        "ebenso alles, was für die Bearbeitung fehlt. "
+        "Bei weitergeleiteten Mails gilt der ganze Verlauf: die eigentliche Anfrage kann "
+        "über den Zitaten stehen oder in ihnen, und Kennungen zählen an jeder Stelle des "
+        "Verlaufs. "
+        "Du bekommst die Mail immer ohne Anhänge, auch wenn welche mitgeschickt wurden. "
+        "Jeden Anhang, den der Kunde ankündigt oder erwähnt (Foto, Stickdatei, Logo, "
+        "Lieferschein, 'anbei', 'im Anhang'), trägst du deshalb als fehlend in "
+        "unklarheiten ein; ebenso alles andere, was für die Bearbeitung fehlt. "
         "Keine Erklärungen außerhalb des JSON."
     )
 
