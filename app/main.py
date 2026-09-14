@@ -1,4 +1,4 @@
-"""FastAPI-Server des Serviceanfragen-Assistenten. Start: uvicorn app.main:app --reload --port 8040"""
+"""FastAPI-Server des Kundenanfragen-Assistenten. Start: uvicorn app.main:app --reload --port 8040"""
 import os
 from datetime import date, datetime
 from pathlib import Path
@@ -9,7 +9,6 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from app import speicher
-from app.kalender import belege, gebe_frei, lade_kalender, speichere_kalender
 from app.llm_client import LLMClient, lade_konfig
 from app.pipeline import verarbeite
 
@@ -29,12 +28,8 @@ class StatusAenderung(BaseModel):
     antwort_entwurf: str | None = None
 
 
-def _kalender_pfad() -> Path:
-    return speicher.DATEN / "kalender.json"
-
-
 def _heute() -> date:
-    return date.fromisoformat(lade_kalender(_kalender_pfad())["basisdatum"])
+    return date.fromisoformat(speicher.lade_konfig()["basisdatum"])
 
 
 def _live_modellaufrufe() -> bool:
@@ -50,26 +45,13 @@ def _mail(mail_id: str) -> dict:
     raise HTTPException(404, f"Mail {mail_id} unbekannt")
 
 
-def _gib_alten_termin_frei(ergebnis: dict | None) -> None:
-    """Gibt den Techniker eines bereits freigegebenen Termins zurück.
-
-    Ohne das bliebe der alte Techniker beim erneuten Verarbeiten für immer
-    belegt: das Ergebnis wird überschrieben, der Kalendereintrag nicht.
-    """
-    if not ergebnis or ergebnis.get("status") != "freigegeben":
-        return
-    termin = ergebnis.get("termin")
-    if not termin:
-        return
-    kalender = lade_kalender(_kalender_pfad())
-    if gebe_frei(kalender, termin["datum"], termin["techniker"]):
-        speichere_kalender(kalender, _kalender_pfad())
-
-
-def erzeuge_app(client_factory=None) -> FastAPI:
-    app = FastAPI(title="Serviceanfragen-Assistent")
+def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
+    app = FastAPI(title="Kundenanfragen-Assistent")
     konfig = lade_konfig()
     factory = client_factory or (lambda: LLMClient(konfig))
+    # Die Systemlandschaft wird erst mit der Anreicherung angebunden; die Fabrik
+    # steht schon hier, damit Tests sie ohne Umbau des Servers ersetzen können.
+    systeme_bauen = systeme_factory
 
     @app.get("/")
     def start():
@@ -81,6 +63,7 @@ def erzeuge_app(client_factory=None) -> FastAPI:
         return {"anbieter": client.konfig.provider, "modell": client.konfig.model,
                 "schluessel_gesetzt": client.konfig.schluessel_gesetzt or client.konfig.provider in ("ollama", "fake"),
                 "live_modellaufrufe": _live_modellaufrufe(),
+                "systeme_erreichbar": None,
                 "heute": _heute().isoformat(), "modus": "server"}
 
     @app.get("/api/mails")
@@ -103,8 +86,7 @@ def erzeuge_app(client_factory=None) -> FastAPI:
                                      "Die Demo zeigt aufgezeichnete Ergebnisse.")
         mail = _mail(mail_id)
         ergebnisse = speicher.lade_ergebnisse()
-        _gib_alten_termin_frei(ergebnisse.get(mail_id))
-        ergebnis = verarbeite(mail, factory(), lade_kalender(_kalender_pfad()), _heute())
+        ergebnis = verarbeite(mail, factory(), _heute(), systeme_bauen() if systeme_bauen else None)
         ergebnisse[mail_id] = ergebnis
         speicher.speichere_ergebnisse(ergebnisse)
         return ergebnis
@@ -126,21 +108,6 @@ def erzeuge_app(client_factory=None) -> FastAPI:
         ergebnis = ergebnisse.get(mail_id)
         if not ergebnis:
             raise HTTPException(409, "Mail ist noch nicht verarbeitet")
-        vorher = ergebnis["status"]
-        termin = ergebnis.get("termin")
-        if termin and vorher != aenderung.status:
-            kalender = lade_kalender(_kalender_pfad())
-            geaendert = False
-            if aenderung.status == "freigegeben":
-                geaendert = belege(kalender, termin["datum"], termin["techniker"])
-                if not geaendert:
-                    # Techniker inzwischen anderweitig verplant: Status bleibt,
-                    # sonst stünde ein freigegebener Termin ohne Techniker im Kalender.
-                    raise HTTPException(409, "Techniker ist an dem Tag inzwischen belegt, Termin kann nicht freigegeben werden")
-            elif vorher == "freigegeben":
-                geaendert = gebe_frei(kalender, termin["datum"], termin["techniker"])
-            if geaendert:
-                speichere_kalender(kalender, _kalender_pfad())
         if aenderung.antwort_entwurf is not None:
             ergebnis["antwort_entwurf"] = aenderung.antwort_entwurf
         ergebnis["status"] = aenderung.status

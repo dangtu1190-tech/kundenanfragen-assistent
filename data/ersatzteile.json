@@ -1,8 +1,0 @@
-[
-  {"begriffe": ["heizelement", "heizstab", "heizleiter"], "teil": "Heizelement Graphit", "status": "ab Lager"},
-  {"begriffe": ["thermoelement"], "teil": "Thermoelement Typ S", "status": "ab Lager"},
-  {"begriffe": ["vorpumpe", "vakuumpumpe", "drehschieber"], "teil": "Vorvakuumpumpe", "status": "Lieferzeit ca. 3 Wochen"},
-  {"begriffe": ["dichtung", "o-ring", "türdichtung"], "teil": "Dichtungssatz Kammertür", "status": "ab Lager"},
-  {"begriffe": ["platine", "steuerungsbaugruppe", "sps-modul", "netzteil"], "teil": "Steuerungsbaugruppe", "status": "Lieferzeit ca. 6 Wochen"},
-  {"begriffe": ["schauglas", "sichtfenster"], "teil": "Schauglas mit Dichtung", "status": "ab Lager"}
-]

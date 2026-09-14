@@ -1,0 +1,155 @@
+{
+  "m01": {
+    "kategorien": [
+      "bestellstatus"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "hoch",
+    "frist": "2026-09-18",
+    "bestellnummer": "B-2026-04711",
+    "kundennummer": "K-10234"
+  },
+  "m02": {
+    "kategorien": [
+      "ruecksendung"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "mittel",
+    "frist": null,
+    "bestellnummer": "B-2026-04688",
+    "kundennummer": null
+  },
+  "m03": {
+    "kategorien": [
+      "reklamation"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "hoch",
+    "frist": null,
+    "bestellnummer": "B-2026-04590",
+    "kundennummer": null
+  },
+  "m04": {
+    "kategorien": [
+      "veredelung"
+    ],
+    "zustaendigkeit": "veredelung",
+    "dringlichkeit": "mittel",
+    "frist": "2026-09-22",
+    "bestellnummer": "B-2026-04733",
+    "kundennummer": null
+  },
+  "m05": {
+    "kategorien": [
+      "angebot"
+    ],
+    "zustaendigkeit": "vertrieb",
+    "dringlichkeit": "niedrig",
+    "frist": null,
+    "bestellnummer": null,
+    "kundennummer": "K-10802"
+  },
+  "m06": {
+    "kategorien": [
+      "rechnung"
+    ],
+    "zustaendigkeit": "buchhaltung",
+    "dringlichkeit": "niedrig",
+    "frist": null,
+    "bestellnummer": null,
+    "kundennummer": null
+  },
+  "m07": {
+    "kategorien": [
+      "bestellstatus",
+      "verfuegbarkeit"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "mittel",
+    "frist": null,
+    "bestellnummer": "B-2026-04702",
+    "kundennummer": null
+  },
+  "m08": {
+    "kategorien": [
+      "bestellstatus"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "hoch",
+    "frist": "2026-09-18",
+    "bestellnummer": "B-2026-04750",
+    "kundennummer": null
+  },
+  "m09": {
+    "kategorien": [
+      "veredelung"
+    ],
+    "zustaendigkeit": "veredelung",
+    "dringlichkeit": "mittel",
+    "frist": null,
+    "bestellnummer": null,
+    "kundennummer": null
+  },
+  "m10": {
+    "kategorien": [
+      "bestellstatus"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "mittel",
+    "frist": null,
+    "bestellnummer": "B-2026-04711",
+    "kundennummer": null
+  },
+  "m11": {
+    "kategorien": [
+      "veredelung",
+      "angebot"
+    ],
+    "zustaendigkeit": "veredelung",
+    "dringlichkeit": "niedrig",
+    "frist": null,
+    "bestellnummer": null,
+    "kundennummer": null
+  },
+  "m12": {
+    "kategorien": [
+      "ruecksendung",
+      "verfuegbarkeit"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "mittel",
+    "frist": null,
+    "bestellnummer": "B-2026-04699",
+    "kundennummer": null
+  },
+  "m13": {
+    "kategorien": [
+      "reklamation"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "hoch",
+    "frist": null,
+    "bestellnummer": "B-2026-04761",
+    "kundennummer": null
+  },
+  "m14": {
+    "kategorien": [
+      "sonstiges"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "niedrig",
+    "frist": null,
+    "bestellnummer": null,
+    "kundennummer": null
+  },
+  "m15": {
+    "kategorien": [
+      "bestellstatus"
+    ],
+    "zustaendigkeit": "kundenservice",
+    "dringlichkeit": "mittel",
+    "frist": null,
+    "bestellnummer": "B-2026-4688",
+    "kundennummer": null
+  }
+}

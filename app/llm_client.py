@@ -1,4 +1,8 @@
-"""Ein OpenAI-kompatibler Client, Basis-URL je Anbieter (Langdock EU oder Ollama).
+"""Ein OpenAI-kompatibler Client, Basis-URL je Anbieter (Ollama lokal oder OpenAI).
+
+Standard ist Ollama auf dem eigenen Rechner: kostenlos, kein Schlüssel, die
+Mails verlassen die Maschine nicht. Jeder andere OpenAI-kompatible Anbieter
+läuft über LLM_BASE_URL mit eigenem Schlüssel.
 
 Konfiguration über Umgebungsvariablen LLM_PROVIDER, LLM_BASE_URL, LLM_MODEL,
 LLM_API_KEY; eine .env im Projektordner wird vorher eingelesen (ohne
@@ -10,8 +14,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DEFAULTS = {
-    "langdock": {"base_url": "https://api.langdock.com/openai/eu/v1", "model": "gpt-5.1"},
-    "ollama": {"base_url": "http://localhost:11434/v1", "model": "qwen2.5:7b", "api_key": "ollama"},
+    "ollama": {"base_url": "http://localhost:11434/v1", "model": "gpt-oss:20b", "api_key": "ollama"},
+    "openai": {"base_url": "https://api.openai.com/v1", "model": "gpt-4.1-mini"},
 }
 
 
@@ -44,8 +48,8 @@ def _lies_env_datei(pfad: Path) -> None:
 def lade_konfig(env_datei: Path | str | None = Path(__file__).resolve().parent.parent / ".env") -> Konfig:
     if env_datei:
         _lies_env_datei(Path(env_datei))
-    provider = os.getenv("LLM_PROVIDER", "langdock").lower()
-    d = DEFAULTS.get(provider, DEFAULTS["langdock"])
+    provider = os.getenv("LLM_PROVIDER", "ollama").lower()
+    d = DEFAULTS.get(provider, DEFAULTS["openai"])
     return Konfig(
         provider=provider,
         base_url=os.getenv("LLM_BASE_URL", d["base_url"]),

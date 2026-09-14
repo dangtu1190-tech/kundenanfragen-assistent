@@ -1,55 +1,65 @@
 from app.antwort import baue_antwort
 
+VERSENDER = "Berufskleidung Nord GmbH"
 EX = {
-    "kunde": {"firma": "Hartmann Wärmebehandlung GmbH"},
-    "ansprechpartner": {"anrede": "Herr", "name": "Frank Lindemann"},
-    "anlage": {"typ": "VKUQ 50", "nummer": "VK-5000-0231", "baujahr": 2015},
-    "anliegen": [{"kategorie": "wartung", "beschreibung": "Jahreswartung"},
-                 {"kategorie": "ersatzteil", "beschreibung": "zwei Heizelemente"}],
-    "dringlichkeit": "mittel",
-    "wunschzeitraum": {"von": "2026-09-21", "bis": "2026-09-25", "tageszeit": "egal"},
-    "zustaendigkeit": "service",
+    "kunde": {"firma": "Dachdeckerei Brandt GmbH", "kundennummer": "K-10234"},
+    "ansprechpartner": {"anrede": "Herr", "name": "Jens Brandt"},
+    "bezug": {"bestellnummer": "B-2026-04711", "rechnungsnummer": None, "veredelungsauftrag": None},
+    "artikel": [{"artikelnummer": "A-4305", "bezeichnung": "Warnschutzjacke", "groesse": "L",
+                 "farbe": "gelb", "menge": 6}],
+    "anliegen": [{"kategorie": "bestellstatus", "beschreibung": "Wo bleibt die Lieferung?"}],
+    "dringlichkeit": "hoch",
+    "frist": "2026-09-18",
     "unklarheiten": [],
 }
-TERMIN = {"datum": "2026-09-21", "techniker": "T4", "qualifikation": "mechanik", "hinweis": ""}
-TEILE = [{"teil": "Heizelement Graphit", "status": "ab Lager"}]
 
 
-def test_entwurf_mit_einsatz_und_ersatzteil():
-    t = baue_antwort(EX, TERMIN, "Wartung", TEILE)
-    assert t.startswith("Sehr geehrter Herr Lindemann,")
-    assert "„Wartung“" in t
-    assert "Für Ihre Anlage VKUQ 50 (VK-5000-0231) haben wir notiert:" in t
-    assert "- Wartung: Jahreswartung" in t and "- Ersatzteil: zwei Heizelemente" in t
-    assert "Servicetechnikers (Mechanik) am Montag, 21.09.2026" in t
-    assert "Ersatzteil Heizelement Graphit: ab Lager" in t
-    assert "[" not in t and t.rstrip().endswith("Ihr Serviceteam")
+def test_entwurf_grundgeruest():
+    t = baue_antwort(EX, {}, "kundenservice", "Warnschutzjacken Bestellung B-2026-04711", VERSENDER)
+    assert t.startswith("Sehr geehrter Herr Brandt,")
+    assert "„Warnschutzjacken Bestellung B-2026-04711“" in t
+    assert "- Bestellstatus: Wo bleibt die Lieferung?" in t
+    assert "[" not in t
+    assert t.rstrip().endswith("Mit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH")
 
 
-def test_entwurf_hinweis_und_unklarheit():
-    ex = dict(EX, unklarheiten=["Anlagennummer fehlt"], anlage={"typ": None, "nummer": None, "baujahr": None})
-    t = baue_antwort(ex, dict(TERMIN, hinweis="Im Wunschzeitraum ist kein passender Techniker frei, Vorschlag liegt außerhalb."), "x")
-    assert "Für Ihre Anlage haben wir notiert:" in t
-    assert "kein passender Techniker frei" in t and "Anlagennummer fehlt" in t
+def test_entwurf_ohne_namen_und_ohne_betreff():
+    ex = dict(EX, ansprechpartner={"anrede": None, "name": None})
+    t = baue_antwort(ex, {}, "kundenservice", "", VERSENDER)
+    assert t.startswith("Guten Tag,")
+    assert "vielen Dank für Ihre Nachricht." in t
 
 
-def test_entwurf_vertrieb_weiterleitung():
-    ex = dict(EX, zustaendigkeit="vertrieb", anliegen=[{"kategorie": "angebot", "beschreibung": "zweiter Lötofen"}])
-    t = baue_antwort(ex, None, "Neuanlage")
-    assert "Vertrieb" in t and "weitergeleitet" in t and "- Angebot: zweiter Lötofen" in t
-    assert "Einsatz" not in t.split("weitergeleitet")[0]
+def test_entwurf_anrede_frau_und_nur_name():
+    t = baue_antwort(dict(EX, ansprechpartner={"anrede": "Frau", "name": "Martina Kessler"}),
+                     {}, "kundenservice", "x", VERSENDER)
+    assert t.startswith("Sehr geehrte Frau Kessler,")
+    t = baue_antwort(dict(EX, ansprechpartner={"anrede": None, "name": "Martina Kessler"}),
+                     {}, "kundenservice", "x", VERSENDER)
+    assert t.startswith("Guten Tag Martina Kessler,")
 
 
-def test_entwurf_nur_ersatzteil_ohne_termin():
-    ex = dict(EX, anliegen=[{"kategorie": "ersatzteil", "beschreibung": "Dichtung"}])
-    t = baue_antwort(ex, None, "", [{"teil": "Dichtungssatz Kammertür", "status": "ab Lager"}])
-    assert "vielen Dank für Ihre Anfrage." in t
-    assert "Ersatzteil Dichtungssatz Kammertür: ab Lager" in t
-    assert "Terminvorschlag" not in t and "melden uns" not in t
-    assert "Angebot" in t  # Hinweis, dass ein Angebot folgt
+def test_entwurf_vertrieb_buchhaltung_veredelung():
+    t = baue_antwort(EX, {}, "vertrieb", "Angebot", VERSENDER)
+    assert "Ihr Anliegen betrifft unseren Vertrieb, die Kolleginnen und Kollegen melden sich mit einem Angebot." in t
+    t = baue_antwort(EX, {}, "buchhaltung", "Rechnung", VERSENDER)
+    assert "Ihre Rechnungsfrage haben wir an die Buchhaltung weitergegeben." in t
+    t = baue_antwort(EX, {}, "veredelung", "Stickerei", VERSENDER)
+    assert "Unsere Veredelung prüft Ihren Auftrag." in t
 
 
-def test_entwurf_ohne_namen_ohne_termin():
-    ex = dict(EX, ansprechpartner={"anrede": None, "name": None}, anliegen=[{"kategorie": "stoerung", "beschreibung": "x"}])
-    t = baue_antwort(ex, None, "x")
-    assert t.startswith("Guten Tag,") and "melden uns" in t
+def test_entwurf_mehrere_anliegen_und_unklarheiten():
+    ex = dict(EX, anliegen=[{"kategorie": "ruecksendung", "beschreibung": "sechs Regenjacken zurück"},
+                            {"kategorie": "verfuegbarkeit", "beschreibung": "Größe L lieferbar?"}],
+              unklarheiten=["angekündigte Fotos fehlen"])
+    t = baue_antwort(ex, {}, "kundenservice", "Rücksendung", VERSENDER)
+    assert "- Rücksendung: sechs Regenjacken zurück" in t
+    assert "- Verfügbarkeit: Größe L lieferbar?" in t
+    assert "- angekündigte Fotos fehlen" in t
+    assert "benötigen wir noch" in t
+
+
+def test_entwurf_ohne_anliegen_bleibt_hoeflich():
+    t = baue_antwort(dict(EX, anliegen=[]), {}, "kundenservice", "", VERSENDER)
+    assert "notiert" not in t
+    assert t.count("\n\n") >= 1

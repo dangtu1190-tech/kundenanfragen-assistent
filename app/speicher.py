@@ -1,4 +1,6 @@
-"""JSON-Dateien lesen und schreiben: Mails, Ergebnisse. Einzige Datenhaltung der Demo."""
+"""JSON-Dateien lesen und schreiben: Mails, Ergebnisse, Konfiguration.
+
+Einzige Datenhaltung der Demo."""
 import json
 from pathlib import Path
 
@@ -28,3 +30,8 @@ def lade_ergebnisse(pfad=None) -> dict[str, dict]:
 
 def speichere_ergebnisse(ergebnisse: dict[str, dict], pfad=None) -> None:
     _schreib(Path(pfad) if pfad else DATEN / "ergebnisse.json", ergebnisse)
+
+
+def lade_konfig(pfad=None) -> dict:
+    """Basisdatum und Versendername aus data/konfig.json."""
+    return _lies(Path(pfad) if pfad else DATEN / "konfig.json", {})

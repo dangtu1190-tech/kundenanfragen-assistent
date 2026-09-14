@@ -11,10 +11,10 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from app.kalender import lade_kalender
+from app.integration import Systeme
 from app.llm_client import LLMClient, lade_konfig
 from app.pipeline import verarbeite
-from app.speicher import DATEN, lade_ergebnisse, lade_mails, speichere_ergebnisse
+from app.speicher import DATEN, lade_ergebnisse, lade_konfig as lade_daten_konfig, lade_mails, speichere_ergebnisse
 
 PAGES = Path(__file__).resolve().parent.parent / "docs" / "data"
 
@@ -23,6 +23,13 @@ def kopiere_fuer_pages() -> None:
     PAGES.mkdir(parents=True, exist_ok=True)
     for name in ("mails.json", "ergebnisse.json"):
         shutil.copyfile(DATEN / name, PAGES / name)
+
+
+def _kurzfassung(erg: dict) -> str:
+    if erg["extraktion_fehler"]:
+        return erg["extraktion_fehler"]
+    kategorien = ", ".join(a["kategorie"] for a in erg["extraktion"]["anliegen"]) or "kein Anliegen"
+    return f"{kategorien}; {erg['zustaendigkeit']}, {erg['dringlichkeit']}"
 
 
 def main(argv=None) -> int:
@@ -37,8 +44,8 @@ def main(argv=None) -> int:
         print("LLM_API_KEY fehlt (siehe .env.example).", file=sys.stderr)
         return 2
     client = LLMClient(konfig)
-    kalender = lade_kalender(DATEN / "kalender.json")
-    heute = date.fromisoformat(kalender["basisdatum"])
+    systeme = Systeme.aus_umgebung()
+    heute = date.fromisoformat(lade_daten_konfig()["basisdatum"])
     ergebnisse = lade_ergebnisse()
     print(f"Anbieter {konfig.provider}, Modell {konfig.model}, heute {heute}")
 
@@ -47,11 +54,10 @@ def main(argv=None) -> int:
             continue
         if not args.neu and not args.nur and mail["id"] in ergebnisse:
             continue
-        erg = verarbeite(mail, client, kalender, heute)
+        erg = verarbeite(mail, client, heute, systeme)
         ergebnisse[mail["id"]] = erg
         speichere_ergebnisse(ergebnisse)
-        kurz = erg["extraktion_fehler"] or f"{len(erg['extraktion']['anliegen'])} Anliegen, {erg['extraktion']['zustaendigkeit']}, Termin {erg['termin']}"
-        print(f"{mail['id']} {erg['status']:16} {erg['dauer_ms']:5} ms  {kurz}")
+        print(f"{mail['id']} {erg['status']:16} {erg['dauer_ms']:5} ms  {_kurzfassung(erg)}")
 
     if args.pages:
         kopiere_fuer_pages()
