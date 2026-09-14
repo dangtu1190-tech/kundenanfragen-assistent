@@ -11,6 +11,13 @@ services:
     command: ["sh", "-c", "exec python -m uvicorn systeme.main:app --host 0.0.0.0 --port 8050"]
     expose:
       - "8050"
+    # Nur für den lokalen Blick in die OpenAPI-Doku der Mock-Systeme
+    # (http://localhost:8050/erp/docs, /crm/docs, /mes/docs). Die App braucht
+    # diesen Port nicht: sie spricht die Systemlandschaft über das
+    # Compose-Netz an (SYSTEME_BASE_URL=http://systeme:8050). In Azure bleibt
+    # der Sidecar unveröffentlicht, dort ist nur der App-Port extern.
+    ports:
+      - "8050:8050"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8050/', timeout=3)"]
       interval: 5s

@@ -13,7 +13,7 @@ budget_alert_email = "budget-alarm@example.invalid"
 budget_amount      = 5
 budget_start_date  = "2026-10-01T00:00:00Z" # Monatserster, darf beim apply nicht in der Vergangenheit liegen
 
-# Live-Pfad bleibt aus. Anbieterdaten eines eigenen Kontos; nicht der Langdock-Zugang des Arbeitgebers.
+# Live-Pfad bleibt aus. Anbieterdaten eines eigenen Kontos, kein Firmenzugang eines Arbeitgebers.
 live_modellaufrufe = false
 llm_provider       = "openai"
 llm_base_url       = "https://api.openai.com/v1"

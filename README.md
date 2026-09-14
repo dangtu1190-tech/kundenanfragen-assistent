@@ -249,23 +249,38 @@ Ergebnis).
 **Was die Zahlen wert sind.** Jede Zeile ist ein Lauf über 15 Mails, kein
 Mittelwert über mehrere Läufe, und n = 15 ist eine kleine Stichprobe.
 Unterschiede von einem oder zwei Punkten in einem Feld sind Rauschen: drei
-Läufe von `gpt-oss:20b` mit demselben Prompt ergaben bei den Kategorien 13,
-11 und 11 von 15. Die Zeile oben ist der beste dieser Läufe, das tatsächliche
-Niveau liegt eher bei 11 bis 13. Drei der Prompt-Regeln (Abgrenzung
-reklamation gegen ruecksendung, Nachbestellung ist kein angebot,
-Lieferantenwerbung ist sonstiges) sind entstanden, nachdem ich mir die Fehler
-an konkreten Testmails angesehen habe. Die Zahl ist insoweit teilweise
-in-sample und keine Vorhersage für fremde Mails. Belastbar ist die Richtung:
+Läufe von `gpt-oss:20b` mit demselben Prompt ergaben bei den Kategorien 13, 11
+und 11 von 15. Die Tabellenzeile zeigt den Lauf mit 13 (`data/vergleich.json`),
+die Ergebnisse hinter der Browser-Demo (`data/ergebnisse.json`) stammen aus
+einem Lauf mit 11. Die ehrliche Erwartung für dieses Modell und diesen Prompt
+ist also 11 bis 13 von 15, nicht 13. Dazu kommt: der Prompt wurde in zwei
+Iterationen gegen genau diese 15 Mails nachgeschärft, es gibt keinen
+zurückgehaltenen Satz Mails. Drei der Prompt-Regeln (Abgrenzung reklamation
+gegen ruecksendung, Nachbestellung ist kein angebot, Lieferantenwerbung ist
+sonstiges) sind entstanden, nachdem ich mir die Fehler an konkreten Testmails
+angesehen habe. Die Zahl ist insoweit in-sample und keine Vorhersage für fremde
+Mails. Belastbar ist die Richtung:
 gpt-oss:20b ist bei Kategorien, Zuständigkeit und Kennungen besser,
 qwen2.5:14b-instruct trifft die Dringlichkeit öfter.
 
 **Was ich daraus gelernt habe:**
 
 - **Dringlichkeit ist das schwache Feld** lokaler Modelle (8/15 und 11/15).
-  Beide stufen zu hoch ein und vergeben zu selten `niedrig`. Genau deshalb
-  überschreiben die Regeln sie: Frist innerhalb von drei Werktagen oder
-  Reklamation ergeben `hoch`, und diese Regelfälle treffen in allen 15 Mails.
-  Ein Feld, das man nicht zuverlässig bekommt, gehört nicht allein dem Modell.
+  Gezählt wird dabei der Wert **nach** den Regeln, denn der Vergleich bewertet
+  das Ergebnis der Pipeline und nicht die rohe Modellantwort. Beide Modelle
+  stufen zu hoch ein und vergeben zu selten `niedrig`. Die Regeln in
+  `app/regeln.py` fangen das nur zum Teil auf: im aufgezeichneten Lauf greift
+  überhaupt nur in 3 von 15 Mails eine Regel, und zwar jedes Mal die
+  Reklamationsregel (m03, m12, m13). Zwei davon treffen den Soll-Wert; bei m12
+  hebt die Regel die Dringlichkeit auf `hoch`, obwohl `mittel` richtig wäre,
+  weil schon die Kategorie falsch war. Die Fristregel greift in diesen 15 Mails
+  gar nicht: die einzige genannte Frist (2026-09-18) liegt vier Werktage nach
+  dem Basisdatum, die Schwelle sind drei. In den übrigen 12 Mails steht also
+  die Einschätzung des Modells unverändert im Ergebnis. Die Regeln sind ein
+  Sicherheitsnetz für Fristen und Reklamationen, keine Korrektur des Feldes
+  insgesamt. Wer sich auf die Dringlichkeit verlassen will, braucht entweder
+  mehr Regeln oder ein besseres Modell; beides ist eine Entscheidung, die man
+  an Zahlen und nicht am Gefühl trifft.
 - **Kennungen trifft das Modell zuverlässig**, sobald der Prompt sie wörtlich
   verlangt (15/15 Bestell- und Kundennummer bei gpt-oss:20b). Der Tippfehler in
   m15 (`B-2026-4688`) wurde buchstabengetreu übernommen und erst von der
@@ -299,8 +314,12 @@ qwen2.5:14b-instruct trifft die Dringlichkeit öfter.
   `angebot` statt `veredelung, angebot`, und m12 (Regenjacken zu klein) wird
   `reklamation` statt `ruecksendung`. Eine Prompt-Regel, die m11 repariert
   hätte ("Logo oder Druck ist zusätzlich veredelung"), hätte m05
-  kaputtgemacht. Das wäre eine Einzelfallanpassung an die Testdaten gewesen,
-  keine Regel.
+  kaputtgemacht; diese eine Regel habe ich deshalb verworfen, weil sie eine
+  Einzelfallanpassung an eine Testmail gewesen wäre. Das heißt aber nicht, dass
+  der Prompt frei von in-sample-Arbeit wäre: die drei Abgrenzungsregeln weiter
+  oben sind genauso nach dem Blick auf diese 15 Mails entstanden. Abgelehnt
+  habe ich die Anpassung an einen Einzelfall, nicht das Lernen an der
+  Stichprobe.
 
 ## 7. Lokal starten
 
@@ -413,7 +432,7 @@ oder Reklamation), nicht aus Betreff oder Metadaten.
 python -m pytest -q
 ```
 
-155 Tests laufen ohne Netzzugriff und ohne Schlüssel; die Mock-Systemlandschaft
+167 Tests laufen ohne Netzzugriff und ohne Schlüssel; die Mock-Systemlandschaft
 läuft dabei im selben Prozess, das Modell wird durch einen Fake-Client ersetzt.
 Ein Test, der wirklich ein Modell fragt (`tests/test_echtlauf.py`), wird nur
 ausgeführt, wenn `LLM_API_KEY` gesetzt ist, sonst übersprungen (1 skipped), nie
@@ -428,7 +447,11 @@ Abgedeckt sind unter anderem: jeder Endpunkt der drei Mock-Systeme samt
 Verbindungsfehler, die tolerante Schemavalidierung, die erwarteten
 Platzhaltertypen je Mail, der Ausfall eines Systems (Status `pruefung_noetig`,
 Ticket bleibt idempotent), die Regeln für Zuständigkeit und Dringlichkeit, der
-Live-Schalter und der Modellvergleich.
+Live-Schalter und der Modellvergleich. `tests/test_llm_client.py` prüft
+zusätzlich den Modellclient selbst: dass `num_ctx` nur an Ollama geht,
+`reasoning_effort` nur an gpt-oss, beides keinen anderen Anbieter erreicht und
+eine abgeschnittene Antwort als `AntwortAbgeschnitten` gemeldet wird statt als
+vermeintlich kaputtes JSON.
 
 Der Linter ist Ruff mit einer bewusst schmalen Regelmenge (`ruff.toml`), damit
 er Fehler findet, aber keine Umbauten am Code erzwingt:
@@ -533,8 +556,9 @@ Pipeline gesetzt und ein apply ausgeführt wird; `latest` allein erzeugt bei
 sind vorbereitet, nicht ausgerollt. Render schläft im Free-Plan nach 15 Minuten
 ohne Anfragen ein, der erste Aufruf danach dauert bis zu einer Minute. Fly.io
 weist laut Preisseite keinen kostenlosen Plan mehr aus, auch gestoppte
-Maschinen kosten Speicher (Stand 11.09.2026, Doku-Seiten geprüft, kein Konto
-angelegt); für eine kostenfreie Demo ist Render die bessere Wahl. In beiden
+Maschinen kosten Speicher. Beide Angaben stammen vom 11.09.2026, gelesen auf
+den Doku-Seiten der Anbieter, bei keinem der beiden ist ein Konto angelegt;
+für eine kostenfreie Demo ist Render die bessere Wahl. In beiden
 Fällen läuft die Mock-Systemlandschaft absichtlich im selben Prozess wie die
 App (`SYSTEME_BASE_URL` bleibt ungesetzt): ein zweiter Dienst nur für Attrappen
 würde den Fußabdruck verdoppeln, ohne etwas zu beweisen. Das Sidecar-Muster
@@ -546,6 +570,27 @@ erreichbare Instanz arbeitet dann wie GitHub Pages mit den aufgezeichneten
 Ergebnissen; Freigeben und Ablehnen funktionieren, der Verarbeiten-Endpunkt
 antwortet mit HTTP 403. Grund: sonst zahlt der hinterlegte Schlüssel für jeden
 Besucher, der auf "Verarbeiten" klickt.
+
+**Die Befehle dazu.** Gebautes Image aus der Registry holen und starten (die
+Mock-Systemlandschaft läuft dann im selben Prozess, `SYSTEME_BASE_URL` bleibt
+ungesetzt):
+
+```
+docker run --rm -p 8040:8040 ghcr.io/dangtu1190-tech/kundenanfragen-assistent:latest
+```
+
+Die Terraform-Konfiguration prüfen, ohne etwas anzulegen:
+
+```
+cd infra/azure
+cp terraform.tfvars.example terraform.tfvars
+terraform init -backend=false
+terraform validate
+terraform test
+```
+
+`terraform test` plant gegen einen Mock-Provider. Ein `terraform apply` ist in
+diesem Projekt nirgends vorgesehen, weder lokal noch in der Pipeline.
 
 ## 13. Bewusst nicht enthalten
 

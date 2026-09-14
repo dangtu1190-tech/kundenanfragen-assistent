@@ -26,9 +26,19 @@ kein Sprachverständnis. Sie muss dieselbe bleiben, egal welches Modell die
 Extraktion geliefert hat, sie muss ohne Prompt-Änderung anpassbar sein, und sie
 muss sich testen lassen. Das Modell macht das, was es gut kann: unstrukturierten
 Text in Felder überführen. Die Messung stützt das: die Dringlichkeit war im
-Modellvergleich das schwächste Feld (9 von 15 und 11 von 15), Bestell- und
-Kundennummer dagegen 15 von 15. Ein Feld, das man nicht zuverlässig bekommt,
-gehört nicht allein dem Modell.
+Modellvergleich das schwächste Feld (8 von 15 und 11 von 15, jeweils gezählt
+nach Anwendung der Regeln, denn der Vergleich bewertet das Pipeline-Ergebnis),
+Bestell- und Kundennummer dagegen 15 von 15.
+
+Dazu gehört die ehrliche Einschränkung: die Regeln reparieren die Dringlichkeit
+nicht flächendeckend. Im aufgezeichneten Lauf greift überhaupt nur in 3 von 15
+Mails eine Regel, und zwar immer die Reklamationsregel (m03, m12, m13); die
+Fristregel greift nie, weil die einzige genannte Frist vier Werktage entfernt
+liegt und die Schwelle bei drei steht. In 12 von 15 Mails steht also die
+Einschätzung des Modells unverändert im Ergebnis. Die Regeln sind ein
+Sicherheitsnetz für zwei klar benennbare Fälle, nicht die Lösung für ein
+schwaches Feld. Für die Zuständigkeit gilt das Argument dagegen ohne
+Einschränkung: sie wird immer aus den Kategorien abgeleitet.
 
 ## 3. Wie ist das idempotent?
 
@@ -63,18 +73,30 @@ auf einer RTX 5070 Ti mit 16 GB:
 
 | Modell | Kategorien | Zuständigkeit | Dringlichkeit | Bestellnummer | Kundennummer | Frist | Schemafehler | Ø Dauer |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| gpt-oss:20b | 13/15 | 14/15 | 9/15 | 15/15 | 15/15 | 14/15 | 0 | 7033 ms |
-| qwen2.5:14b-instruct | 9/15 | 11/15 | 11/15 | 13/15 | 9/15 | 12/15 | 1 | 3415 ms |
+| gpt-oss:20b | 13/15 | 14/15 | 8/15 | 15/15 | 15/15 | 15/15 | 0 | 1998 ms |
+| qwen2.5:14b-instruct | 10/15 | 11/15 | 11/15 | 13/15 | 10/15 | 12/15 | 1 | 3382 ms |
 
 Wichtig ist, was die Zahlen nicht sagen: jede Zeile ist ein einzelner Lauf über
-15 Mails, kein Mittelwert über mehrere Läufe. Ein Punkt Unterschied in einem
-Feld ist Rauschen. Belastbar ist die Richtung, also dass gpt-oss:20b in fünf von
-sechs Feldern besser und qwen gut doppelt so schnell ist. Der einzige
-Schemafehler kam übrigens nicht vom Prompt: Ollamas Standard-Kontextfenster von
-4096 Token lief bei einer vagen Mail voll, weil gpt-oss den Rest im
-Reasoning-Kanal verbrauchte (1001 + 3095 Token, leere Antwort). Eine Zeile im
-Prompt hat das Symptom beseitigt, der saubere Fix wäre ein größeres `num_ctx`
-und eine eigene Fehlermeldung für `finish_reason == "length"`. Das steht offen.
+15 Mails, kein Mittelwert, und n = 15 ist eine kleine Stichprobe. Drei Läufe von
+gpt-oss:20b mit demselben Prompt ergaben bei den Kategorien 13, 11 und 11 von
+15. Die Tabelle zeigt den Lauf mit 13, die Browser-Demo einen Lauf mit 11; die
+ehrliche Erwartung ist 11 bis 13. Der Prompt wurde außerdem in zwei Iterationen
+gegen genau diese 15 Mails nachgeschärft, es gibt keinen zurückgehaltenen Satz
+Mails, die Zahlen sind also in-sample. Die Dringlichkeit ist der Wert nach den
+Regeln, nicht die rohe Modellantwort. Belastbar ist die Richtung: gpt-oss:20b
+ist bei Kategorien, Zuständigkeit und Kennungen besser, qwen trifft die
+Dringlichkeit öfter.
+
+Der einzige Schemafehler kam übrigens nicht vom Prompt: Ollamas
+Standard-Kontextfenster von 4096 Token lief bei einer vagen Mail voll, weil
+gpt-oss den Rest im Reasoning-Kanal verbrauchte (1001 + 3095 Token, leere
+Antwort), und der Client meldete das als "Antwort ist kein JSON". Das ist
+inzwischen behoben: `num_ctx` kommt aus `LLM_NUM_CTX` (Standard 8192), und eine
+abgeschnittene Antwort wird als eigene Ausnahme `AntwortAbgeschnitten` mit
+Hinweis auf num_ctx gemeldet. Für gpt-oss geht zusätzlich `reasoning_effort=low`
+mit, was den Lauf von rund 7,8 auf rund 2,0 Sekunden je Mail verkürzt, dafür
+aber die Wiederholbarkeit kostet: mit vollem Reasoning lieferten zwei Läufe
+noch identische Ergebnisse, mit `low` streuen sie.
 
 ## 6. Wie ist das kostenseitig gebaut?
 
@@ -150,11 +172,16 @@ Damit das nicht in Rückfragen versteckt bleibt, hier gebündelt:
 - **Die CI ist noch nie gelaufen.** Das Repository wird gerade erst angelegt.
 - **Zustand ist flüchtig**, es gibt **keine Anmeldung**, und der Server ist auf
   **eine Instanz** ausgelegt.
-- **Die Modellzahlen sind je ein Lauf**, keine Mittelwerte. Einzelne Punkte
-  sind Rauschen.
+- **Die Modellzahlen sind je ein Lauf**, keine Mittelwerte, und sie sind
+  in-sample: der Prompt wurde gegen dieselben 15 Mails nachgeschärft, ein
+  zurückgehaltener Satz existiert nicht. Einzelne Punkte sind Rauschen.
+- **Die Regeln reparieren die Dringlichkeit nicht.** Sie greifen im
+  aufgezeichneten Lauf in 3 von 15 Mails, die Fristregel in keiner einzigen. In
+  den übrigen steht die Einschätzung des Modells unverändert im Ergebnis.
 - **Zwei fachliche Restfehler bleiben** (m11 und m12 im Modellvergleich). Die
   Prompt-Regel, die den einen repariert hätte, hätte einen anderen Fall
-  kaputtgemacht; das wäre eine Anpassung an die Testdaten gewesen, keine Regel.
+  kaputtgemacht; diese eine Regel habe ich als Einzelfallanpassung verworfen.
+  Andere Prompt-Regeln sind sehr wohl nach dem Blick auf diese Mails entstanden.
 - **Die Pseudonymisierung hat bekannte Lücken**, die im README benannt sind:
   Namen ohne Anrede oder Signatur, klein geschriebene Signaturen, mehrdeutige
   Nachnamen, Orte ohne PLZ, Firmennamen ohne Rechtsform.

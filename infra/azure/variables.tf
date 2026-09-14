@@ -71,7 +71,7 @@ variable "live_modellaufrufe" {
 }
 
 variable "llm_provider" {
-  description = "Anbieterkennung für die Anwendung (LLM_PROVIDER). Nicht der Langdock-Zugang des Arbeitgebers."
+  description = "Anbieterkennung für die Anwendung (LLM_PROVIDER). Eigenes Konto, kein Firmenzugang eines Arbeitgebers."
   type        = string
   default     = "openai"
 }
