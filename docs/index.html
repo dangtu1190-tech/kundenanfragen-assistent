@@ -437,10 +437,13 @@ function renderExtraktion(ergebnis) {
   var kundeText = [kunde.firma, kunde.kundennummer].filter(Boolean).map(esc).join(", ") || leer("nicht genannt");
   var apText = [ap.anrede, ap.name].filter(Boolean).map(esc).join(" ") || leer("nicht genannt");
 
+  // Rohtext bauen, nicht escapen: punkte() escapt jeden Eintrag einmal. Ein
+  // esc() an dieser Stelle käme doppelt an und ein Artikel wie
+  // 'Jacke "Nord" & Co' stünde als &amp;quot;-Kette in der Liste.
   var artikel = (ex.artikel || []).map(function (a) {
     return [a.artikelnummer, a.bezeichnung, a.groesse, a.farbe,
             (a.menge === null || a.menge === undefined) ? null : a.menge + " Stück"]
-      .filter(function (x) { return x !== null && x !== undefined && x !== ""; }).map(esc).join(", ");
+      .filter(function (x) { return x !== null && x !== undefined && x !== ""; }).join(", ");
   });
   var anliegen = (ex.anliegen || []).map(function (a) { return a.kategorie + ": " + a.beschreibung; });
 
@@ -491,14 +494,18 @@ function blockKunde(sd, bezugKundennummer, aus) {
   ]);
 }
 
+// Jede Zelle über wert(): fehlt ein Wert, steht der Leertext da statt einer
+// leeren Zelle. Menge 0 bleibt "0", weil wert() auf null, undefined und
+// Leerstring prüft und nicht auf Falsy.
 function positionenTabelle(positionen) {
   if (!positionen || !positionen.length) return leer("keine Positionen");
   return "<table><thead><tr><th>Artikel</th><th>Bezeichnung</th><th>Größe</th><th>Farbe</th>" +
     "<th>Menge</th><th>Status</th></tr></thead><tbody>" +
     positionen.map(function (p) {
-      return "<tr><td>" + esc(p.artikelnummer) + "</td><td>" + esc(p.bezeichnung) + "</td><td>" +
+      return "<tr><td>" + wert(p.artikelnummer, "ohne Nummer") + "</td><td>" +
+        wert(p.bezeichnung, "ohne Bezeichnung") + "</td><td>" +
         wert(p.groesse, "keine") + "</td><td>" + wert(p.farbe, "keine") + "</td><td>" +
-        esc(p.menge) + "</td><td>" + esc(p.status) + "</td></tr>";
+        wert(p.menge, "keine Menge") + "</td><td>" + wert(p.status, "kein Status") + "</td></tr>";
     }).join("") + "</tbody></table>";
 }
 
