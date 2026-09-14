@@ -44,19 +44,11 @@
         "rechnungsnummer": null,
         "veredelungsauftrag": null
       },
-      "artikel": [
-        {
-          "artikelnummer": null,
-          "bezeichnung": "Warnschutzjacken",
-          "groesse": null,
-          "farbe": null,
-          "menge": null
-        }
-      ],
+      "artikel": [],
       "anliegen": [
         {
           "kategorie": "bestellstatus",
-          "beschreibung": "Lieferzeit der Bestellung B-2026-04711"
+          "beschreibung": "Warten auf Lieferung Warnschutzjacken"
         }
       ],
       "dringlichkeit": "hoch",
@@ -120,7 +112,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Jens Brandt,\n\nvielen Dank für Ihre Nachricht „Warnschutzjacken Bestellung B-2026-04711“.\n\nWir haben notiert:\n- Bestellstatus: Lieferzeit der Bestellung B-2026-04711\n\nIhre Bestellung B-2026-04711 vom 2026-09-09 ist versendet, Sendungsnummer SN-7F3K9Q2L, voraussichtliche Zustellung am 2026-09-15.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Jens Brandt,\n\nvielen Dank für Ihre Nachricht „Warnschutzjacken Bestellung B-2026-04711“.\n\nWir haben notiert:\n- Bestellstatus: Warten auf Lieferung Warnschutzjacken\n\nIhre Bestellung B-2026-04711 vom 2026-09-09 ist versendet, Sendungsnummer SN-7F3K9Q2L, voraussichtliche Zustellung am 2026-09-15.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0001",
       "status": "offen"
@@ -128,8 +120,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 9521,
-    "zeitpunkt": "2026-09-14T10:59:35"
+    "dauer_ms": 7854,
+    "zeitpunkt": "2026-09-14T11:30:40"
   },
   "m02": {
     "mail_id": "m02",
@@ -261,8 +253,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 5875,
-    "zeitpunkt": "2026-09-14T10:59:44"
+    "dauer_ms": 2232,
+    "zeitpunkt": "2026-09-14T11:30:48"
   },
   "m03": {
     "mail_id": "m03",
@@ -304,19 +296,11 @@
         "rechnungsnummer": null,
         "veredelungsauftrag": null
       },
-      "artikel": [
-        {
-          "artikelnummer": null,
-          "bezeichnung": "T-Shirts",
-          "groesse": null,
-          "farbe": null,
-          "menge": null
-        }
-      ],
+      "artikel": [],
       "anliegen": [
         {
           "kategorie": "reklamation",
-          "beschreibung": "Druck löst sich ab, fehlende Buchstaben"
+          "beschreibung": "Druck löst sich nach Waschen ab, fehlende Buchstaben"
         }
       ],
       "dringlichkeit": "hoch",
@@ -366,7 +350,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": "Reklamation",
-    "antwort_entwurf": "Guten Tag Cem Yilmaz,\n\nvielen Dank für Ihre Nachricht „Reklamation bedruckte T-Shirts“.\n\nWir haben notiert:\n- Reklamation: Druck löst sich ab, fehlende Buchstaben\n\nDas tut uns leid. Wir organisieren den Ersatz beziehungsweise die Abholung der beanstandeten Ware und melden uns mit einem Termin.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Foto fehlt\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Cem Yilmaz,\n\nvielen Dank für Ihre Nachricht „Reklamation bedruckte T-Shirts“.\n\nWir haben notiert:\n- Reklamation: Druck löst sich nach Waschen ab, fehlende Buchstaben\n\nDas tut uns leid. Wir organisieren den Ersatz beziehungsweise die Abholung der beanstandeten Ware und melden uns mit einem Termin.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Foto fehlt\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0003",
       "status": "offen"
@@ -374,8 +358,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 7450,
-    "zeitpunkt": "2026-09-14T10:59:50"
+    "dauer_ms": 1584,
+    "zeitpunkt": "2026-09-14T11:30:50"
   },
   "m04": {
     "mail_id": "m04",
@@ -422,19 +406,15 @@
         "rechnungsnummer": null,
         "veredelungsauftrag": "V-2026-131"
       },
-      "artikel": [
-        {
-          "artikelnummer": null,
-          "bezeichnung": "Softshelljacken",
-          "groesse": null,
-          "farbe": null,
-          "menge": 8
-        }
-      ],
+      "artikel": [],
       "anliegen": [
         {
           "kategorie": "veredelung",
-          "beschreibung": "Status der Stickerei zu Auftrag V-2026-131"
+          "beschreibung": "Stand der Stickerei"
+        },
+        {
+          "kategorie": "bestellstatus",
+          "beschreibung": "Lieferstatus der Softshelljacken"
         }
       ],
       "dringlichkeit": "hoch",
@@ -508,7 +488,7 @@
     "zustaendigkeit": "veredelung",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Sabine Reuter,\n\nvielen Dank für Ihre Nachricht „Stickerei Auftrag V-2026-131“.\n\nWir haben notiert:\n- Veredelung: Status der Stickerei zu Auftrag V-2026-131\n\nIhr Veredelungsauftrag V-2026-131 (Stick) ist in Produktion.\n\nDie Arbeit läuft auf Maschine STK-01, geplantes Ende ist der 2026-09-16.\n\nUnsere Veredelung prüft Ihren Auftrag.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Sabine Reuter,\n\nvielen Dank für Ihre Nachricht „Stickerei Auftrag V-2026-131“.\n\nWir haben notiert:\n- Veredelung: Stand der Stickerei\n- Bestellstatus: Lieferstatus der Softshelljacken\n\nIhr Veredelungsauftrag V-2026-131 (Stick) ist in Produktion.\n\nDie Arbeit läuft auf Maschine STK-01, geplantes Ende ist der 2026-09-16.\n\nIhre Bestellung B-2026-04733 wird gerade kommissioniert, geplanter Liefertermin ist der 2026-09-18.\n\nUnsere Veredelung prüft Ihren Auftrag.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0004",
       "status": "offen"
@@ -516,8 +496,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 8360,
-    "zeitpunkt": "2026-09-14T10:59:58"
+    "dauer_ms": 2362,
+    "zeitpunkt": "2026-09-14T11:30:51"
   },
   "m05": {
     "mail_id": "m05",
@@ -568,11 +548,11 @@
       "anliegen": [
         {
           "kategorie": "angebot",
-          "beschreibung": "Angebot für neue Mitarbeiter"
+          "beschreibung": "Anfrage für neues Ausstattungsangebot"
         }
       ],
-      "dringlichkeit": "hoch",
-      "frist": "2026-10-01",
+      "dringlichkeit": "mittel",
+      "frist": null,
       "unklarheiten": []
     },
     "extraktion_fehler": null,
@@ -640,9 +620,9 @@
     "hinweise": [],
     "integrationsfehler": [],
     "zustaendigkeit": "vertrieb",
-    "dringlichkeit": "hoch",
+    "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Frank Lorenz,\n\nvielen Dank für Ihre Nachricht „Ausstattung neue Mitarbeiter“.\n\nWir haben notiert:\n- Angebot: Angebot für neue Mitarbeiter\n\nIhr Anliegen betrifft unseren Vertrieb, die Kolleginnen und Kollegen melden sich mit einem Angebot.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Frank Lorenz,\n\nvielen Dank für Ihre Nachricht „Ausstattung neue Mitarbeiter“.\n\nWir haben notiert:\n- Angebot: Anfrage für neues Ausstattungsangebot\n\nIhr Anliegen betrifft unseren Vertrieb, die Kolleginnen und Kollegen melden sich mit einem Angebot.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0005",
       "status": "offen"
@@ -650,8 +630,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 4055,
-    "zeitpunkt": "2026-09-14T11:00:06"
+    "dauer_ms": 1138,
+    "zeitpunkt": "2026-09-14T11:30:54"
   },
   "m06": {
     "mail_id": "m06",
@@ -707,7 +687,11 @@
       "anliegen": [
         {
           "kategorie": "rechnung",
-          "beschreibung": "Kopie Rechnung mit Kostenstelle und Zahlungsziel erfragen"
+          "beschreibung": "Kopie der Rechnung mit Kostenstelle HH-Reinigung-12 anfordern"
+        },
+        {
+          "kategorie": "rechnung",
+          "beschreibung": "Zahlungsziel erfragen"
         }
       ],
       "dringlichkeit": "mittel",
@@ -746,7 +730,7 @@
     "zustaendigkeit": "buchhaltung",
     "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Petra Nowak,\n\nvielen Dank für Ihre Nachricht „Rechnung R-2026-07731“.\n\nWir haben notiert:\n- Rechnung: Kopie Rechnung mit Kostenstelle und Zahlungsziel erfragen\n\nDie Rechnung R-2026-07731 über 1284,50 Euro ist am 2026-10-09 fällig.\n\nIhre Rechnungsfrage haben wir an die Buchhaltung weitergegeben.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Petra Nowak,\n\nvielen Dank für Ihre Nachricht „Rechnung R-2026-07731“.\n\nWir haben notiert:\n- Rechnung: Kopie der Rechnung mit Kostenstelle HH-Reinigung-12 anfordern\n- Rechnung: Zahlungsziel erfragen\n\nDie Rechnung R-2026-07731 über 1284,50 Euro ist am 2026-10-09 fällig.\n\nIhre Rechnungsfrage haben wir an die Buchhaltung weitergegeben.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0006",
       "status": "offen"
@@ -754,8 +738,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 5905,
-    "zeitpunkt": "2026-09-14T11:00:10"
+    "dauer_ms": 1763,
+    "zeitpunkt": "2026-09-14T11:30:55"
   },
   "m07": {
     "mail_id": "m07",
@@ -804,28 +788,21 @@
       },
       "artikel": [
         {
-          "artikelnummer": null,
-          "bezeichnung": "Sicherheitsschuhe",
-          "groesse": null,
-          "farbe": null,
-          "menge": 2
-        },
-        {
           "artikelnummer": "A-4210",
-          "bezeichnung": "Softshelljacken",
+          "bezeichnung": "Softshelljacke",
           "groesse": "XL",
           "farbe": "navy",
-          "menge": 2
+          "menge": null
         }
       ],
       "anliegen": [
         {
-          "kategorie": "bestellstatus",
-          "beschreibung": "Teillieferung angekommen, fehlende Softshelljacken"
+          "kategorie": "verfuegbarkeit",
+          "beschreibung": "Lieferbarkeit der fehlenden Jacken prüfen"
         },
         {
           "kategorie": "verfuegbarkeit",
-          "beschreibung": "Verfügbarkeit Softshelljacken A-4210 XL navy"
+          "beschreibung": "Nachfolgerartikel für die fehlenden Jacken erfragen"
         }
       ],
       "dringlichkeit": "mittel",
@@ -892,7 +869,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Torben Mertens,\n\nvielen Dank für Ihre Nachricht „Teillieferung B-2026-04702“.\n\nWir haben notiert:\n- Bestellstatus: Teillieferung angekommen, fehlende Softshelljacken\n- Verfügbarkeit: Verfügbarkeit Softshelljacken A-4210 XL navy\n\nIhre Bestellung B-2026-04702 ist bisher nur teilweise geliefert. Offen sind noch:\n- 2 x Softshelljacke (A-4210), Größe XL, navy\n\nArtikel A-4210 in Größe XL, navy ist nicht mehr lieferbar; als Nachfolger können wir A-4211 anbieten.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Torben Mertens,\n\nvielen Dank für Ihre Nachricht „Teillieferung B-2026-04702“.\n\nWir haben notiert:\n- Verfügbarkeit: Lieferbarkeit der fehlenden Jacken prüfen\n- Verfügbarkeit: Nachfolgerartikel für die fehlenden Jacken erfragen\n\nArtikel A-4210 in Größe XL, navy ist nicht mehr lieferbar; als Nachfolger können wir A-4211 anbieten.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0007",
       "status": "offen"
@@ -900,8 +877,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 11924,
-    "zeitpunkt": "2026-09-14T11:00:16"
+    "dauer_ms": 1724,
+    "zeitpunkt": "2026-09-14T11:30:57"
   },
   "m08": {
     "mail_id": "m08",
@@ -952,7 +929,7 @@
       "anliegen": [
         {
           "kategorie": "bestellstatus",
-          "beschreibung": "Lieferstatus und Vollständigkeit der Bestellung"
+          "beschreibung": "Lieferung rechtzeitig prüfen"
         }
       ],
       "dringlichkeit": "hoch",
@@ -1018,7 +995,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Ole Hansen,\n\nvielen Dank für Ihre Nachricht „Order B-2026-04750 delivery date“.\n\nWir haben notiert:\n- Bestellstatus: Lieferstatus und Vollständigkeit der Bestellung\n\nIhre Bestellung B-2026-04750 ist bei uns erfasst, geplanter Liefertermin ist der 2026-09-19.\n\nDer geplante Liefertermin 2026-09-19 liegt nach Ihrer Frist 2026-09-18; wir prüfen, ob wir vorab teilliefern können, und melden uns dazu.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Ole Hansen,\n\nvielen Dank für Ihre Nachricht „Order B-2026-04750 delivery date“.\n\nWir haben notiert:\n- Bestellstatus: Lieferung rechtzeitig prüfen\n\nIhre Bestellung B-2026-04750 ist bei uns erfasst, geplanter Liefertermin ist der 2026-09-19.\n\nDer geplante Liefertermin 2026-09-19 liegt nach Ihrer Frist 2026-09-18; wir prüfen, ob wir vorab teilliefern können, und melden uns dazu.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0008",
       "status": "offen"
@@ -1026,8 +1003,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 3950,
-    "zeitpunkt": "2026-09-14T11:00:28"
+    "dauer_ms": 1579,
+    "zeitpunkt": "2026-09-14T11:30:58"
   },
   "m09": {
     "mail_id": "m09",
@@ -1088,13 +1065,13 @@
       "anliegen": [
         {
           "kategorie": "veredelung",
-          "beschreibung": "Veredelungsauftrag freigeben"
+          "beschreibung": "Freigabe Stickdatei für Poloshirts"
         }
       ],
       "dringlichkeit": "mittel",
       "frist": null,
       "unklarheiten": [
-        "Fehlendes Anhang: Stickdatei fehlt"
+        "Stickdatei fehlt im Anhang"
       ]
     },
     "extraktion_fehler": null,
@@ -1131,7 +1108,7 @@
     "zustaendigkeit": "veredelung",
     "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Daniel Adler,\n\nvielen Dank für Ihre Nachricht „WG: Logo für Polos“.\n\nWir haben notiert:\n- Veredelung: Veredelungsauftrag freigeben\n\nIhr Veredelungsauftrag V-2026-140 (Stick) wartet auf Ihre Freigabe.\n\nHinweis aus der Produktion: Stickdatei fehlt.\n\nUnsere Veredelung prüft Ihren Auftrag.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Fehlendes Anhang: Stickdatei fehlt\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Daniel Adler,\n\nvielen Dank für Ihre Nachricht „WG: Logo für Polos“.\n\nWir haben notiert:\n- Veredelung: Freigabe Stickdatei für Poloshirts\n\nIhr Veredelungsauftrag V-2026-140 (Stick) wartet auf Ihre Freigabe.\n\nHinweis aus der Produktion: Stickdatei fehlt.\n\nUnsere Veredelung prüft Ihren Auftrag.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Stickdatei fehlt im Anhang\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0009",
       "status": "offen"
@@ -1139,8 +1116,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 3600,
-    "zeitpunkt": "2026-09-14T11:00:32"
+    "dauer_ms": 1555,
+    "zeitpunkt": "2026-09-14T11:31:00"
   },
   "m10": {
     "mail_id": "m10",
@@ -1181,7 +1158,7 @@
       "anliegen": [
         {
           "kategorie": "bestellstatus",
-          "beschreibung": "wo bleibt die Lieferung"
+          "beschreibung": "Lieferung fehlt"
         }
       ],
       "dringlichkeit": "hoch",
@@ -1245,7 +1222,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag,\n\nvielen Dank für Ihre Nachricht.\n\nWir haben notiert:\n- Bestellstatus: wo bleibt die Lieferung\n\nIhre Bestellung B-2026-04711 vom 2026-09-09 ist versendet, Sendungsnummer SN-7F3K9Q2L, voraussichtliche Zustellung am 2026-09-15.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag,\n\nvielen Dank für Ihre Nachricht.\n\nWir haben notiert:\n- Bestellstatus: Lieferung fehlt\n\nIhre Bestellung B-2026-04711 vom 2026-09-09 ist versendet, Sendungsnummer SN-7F3K9Q2L, voraussichtliche Zustellung am 2026-09-15.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0010",
       "status": "offen"
@@ -1253,8 +1230,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 4954,
-    "zeitpunkt": "2026-09-14T11:00:35"
+    "dauer_ms": 1445,
+    "zeitpunkt": "2026-09-14T11:31:02"
   },
   "m11": {
     "mail_id": "m11",
@@ -1299,14 +1276,14 @@
       "artikel": [
         {
           "artikelnummer": "A-4520",
-          "bezeichnung": "Poloshirts",
+          "bezeichnung": "Poloshirt",
           "groesse": "M",
           "farbe": "grün",
           "menge": 10
         },
         {
           "artikelnummer": "A-4520",
-          "bezeichnung": "Poloshirts",
+          "bezeichnung": "Poloshirt",
           "groesse": "L",
           "farbe": "grün",
           "menge": 10
@@ -1315,13 +1292,14 @@
       "anliegen": [
         {
           "kategorie": "angebot",
-          "beschreibung": "Angebot für 20 Poloshirts A-4520 mit Logo"
+          "beschreibung": "Angebot für 20 Poloshirts mit Logo"
         }
       ],
-      "dringlichkeit": "niedrig",
+      "dringlichkeit": "mittel",
       "frist": null,
       "unklarheiten": [
-        "Logo fehlt im Anhang"
+        "Logo-Datei fehlt",
+        "Freigabe fehlt"
       ]
     },
     "extraktion_fehler": null,
@@ -1361,9 +1339,9 @@
     "hinweise": [],
     "integrationsfehler": [],
     "zustaendigkeit": "vertrieb",
-    "dringlichkeit": "niedrig",
+    "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Anke Wille,\n\nvielen Dank für Ihre Nachricht „Poloshirts mit Logo“.\n\nWir haben notiert:\n- Angebot: Angebot für 20 Poloshirts A-4520 mit Logo\n\nIhr Anliegen betrifft unseren Vertrieb, die Kolleginnen und Kollegen melden sich mit einem Angebot.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Logo fehlt im Anhang\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Anke Wille,\n\nvielen Dank für Ihre Nachricht „Poloshirts mit Logo“.\n\nWir haben notiert:\n- Angebot: Angebot für 20 Poloshirts mit Logo\n\nIhr Anliegen betrifft unseren Vertrieb, die Kolleginnen und Kollegen melden sich mit einem Angebot.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Logo-Datei fehlt\n- Freigabe fehlt\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0011",
       "status": "offen"
@@ -1371,8 +1349,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 9773,
-    "zeitpunkt": "2026-09-14T11:00:40"
+    "dauer_ms": 2652,
+    "zeitpunkt": "2026-09-14T11:31:03"
   },
   "m12": {
     "mail_id": "m12",
@@ -1422,14 +1400,14 @@
       "artikel": [
         {
           "artikelnummer": "A-4610",
-          "bezeichnung": "Regenjacken",
+          "bezeichnung": null,
           "groesse": "M",
           "farbe": null,
           "menge": 6
         },
         {
           "artikelnummer": "A-4610",
-          "bezeichnung": "Regenjacken",
+          "bezeichnung": null,
           "groesse": "L",
           "farbe": null,
           "menge": 6
@@ -1438,11 +1416,11 @@
       "anliegen": [
         {
           "kategorie": "reklamation",
-          "beschreibung": "Regenjacken A-4610 Größe M fallen kleiner aus, Rücksendung"
+          "beschreibung": "Jacken zu klein"
         },
         {
-          "kategorie": "verfuegbarkeit",
-          "beschreibung": "Lieferbarkeit der Regenjacken A-4610 Größe L"
+          "kategorie": "sonstiges",
+          "beschreibung": "Neue Bestellung in Größe L"
         }
       ],
       "dringlichkeit": "hoch",
@@ -1514,7 +1492,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "hoch",
     "dringlichkeit_grund": "Reklamation",
-    "antwort_entwurf": "Guten Tag Petra Nowak,\n\nvielen Dank für Ihre Nachricht „Regenjacken Rücksendung und Nachbestellung“.\n\nWir haben notiert:\n- Reklamation: Regenjacken A-4610 Größe M fallen kleiner aus, Rücksendung\n- Verfügbarkeit: Lieferbarkeit der Regenjacken A-4610 Größe L\n\nDas tut uns leid. Wir organisieren den Ersatz beziehungsweise die Abholung der beanstandeten Ware und melden uns mit einem Termin.\n\nArtikel A-4610 in Größe M, gelb ist lieferbar, Bestand 35 Stück.\n\nArtikel A-4610 in Größe L, gelb ist lieferbar, Bestand 35 Stück.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Petra Nowak,\n\nvielen Dank für Ihre Nachricht „Regenjacken Rücksendung und Nachbestellung“.\n\nWir haben notiert:\n- Reklamation: Jacken zu klein\n- Sonstiges: Neue Bestellung in Größe L\n\nDas tut uns leid. Wir organisieren den Ersatz beziehungsweise die Abholung der beanstandeten Ware und melden uns mit einem Termin.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0012",
       "status": "offen"
@@ -1522,8 +1500,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 13936,
-    "zeitpunkt": "2026-09-14T11:00:50"
+    "dauer_ms": 3375,
+    "zeitpunkt": "2026-09-14T11:31:06"
   },
   "m13": {
     "mail_id": "m13",
@@ -1570,15 +1548,7 @@
         "rechnungsnummer": null,
         "veredelungsauftrag": null
       },
-      "artikel": [
-        {
-          "artikelnummer": null,
-          "bezeichnung": "Warnschutzjacken",
-          "groesse": null,
-          "farbe": "orange",
-          "menge": 4
-        }
-      ],
+      "artikel": [],
       "anliegen": [
         {
           "kategorie": "reklamation",
@@ -1638,8 +1608,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 5035,
-    "zeitpunkt": "2026-09-14T11:01:04"
+    "dauer_ms": 1588,
+    "zeitpunkt": "2026-09-14T11:31:09"
   },
   "m14": {
     "mail_id": "m14",
@@ -1685,7 +1655,7 @@
       "anliegen": [
         {
           "kategorie": "sonstiges",
-          "beschreibung": "Lieferantenangebot"
+          "beschreibung": "Anfrage nach Ansprechpartner für Einkauf"
         }
       ],
       "dringlichkeit": "mittel",
@@ -1700,7 +1670,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Miguel Ferreira,\n\nvielen Dank für Ihre Nachricht „Partnership proposal“.\n\nWir haben notiert:\n- Sonstiges: Lieferantenangebot\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Miguel Ferreira,\n\nvielen Dank für Ihre Nachricht „Partnership proposal“.\n\nWir haben notiert:\n- Sonstiges: Anfrage nach Ansprechpartner für Einkauf\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0014",
       "status": "offen"
@@ -1708,8 +1678,8 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 3774,
-    "zeitpunkt": "2026-09-14T11:01:09"
+    "dauer_ms": 1227,
+    "zeitpunkt": "2026-09-14T11:31:11"
   },
   "m15": {
     "mail_id": "m15",
@@ -1768,7 +1738,7 @@
       "anliegen": [
         {
           "kategorie": "bestellstatus",
-          "beschreibung": "fehlende Poloshirts"
+          "beschreibung": "fehlende Poloshirts in Lieferung"
         }
       ],
       "dringlichkeit": "mittel",
@@ -1802,7 +1772,7 @@
     "zustaendigkeit": "kundenservice",
     "dringlichkeit": "mittel",
     "dringlichkeit_grund": null,
-    "antwort_entwurf": "Guten Tag Martina Kessler,\n\nvielen Dank für Ihre Nachricht „Lieferung B-2026-4688“.\n\nWir haben notiert:\n- Bestellstatus: fehlende Poloshirts\n\nWir prüfen den Stand und melden uns heute noch.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Bestellnummer B-2026-4688 ist im ERP nicht bekannt\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
+    "antwort_entwurf": "Guten Tag Martina Kessler,\n\nvielen Dank für Ihre Nachricht „Lieferung B-2026-4688“.\n\nWir haben notiert:\n- Bestellstatus: fehlende Poloshirts in Lieferung\n\nWir prüfen den Stand und melden uns heute noch.\n\nWir kümmern uns darum und melden uns mit einer verbindlichen Aussage.\n\nDamit wir Ihr Anliegen abschließen können, benötigen wir noch:\n- Bestellnummer B-2026-4688 ist im ERP nicht bekannt\n\nMit freundlichen Grüßen\nIhr Kundenservice\nBerufskleidung Nord GmbH",
     "ticket": {
       "ticket_id": "T-2026-0015",
       "status": "offen"
@@ -1810,7 +1780,7 @@
     "status": "offen",
     "anbieter": "ollama",
     "modell": "gpt-oss:20b",
-    "dauer_ms": 7434,
-    "zeitpunkt": "2026-09-14T11:01:13"
+    "dauer_ms": 2079,
+    "zeitpunkt": "2026-09-14T11:31:12"
   }
 }

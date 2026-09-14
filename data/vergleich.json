@@ -17,19 +17,11 @@
             "rechnungsnummer": null,
             "veredelungsauftrag": null
           },
-          "artikel": [
-            {
-              "artikelnummer": null,
-              "bezeichnung": "Warnschutzjacken",
-              "groesse": null,
-              "farbe": null,
-              "menge": null
-            }
-          ],
+          "artikel": [],
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "Lieferzeit der Bestellung B-2026-04711"
+              "beschreibung": "Warten auf Lieferung Warnschutzjacken"
             }
           ],
           "dringlichkeit": "hoch",
@@ -40,7 +32,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 9525
+        "dauer_ms": 3594
       },
       "m02": {
         "mail_id": "m02",
@@ -61,7 +53,7 @@
           "artikel": [
             {
               "artikelnummer": "A-4101",
-              "bezeichnung": "Bundhosen",
+              "bezeichnung": null,
               "groesse": "52",
               "farbe": null,
               "menge": 4
@@ -70,7 +62,7 @@
           "anliegen": [
             {
               "kategorie": "ruecksendung",
-              "beschreibung": "Größentausch von Bundhosen"
+              "beschreibung": "Größentausch Bundhosen"
             }
           ],
           "dringlichkeit": "mittel",
@@ -81,7 +73,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 5899
+        "dauer_ms": 2423
       },
       "m03": {
         "mail_id": "m03",
@@ -99,32 +91,24 @@
             "rechnungsnummer": null,
             "veredelungsauftrag": null
           },
-          "artikel": [
-            {
-              "artikelnummer": null,
-              "bezeichnung": "T-Shirts",
-              "groesse": null,
-              "farbe": null,
-              "menge": null
-            }
-          ],
+          "artikel": [],
           "anliegen": [
             {
               "kategorie": "reklamation",
-              "beschreibung": "Druck löst sich ab, fehlende Buchstaben"
+              "beschreibung": "Druck löst sich nach Waschen ab, fehlende Buchstaben"
             }
           ],
           "dringlichkeit": "hoch",
           "frist": null,
           "unklarheiten": [
-            "Foto fehlt"
+            "Foto im Anhang fehlt"
           ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 7512
+        "dauer_ms": 1695
       },
       "m04": {
         "mail_id": "m04",
@@ -142,19 +126,11 @@
             "rechnungsnummer": null,
             "veredelungsauftrag": "V-2026-131"
           },
-          "artikel": [
-            {
-              "artikelnummer": null,
-              "bezeichnung": "Softshelljacken",
-              "groesse": null,
-              "farbe": null,
-              "menge": 8
-            }
-          ],
+          "artikel": [],
           "anliegen": [
             {
               "kategorie": "veredelung",
-              "beschreibung": "Status der Stickerei zu Auftrag V-2026-131"
+              "beschreibung": "Status der Stickerei für acht Softshelljacken"
             }
           ],
           "dringlichkeit": "hoch",
@@ -165,7 +141,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "veredelung",
         "dringlichkeit": "hoch",
-        "dauer_ms": 8373
+        "dauer_ms": 2201
       },
       "m05": {
         "mail_id": "m05",
@@ -187,18 +163,18 @@
           "anliegen": [
             {
               "kategorie": "angebot",
-              "beschreibung": "Angebot für neue Mitarbeiter"
+              "beschreibung": "Anfrage für neues Ausstattungsangebot"
             }
           ],
-          "dringlichkeit": "hoch",
-          "frist": "2026-10-01",
+          "dringlichkeit": "mittel",
+          "frist": null,
           "unklarheiten": []
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "vertrieb",
-        "dringlichkeit": "hoch",
-        "dauer_ms": 4017
+        "dringlichkeit": "mittel",
+        "dauer_ms": 1364
       },
       "m06": {
         "mail_id": "m06",
@@ -220,7 +196,11 @@
           "anliegen": [
             {
               "kategorie": "rechnung",
-              "beschreibung": "Kopie Rechnung mit Kostenstelle und Zahlungsziel erfragen"
+              "beschreibung": "Kopie der Rechnung mit Kostenstelle HH-Reinigung-12"
+            },
+            {
+              "kategorie": "rechnung",
+              "beschreibung": "Frage zum Zahlungsziel"
             }
           ],
           "dringlichkeit": "mittel",
@@ -231,7 +211,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "buchhaltung",
         "dringlichkeit": "mittel",
-        "dauer_ms": 5925
+        "dauer_ms": 1680
       },
       "m07": {
         "mail_id": "m07",
@@ -251,28 +231,21 @@
           },
           "artikel": [
             {
-              "artikelnummer": null,
-              "bezeichnung": "Sicherheitsschuhe",
-              "groesse": null,
-              "farbe": null,
-              "menge": 2
-            },
-            {
               "artikelnummer": "A-4210",
-              "bezeichnung": "Softshelljacken",
+              "bezeichnung": "Softshelljacke",
               "groesse": "XL",
               "farbe": "navy",
-              "menge": 2
+              "menge": null
             }
           ],
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "Teillieferung angekommen, fehlende Softshelljacken"
+              "beschreibung": "Fehlende Softshelljacken in Bestellung"
             },
             {
               "kategorie": "verfuegbarkeit",
-              "beschreibung": "Verfügbarkeit Softshelljacken A-4210 XL navy"
+              "beschreibung": "Lieferbarkeit und Nachfolger der fehlenden Jacken erfragen"
             }
           ],
           "dringlichkeit": "mittel",
@@ -283,7 +256,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 11964
+        "dauer_ms": 1696
       },
       "m08": {
         "mail_id": "m08",
@@ -305,7 +278,7 @@
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "Lieferstatus und Vollständigkeit der Bestellung"
+              "beschreibung": "Bestätigung der Lieferung"
             }
           ],
           "dringlichkeit": "hoch",
@@ -316,7 +289,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 3893
+        "dauer_ms": 1621
       },
       "m09": {
         "mail_id": "m09",
@@ -338,20 +311,20 @@
           "anliegen": [
             {
               "kategorie": "veredelung",
-              "beschreibung": "Veredelungsauftrag freigeben"
+              "beschreibung": "Freigabe Stickdatei für Poloshirts"
             }
           ],
           "dringlichkeit": "mittel",
           "frist": null,
           "unklarheiten": [
-            "Fehlendes Anhang: Stickdatei fehlt"
+            "Stickdatei fehlt im Anhang"
           ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "veredelung",
         "dringlichkeit": "mittel",
-        "dauer_ms": 3599
+        "dauer_ms": 1638
       },
       "m10": {
         "mail_id": "m10",
@@ -373,7 +346,7 @@
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "wo bleibt die Lieferung"
+              "beschreibung": "Lieferung fehlt"
             }
           ],
           "dringlichkeit": "hoch",
@@ -384,7 +357,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 4964
+        "dauer_ms": 1405
       },
       "m11": {
         "mail_id": "m11",
@@ -405,14 +378,14 @@
           "artikel": [
             {
               "artikelnummer": "A-4520",
-              "bezeichnung": "Poloshirts",
+              "bezeichnung": "Poloshirt",
               "groesse": "M",
               "farbe": "grün",
               "menge": 10
             },
             {
               "artikelnummer": "A-4520",
-              "bezeichnung": "Poloshirts",
+              "bezeichnung": "Poloshirt",
               "groesse": "L",
               "farbe": "grün",
               "menge": 10
@@ -421,20 +394,21 @@
           "anliegen": [
             {
               "kategorie": "angebot",
-              "beschreibung": "Angebot für 20 Poloshirts A-4520 mit Logo"
+              "beschreibung": "Angebot für 20 Poloshirts mit Logo"
             }
           ],
-          "dringlichkeit": "niedrig",
+          "dringlichkeit": "mittel",
           "frist": null,
           "unklarheiten": [
-            "Logo fehlt im Anhang"
+            "Logo-Datei fehlt",
+            "Freigabe fehlt"
           ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "vertrieb",
-        "dringlichkeit": "niedrig",
-        "dauer_ms": 9847
+        "dringlichkeit": "mittel",
+        "dauer_ms": 2615
       },
       "m12": {
         "mail_id": "m12",
@@ -455,14 +429,14 @@
           "artikel": [
             {
               "artikelnummer": "A-4610",
-              "bezeichnung": "Regenjacken",
+              "bezeichnung": null,
               "groesse": "M",
               "farbe": null,
               "menge": 6
             },
             {
               "artikelnummer": "A-4610",
-              "bezeichnung": "Regenjacken",
+              "bezeichnung": null,
               "groesse": "L",
               "farbe": null,
               "menge": 6
@@ -471,11 +445,11 @@
           "anliegen": [
             {
               "kategorie": "reklamation",
-              "beschreibung": "Regenjacken A-4610 Größe M fallen kleiner aus, Rücksendung"
+              "beschreibung": "Jacken zu klein"
             },
             {
-              "kategorie": "verfuegbarkeit",
-              "beschreibung": "Lieferbarkeit der Regenjacken A-4610 Größe L"
+              "kategorie": "sonstiges",
+              "beschreibung": "Neue Bestellung in Größe L"
             }
           ],
           "dringlichkeit": "hoch",
@@ -486,7 +460,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 13858
+        "dauer_ms": 3234
       },
       "m13": {
         "mail_id": "m13",
@@ -504,15 +478,7 @@
             "rechnungsnummer": null,
             "veredelungsauftrag": null
           },
-          "artikel": [
-            {
-              "artikelnummer": null,
-              "bezeichnung": "Warnschutzjacken",
-              "groesse": null,
-              "farbe": "orange",
-              "menge": 4
-            }
-          ],
+          "artikel": [],
           "anliegen": [
             {
               "kategorie": "reklamation",
@@ -527,7 +493,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 4982
+        "dauer_ms": 1558
       },
       "m14": {
         "mail_id": "m14",
@@ -549,7 +515,7 @@
           "anliegen": [
             {
               "kategorie": "sonstiges",
-              "beschreibung": "Lieferantenangebot"
+              "beschreibung": "Anfrage nach Ansprechpartner für Einkauf"
             }
           ],
           "dringlichkeit": "mittel",
@@ -560,7 +526,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 3749
+        "dauer_ms": 1199
       },
       "m15": {
         "mail_id": "m15",
@@ -590,7 +556,7 @@
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "fehlende Poloshirts"
+              "beschreibung": "fehlende Poloshirts in Lieferung"
             }
           ],
           "dringlichkeit": "mittel",
@@ -601,7 +567,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 7393
+        "dauer_ms": 2053
       }
     },
     "qwen2.5:14b-instruct": {
@@ -621,19 +587,11 @@
             "rechnungsnummer": null,
             "veredelungsauftrag": null
           },
-          "artikel": [
-            {
-              "artikelnummer": null,
-              "bezeichnung": "Warnschutzjacken",
-              "groesse": null,
-              "farbe": null,
-              "menge": null
-            }
-          ],
+          "artikel": [],
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "Wunsch nach Liefertermin für Bestellung B-2026-04711 mit Warnschutzjacken, da Bauleiter am 18.09.2026 ohne diese Ware nicht auf das Baustellengelände gelassen wird."
+              "beschreibung": "Wunsch nach Liefertermin für Bestellung B-2026-04711 mit Warnschutzjacken, da Bauleiter am 18.09.2026 ohne diese Jacken keinen Zutritt auf Autobahnbaustelle erlaubt."
             }
           ],
           "dringlichkeit": "hoch",
@@ -644,7 +602,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 9161
+        "dauer_ms": 8467
       },
       "m02": {
         "mail_id": "m02",
@@ -690,7 +648,7 @@
         ],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 2948
+        "dauer_ms": 2960
       },
       "m03": {
         "mail_id": "m03",
@@ -699,7 +657,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 2896
+        "dauer_ms": 2999
       },
       "m04": {
         "mail_id": "m04",
@@ -740,7 +698,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 3189
+        "dauer_ms": 3222
       },
       "m05": {
         "mail_id": "m05",
@@ -797,14 +755,14 @@
           "dringlichkeit": "mittel",
           "frist": "2026-10-01",
           "unklarheiten": [
-            "Größenangaben fehlen"
+            "Größen der neuen Mitarbeiter fehlen"
           ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "vertrieb",
         "dringlichkeit": "mittel",
-        "dauer_ms": 4268
+        "dauer_ms": 4294
       },
       "m06": {
         "mail_id": "m06",
@@ -841,14 +799,14 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "buchhaltung",
         "dringlichkeit": "mittel",
-        "dauer_ms": 2673
+        "dauer_ms": 2684
       },
       "m07": {
         "mail_id": "m07",
         "extraktion": {
           "kunde": {
             "firma": "SHK Mertens GmbH",
-            "kundennummer": "null"
+            "kundennummer": null
           },
           "ansprechpartner": {
             "anrede": null,
@@ -856,8 +814,8 @@
           },
           "bezug": {
             "bestellnummer": "B-2026-04702",
-            "rechnungsnummer": "null",
-            "veredelungsauftrag": "null"
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
           },
           "artikel": [
             {
@@ -871,27 +829,24 @@
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "Bestellung B-2026-04702 fehlt Teillieferung"
+              "beschreibung": "Teillieferung, Softshelljacken fehlen"
             },
             {
               "kategorie": "verfuegbarkeit",
-              "beschreibung": "Nachfolger oder Nachlieferung der Softshelljacke A-4210 in XL, navy"
+              "beschreibung": "Nachfolger oder Nachlieferung der Softshelljacken in XL, navy"
             }
           ],
           "dringlichkeit": "mittel",
           "frist": null,
-          "unklarheiten": [
-            "null"
-          ]
+          "unklarheiten": []
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [
-          "anrede 'null' ungültig, auf null gesetzt",
-          "frist 'null' ungültig, auf null gesetzt"
+          "anrede 'Herr, Frau' ungültig, auf null gesetzt"
         ],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 3316
+        "dauer_ms": 3108
       },
       "m08": {
         "mail_id": "m08",
@@ -901,7 +856,7 @@
             "kundennummer": null
           },
           "ansprechpartner": {
-            "anrede": "Herr",
+            "anrede": null,
             "name": "Ole Hansen"
           },
           "bezug": {
@@ -932,7 +887,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 2942
+        "dauer_ms": 2913
       },
       "m09": {
         "mail_id": "m09",
@@ -968,14 +923,14 @@
           "dringlichkeit": "mittel",
           "frist": null,
           "unklarheiten": [
-            "Stickdatei fehlt im Anhang"
+            "Stickdatei im Anhang fehlt"
           ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "veredelung",
         "dringlichkeit": "mittel",
-        "dauer_ms": 2817
+        "dauer_ms": 2869
       },
       "m10": {
         "mail_id": "m10",
@@ -986,7 +941,7 @@
           },
           "ansprechpartner": {
             "anrede": null,
-            "name": "Jens Brandt"
+            "name": null
           },
           "bezug": {
             "bestellnummer": null,
@@ -1002,13 +957,15 @@
           ],
           "dringlichkeit": "mittel",
           "frist": null,
-          "unklarheiten": []
+          "unklarheiten": [
+            "Rückruf 0451 / 88 12 34"
+          ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 1905
+        "dauer_ms": 2041
       },
       "m11": {
         "mail_id": "m11",
@@ -1058,7 +1015,7 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "vertrieb",
         "dringlichkeit": "niedrig",
-        "dauer_ms": 3459
+        "dauer_ms": 3436
       },
       "m12": {
         "mail_id": "m12",
@@ -1110,52 +1067,48 @@
         "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 3854
+        "dauer_ms": 3878
       },
       "m13": {
         "mail_id": "m13",
         "extraktion": {
           "kunde": {
             "firma": "Kfz-Werkstatt Adler GmbH",
-            "kundennummer": "null"
+            "kundennummer": "B-2026-04761"
           },
           "ansprechpartner": {
-            "anrede": null,
+            "anrede": "Herr",
             "name": "Daniel Adler"
           },
           "bezug": {
             "bestellnummer": "B-2026-04761",
-            "rechnungsnummer": "null",
-            "veredelungsauftrag": "null"
+            "rechnungsnummer": null,
+            "veredelungsauftrag": null
           },
           "artikel": [
             {
-              "artikelnummer": "null",
+              "artikelnummer": null,
               "bezeichnung": "Warnschutzjacke",
-              "groesse": "null",
+              "groesse": null,
               "farbe": "orange",
               "menge": 4
             }
           ],
           "anliegen": [
             {
-              "kategorie": "ruecksendung",
-              "beschreibung": "Tausch von vier orange Warnschutzjacken gegen gelbe"
+              "kategorie": "reklamation",
+              "beschreibung": "Falsche Farbe der Warnschutzjacken, gelb statt orange"
             }
           ],
           "dringlichkeit": "hoch",
-          "frist": "2026-09-19",
-          "unklarheiten": [
-            "fehlende Artikelnummer für die Warnschutzjacke"
-          ]
+          "frist": "2026-09-16",
+          "unklarheiten": []
         },
         "extraktion_fehler": null,
-        "extraktion_hinweise": [
-          "anrede 'null' ungültig, auf null gesetzt"
-        ],
+        "extraktion_hinweise": [],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "hoch",
-        "dauer_ms": 2905
+        "dauer_ms": 2919
       },
       "m14": {
         "mail_id": "m14",
@@ -1177,20 +1130,20 @@
           "anliegen": [
             {
               "kategorie": "angebot",
-              "beschreibung": "Preisanfrage und Angebot für die Produktion von Berufsbekleidung, Polo-Shirts und Jacken"
+              "beschreibung": "Preisanfrage und Angebot für Arbeitshemden, Poloshirts und Jacken"
             }
           ],
           "dringlichkeit": "niedrig",
           "frist": null,
           "unklarheiten": [
-            "Fehlender Name und Kontakt für den Einkauf"
+            "Fehlt die Kontaktinformation für den Einkauf bei der Firma"
           ]
         },
         "extraktion_fehler": null,
         "extraktion_hinweise": [],
         "zustaendigkeit": "vertrieb",
         "dringlichkeit": "niedrig",
-        "dauer_ms": 2181
+        "dauer_ms": 2167
       },
       "m15": {
         "mail_id": "m15",
@@ -1220,7 +1173,7 @@
           "anliegen": [
             {
               "kategorie": "bestellstatus",
-              "beschreibung": "Fehlen der Poloshirts in der Lieferung zur Bestellung B-2026-4688"
+              "beschreibung": "Fehlen von vier Poloshirts in der Lieferung zur Bestellung B-2026-4688"
             }
           ],
           "dringlichkeit": "mittel",
@@ -1236,7 +1189,7 @@
         ],
         "zustaendigkeit": "kundenservice",
         "dringlichkeit": "mittel",
-        "dauer_ms": 2714
+        "dauer_ms": 2776
       }
     }
   },
@@ -1244,23 +1197,23 @@
     "gpt-oss:20b": {
       "kategorien": 13,
       "zustaendigkeit": 14,
-      "dringlichkeit": 9,
+      "dringlichkeit": 8,
       "bestellnummer": 15,
       "kundennummer": 15,
-      "frist": 14,
+      "frist": 15,
       "schemafehler": 0,
-      "mittlere_dauer_ms": 7033.3,
+      "mittlere_dauer_ms": 1998.4,
       "n": 15
     },
     "qwen2.5:14b-instruct": {
-      "kategorien": 9,
+      "kategorien": 10,
       "zustaendigkeit": 11,
       "dringlichkeit": 11,
       "bestellnummer": 13,
-      "kundennummer": 9,
+      "kundennummer": 10,
       "frist": 12,
       "schemafehler": 1,
-      "mittlere_dauer_ms": 3415.2,
+      "mittlere_dauer_ms": 3382.2,
       "n": 15
     }
   }

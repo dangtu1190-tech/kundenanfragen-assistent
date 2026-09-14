@@ -238,8 +238,8 @@ anderes Modell. Ergebnis in `docs/modellvergleich.md` und `data/vergleich.json`:
 
 | Modell | Kategorien | Zuständigkeit | Dringlichkeit | Bestellnummer | Kundennummer | Frist | Schemafehler | Ø Dauer |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| gpt-oss:20b | 13/15 | 14/15 | 9/15 | 15/15 | 15/15 | 14/15 | 0 | 7033 ms |
-| qwen2.5:14b-instruct | 9/15 | 11/15 | 11/15 | 13/15 | 9/15 | 12/15 | 1 | 3415 ms |
+| gpt-oss:20b | 13/15 | 14/15 | 8/15 | 15/15 | 15/15 | 15/15 | 0 | 1998 ms |
+| qwen2.5:14b-instruct | 10/15 | 11/15 | 11/15 | 13/15 | 10/15 | 12/15 | 1 | 3382 ms |
 
 Gemessen am 14.09.2026 mit Ollama auf einer RTX 5070 Ti mit 16 GB. Die
 ausgelieferten Ergebnisse in `data/ergebnisse.json` und `docs/data/` stammen
@@ -247,13 +247,21 @@ aus einem Echtlauf mit `gpt-oss:20b` (Felder `anbieter` und `modell` je
 Ergebnis).
 
 **Was die Zahlen wert sind.** Jede Zeile ist ein Lauf über 15 Mails, kein
-Mittelwert über mehrere Läufe. Unterschiede von einem Punkt in einem Feld sind
-Rauschen. Belastbar ist die Richtung: gpt-oss:20b ist in fünf von sechs Feldern
-besser, qwen2.5:14b-instruct ist gut doppelt so schnell.
+Mittelwert über mehrere Läufe, und n = 15 ist eine kleine Stichprobe.
+Unterschiede von einem oder zwei Punkten in einem Feld sind Rauschen: drei
+Läufe von `gpt-oss:20b` mit demselben Prompt ergaben bei den Kategorien 13,
+11 und 11 von 15. Die Zeile oben ist der beste dieser Läufe, das tatsächliche
+Niveau liegt eher bei 11 bis 13. Drei der Prompt-Regeln (Abgrenzung
+reklamation gegen ruecksendung, Nachbestellung ist kein angebot,
+Lieferantenwerbung ist sonstiges) sind entstanden, nachdem ich mir die Fehler
+an konkreten Testmails angesehen habe. Die Zahl ist insoweit teilweise
+in-sample und keine Vorhersage für fremde Mails. Belastbar ist die Richtung:
+gpt-oss:20b ist bei Kategorien, Zuständigkeit und Kennungen besser,
+qwen2.5:14b-instruct trifft die Dringlichkeit öfter.
 
 **Was ich daraus gelernt habe:**
 
-- **Dringlichkeit ist das schwache Feld** lokaler Modelle (9/15 und 11/15).
+- **Dringlichkeit ist das schwache Feld** lokaler Modelle (8/15 und 11/15).
   Beide stufen zu hoch ein und vergeben zu selten `niedrig`. Genau deshalb
   überschreiben die Regeln sie: Frist innerhalb von drei Werktagen oder
   Reklamation ergeben `hoch`, und diese Regelfälle treffen in allen 15 Mails.
@@ -267,10 +275,15 @@ besser, qwen2.5:14b-instruct ist gut doppelt so schnell.
   Ollama setzt `num_ctx` standardmäßig auf 4096 Token. Bei einer vagen Mail
   verbrauchte gpt-oss:20b den gesamten Rest des Fensters im Reasoning-Kanal und
   lieferte einen leeren String (`finish_reason=length`, 1001 + 3095 = 4096
-  Token). Eine Prompt-Zeile ("Antworte ohne langes Nachdenken direkt mit dem
-  JSON") hat den Fall in allen Messläufen seither beseitigt. Das ist eine
-  Symptombehandlung: der saubere Fix wäre, für Ollama `num_ctx` zu erhöhen und
-  `finish_reason == "length"` als eigenen Fehler zu melden. Das steht offen.
+  Token), was als "Antwort ist kein JSON" ankam und in die Irre führte. Der
+  Client schickt für Ollama jetzt `num_ctx` aus `LLM_NUM_CTX` (Standard 8192)
+  mit und meldet `finish_reason == "length"` als eigene Ausnahme
+  `AntwortAbgeschnitten` mit einem Hinweis auf num_ctx. Für gpt-oss geht
+  zusätzlich `reasoning_effort=low` mit: das macht den Lauf von rund 7,8 auf
+  rund 2,0 Sekunden je Mail schneller, ohne die Trefferzahlen zu verschlechtern
+  (ohne den Parameter gemessen: Kategorien 10/15, Zuständigkeit 12/15,
+  Frist 14/15). Es kostet allerdings Wiederholbarkeit: mit vollem Reasoning
+  lieferten zwei Läufe noch identische Ergebnisse, mit `low` streuen sie.
 - **Keine Beispielwerte im Prompt.** In einem früheren Vergleich setzte ein
   Modell die Beispielkennung aus dem Prompt als echten Wert ein. Der Prompt
   enthält deshalb keine realistisch aussehenden Beispielwerte und keine
@@ -283,10 +296,11 @@ besser, qwen2.5:14b-instruct ist gut doppelt so schnell.
   `anrede` und `frist` fangen die Vorvalidatoren das ab, für `kundennummer`
   noch nicht.
 - **Zwei Restfehler bleiben** und werden nicht wegoptimiert: m11 bekommt nur
-  `angebot` statt `veredelung, angebot`, m12 wird `reklamation` statt
-  `ruecksendung`. Eine Prompt-Regel, die m11 repariert hätte ("Logo oder Druck
-  ist zusätzlich veredelung"), hätte m05 kaputtgemacht. Das wäre eine
-  Einzelfallanpassung an die Testdaten gewesen, keine Regel.
+  `angebot` statt `veredelung, angebot`, und m12 (Regenjacken zu klein) wird
+  `reklamation` statt `ruecksendung`. Eine Prompt-Regel, die m11 repariert
+  hätte ("Logo oder Druck ist zusätzlich veredelung"), hätte m05
+  kaputtgemacht. Das wäre eine Einzelfallanpassung an die Testdaten gewesen,
+  keine Regel.
 
 ## 7. Lokal starten
 
@@ -338,7 +352,7 @@ python -m app.cli --neu
 
 ## 8. Modellzugriff
 
-Der Client ist OpenAI-kompatibel und über vier Umgebungsvariablen konfiguriert:
+Der Client ist OpenAI-kompatibel und über fünf Umgebungsvariablen konfiguriert:
 
 | Variable | Ollama (Standard) | OpenAI-kompatibler Anbieter |
 |---|---|---|
@@ -346,6 +360,7 @@ Der Client ist OpenAI-kompatibel und über vier Umgebungsvariablen konfiguriert:
 | `LLM_BASE_URL` | `http://localhost:11434/v1` | `https://api.openai.com/v1` |
 | `LLM_MODEL` | `gpt-oss:20b` oder `qwen2.5:14b-instruct` | z. B. `gpt-4.1-mini` |
 | `LLM_API_KEY` | beliebiger Wert | Schlüssel eines eigenen Kontos |
+| `LLM_NUM_CTX` | `8192` | wird nicht gesendet |
 
 Standard ist Ollama: lokal, kostenlos, keine Daten außer Haus, und die Zahlen
 in Abschnitt 6 sind damit entstanden. Jeder andere OpenAI-kompatible Endpunkt
@@ -353,6 +368,12 @@ läuft über `LLM_BASE_URL` mit eigenem Schlüssel und ist die Reserve, falls
 keine passende Hardware zur Verfügung steht. Ein Firmenzugang eines
 Arbeitgebers wird für keinen Teil dieses Projekts verwendet; alle
 Anbietervariablen sind Platzhalter für ein eigenes Konto.
+
+`LLM_NUM_CTX` setzt für Ollama das Kontextfenster und geht nur an diesen
+Anbieter. Ollamas Standard von 4096 Token reicht für `gpt-oss:20b` nicht: das
+Modell füllt ihn bei einer vagen Mail mit Reasoning und liefert eine leere
+Antwort. Bleibt trotz eines höheren Werts etwas übrig, meldet der Client das
+als `AntwortAbgeschnitten` statt als Formatfehler.
 
 ## 9. Testdaten
 
