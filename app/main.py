@@ -9,10 +9,14 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from app import speicher
+from app.integration import SystemNichtErreichbar, Systeme
 from app.llm_client import LLMClient, lade_konfig
 from app.pipeline import verarbeite
 
 DOCS = Path(__file__).resolve().parent.parent / "docs"
+
+# Der Ticketstatus im CRM folgt der Entscheidung im Assistenten.
+CRM_STATUS = {"freigegeben": "beantwortet", "abgelehnt": "verworfen", "offen": "offen"}
 
 
 class NeueMail(BaseModel):
@@ -49,13 +53,22 @@ def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
     app = FastAPI(title="Kundenanfragen-Assistent")
     konfig = lade_konfig()
     factory = client_factory or (lambda: LLMClient(konfig))
-    # Die Systemlandschaft wird erst mit der Anreicherung angebunden; die Fabrik
-    # steht schon hier, damit Tests sie ohne Umbau des Servers ersetzen können.
-    systeme_bauen = systeme_factory
+    # Standard ist die Systemlandschaft aus der Umgebung (ohne SYSTEME_BASE_URL
+    # in-process); Tests setzen hier ihre Fakes ein.
+    systeme_bauen = systeme_factory or Systeme.aus_umgebung
 
     @app.get("/")
     def start():
         return FileResponse(DOCS / "index.html")
+
+    def _systeme_erreichbar() -> bool:
+        """Ein echter Aufruf gegen das MES, kein Ping: nur so zeigt sich, ob die
+        Systemlandschaft wirklich antwortet."""
+        try:
+            systeme_bauen().mes.maschinen()
+        except SystemNichtErreichbar:
+            return False
+        return True
 
     @app.get("/api/status")
     def status():
@@ -63,7 +76,7 @@ def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
         return {"anbieter": client.konfig.provider, "modell": client.konfig.model,
                 "schluessel_gesetzt": client.konfig.schluessel_gesetzt or client.konfig.provider in ("ollama", "fake"),
                 "live_modellaufrufe": _live_modellaufrufe(),
-                "systeme_erreichbar": None,
+                "systeme_erreichbar": _systeme_erreichbar(),
                 "heute": _heute().isoformat(), "modus": "server"}
 
     @app.get("/api/mails")
@@ -86,7 +99,7 @@ def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
                                      "Die Demo zeigt aufgezeichnete Ergebnisse.")
         mail = _mail(mail_id)
         ergebnisse = speicher.lade_ergebnisse()
-        ergebnis = verarbeite(mail, factory(), _heute(), systeme_bauen() if systeme_bauen else None)
+        ergebnis = verarbeite(mail, factory(), _heute(), systeme_bauen())
         ergebnisse[mail_id] = ergebnis
         speicher.speichere_ergebnisse(ergebnisse)
         return ergebnis
@@ -108,6 +121,16 @@ def erzeuge_app(client_factory=None, systeme_factory=None) -> FastAPI:
         ergebnis = ergebnisse.get(mail_id)
         if not ergebnis:
             raise HTTPException(409, "Mail ist noch nicht verarbeitet")
+        ticket = ergebnis.get("ticket")
+        if ticket and ticket.get("ticket_id"):
+            # Erst das CRM, dann speichern: scheitert die Synchronisation, darf
+            # der Status hier nicht schon weitergelaufen sein.
+            try:
+                aktuell = systeme_bauen().crm.ticket_status(ticket["ticket_id"], CRM_STATUS[aenderung.status])
+            except SystemNichtErreichbar as e:
+                raise HTTPException(502, f"Ticketstatus konnte nicht gesetzt werden ({e.system}: {e.grund})") from e
+            if aktuell:
+                ticket["status"] = aktuell["status"]
         if aenderung.antwort_entwurf is not None:
             ergebnis["antwort_entwurf"] = aenderung.antwort_entwurf
         ergebnis["status"] = aenderung.status

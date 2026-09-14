@@ -4,6 +4,10 @@
     python -m app.cli --neu      alles neu verarbeiten
     python -m app.cli --nur m03  nur diese Mail
     python -m app.cli --pages    zusätzlich docs/data/ für GitHub Pages aktualisieren
+
+Ohne SYSTEME_BASE_URL läuft die Systemlandschaft im Prozess: die angelegten
+CRM-Tickets landen dann in systeme/daten/tickets.json. Für einen sauberen
+Ausgangsstand vor dem Aufzeichnungslauf diese Datei auf [] zurücksetzen.
 """
 import argparse
 import shutil
@@ -29,7 +33,12 @@ def _kurzfassung(erg: dict) -> str:
     if erg["extraktion_fehler"]:
         return erg["extraktion_fehler"]
     kategorien = ", ".join(a["kategorie"] for a in erg["extraktion"]["anliegen"]) or "kein Anliegen"
-    return f"{kategorien}; {erg['zustaendigkeit']}, {erg['dringlichkeit']}"
+    text = f"{kategorien}; {erg['zustaendigkeit']}, {erg['dringlichkeit']}"
+    if erg["ticket"]:
+        text += f", {erg['ticket']['ticket_id']}"
+    if erg["integrationsfehler"]:
+        text += f"; {len(erg['integrationsfehler'])} Integrationsfehler"
+    return text
 
 
 def main(argv=None) -> int:

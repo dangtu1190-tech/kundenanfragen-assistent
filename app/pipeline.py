@@ -1,17 +1,21 @@
-"""Die Schritte je Mail: pseudonymisieren, extrahieren, zurücksetzen, Entwurf bauen.
+"""Die Schritte je Mail: pseudonymisieren, extrahieren, zurücksetzen, anreichern,
+Regeln anwenden, Entwurf bauen, Ticket anlegen.
 
 Das Modell bekommt ausschließlich `pseudonym_text`. Fehler der Extraktion
-führen zu Status `pruefung_noetig`, nie zu einem Absturz.
+führen zu Status `pruefung_noetig`, nie zu einem Absturz; dasselbe gilt für
+einen Ausfall von ERP, CRM oder MES: die Verarbeitung läuft weiter, der Grund
+steht in `integrationsfehler` und der Entwurf verzichtet auf Systemdaten.
 
-Anreicherung (ERP, CRM, MES), Regeln für Zuständigkeit und Dringlichkeit sowie
-das CRM-Ticket folgen in einem eigenen Schritt; die Ergebnisfelder dafür stehen
-hier schon und bleiben vorerst leer. `systeme` wird deshalb noch nicht benutzt.
+`systeme` darf None sein. Dann laufen nur die lokalen Schritte samt Regeln und
+Entwurf, ohne Systemzugriff und ohne Ticket; genau das braucht der
+Modellvergleich, der viele Modelle gegen dieselben Mails laufen lässt.
 """
 import time
 from datetime import date, datetime
 
-from app import speicher
+from app import regeln, speicher
 from app.anonymisierung import anonymisiere, zuruecksetzen
+from app.anreicherung import anreichere, lege_ticket_an
 from app.antwort import baue_antwort
 from app.extraktion import ExtraktionsFehler, extrahiere
 
@@ -29,6 +33,19 @@ def _leeres_ergebnis(mail: dict, pseudonym_text: str, tabelle: list, client) -> 
     }
 
 
+def _reichere_an(ergebnis: dict, mail: dict, systeme, heute: date) -> None:
+    """Systemdaten laden und die neuen Rückfragen in die Extraktion übernehmen."""
+    extraktion = ergebnis["extraktion"]
+    systemdaten, hinweise, fehler, neue_unklarheiten = anreichere(extraktion, mail, systeme, heute)
+    ergebnis["systemdaten"] = systemdaten
+    ergebnis["hinweise"] = hinweise
+    ergebnis["integrationsfehler"] = fehler
+    if neue_unklarheiten:
+        # In die Unklarheiten, damit der Entwurf sie als Rückfrage auflistet.
+        vorhanden = extraktion.get("unklarheiten") or []
+        extraktion["unklarheiten"] = list(dict.fromkeys(vorhanden + neue_unklarheiten))
+
+
 def verarbeite(mail: dict, client, heute: date, systeme=None) -> dict:
     start = time.perf_counter()
     pseudonym_text, tabelle = anonymisiere(mail["text"], mail.get("absender_name"), mail.get("absender_firma"))
@@ -37,16 +54,24 @@ def verarbeite(mail: dict, client, heute: date, systeme=None) -> dict:
         extraktion, hinweise = extrahiere(client, pseudonym_text, heute)
     except ExtraktionsFehler as e:
         ergebnis["extraktion_fehler"] = str(e)
-        ergebnis["status"] = "pruefung_noetig"
     except Exception as e:  # Netz, Anbieter, Schlüssel
         ergebnis["extraktion_fehler"] = f"Modellaufruf fehlgeschlagen: {type(e).__name__}: {e}"
-        ergebnis["status"] = "pruefung_noetig"
     else:
         ergebnis["extraktion"] = zuruecksetzen(extraktion.model_dump(), tabelle)
         ergebnis["extraktion_hinweise"] = hinweise
-        ergebnis["dringlichkeit"] = ergebnis["extraktion"]["dringlichkeit"]
+        if systeme is not None:
+            _reichere_an(ergebnis, mail, systeme, heute)
+        kategorien = [a["kategorie"] for a in ergebnis["extraktion"]["anliegen"]]
+        ergebnis["zustaendigkeit"] = regeln.zustaendigkeit(kategorien)
+        ergebnis["dringlichkeit"], ergebnis["dringlichkeit_grund"] = regeln.dringlichkeit(
+            ergebnis["extraktion"], heute)
         ergebnis["antwort_entwurf"] = baue_antwort(
             ergebnis["extraktion"], ergebnis["systemdaten"], ergebnis["zustaendigkeit"],
             mail.get("betreff", ""), speicher.lade_konfig().get("versender", ""))
+        if systeme is not None:
+            ticket = lege_ticket_an(ergebnis, mail, systeme)
+            ergebnis["ticket"] = {"ticket_id": ticket["ticket_id"], "status": ticket["status"]} if ticket else None
+    if ergebnis["extraktion_fehler"] or ergebnis["integrationsfehler"]:
+        ergebnis["status"] = "pruefung_noetig"
     ergebnis["dauer_ms"] = int((time.perf_counter() - start) * 1000)
     return ergebnis

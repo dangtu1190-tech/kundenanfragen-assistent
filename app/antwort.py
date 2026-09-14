@@ -1,9 +1,16 @@
 """Antwortentwurf aus einer deutschen Vorlage. Kein Modell: der Text bleibt vorhersagbar.
 
-`systemdaten` wird in dieser Fassung noch nicht ausgewertet (Bestellstatus,
-Sendungsnummer, Veredelungsauftrag kommen mit der Anreicherung dazu); der
-Parameter steht schon hier, damit die Aufrufstelle stabil bleibt.
+Die fachlichen Sätze zu Bestellstatus, Verfügbarkeit, Veredelung und Rechnung
+kommen aus antwort_texte.py und werden aus `systemdaten` gebaut. Fehlen die
+Daten, steht dort ein neutraler Satz statt einer erfundenen Zusage.
+
+Interne Hinweise der Anreicherung (etwa "Bestellung gehört zu einem anderen
+Kunden") stehen bewusst nicht im Brief: sie sind für die Bearbeitung gedacht.
+Der einzige Konflikt mit Kundenbezug, Liefertermin nach genannter Frist, wird
+in antwort_texte.py aus denselben Systemdaten noch einmal abgeleitet.
 """
+from app.antwort_texte import systemsaetze
+
 KATEGORIE_TEXT = {
     "bestellstatus": "Bestellstatus",
     "ruecksendung": "Rücksendung",
@@ -46,6 +53,9 @@ def baue_antwort(ex: dict, systemdaten: dict, zustaendigkeit: str, betreff: str,
     anliegen = _anliegen_zeilen(ex)
     if anliegen:
         zeilen += ["", "Wir haben notiert:"] + anliegen
+
+    for satz in systemsaetze(ex, systemdaten):
+        zeilen += ["", satz]
 
     satz = ZUSTAENDIGKEIT_TEXT.get(zustaendigkeit)
     zeilen += ["", satz or "Wir kümmern uns darum und melden uns mit einer verbindlichen Aussage."]

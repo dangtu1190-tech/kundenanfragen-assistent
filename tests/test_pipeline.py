@@ -63,14 +63,16 @@ def test_ergebnis_felder_und_rueckersetzung():
     json.dumps(erg)  # muss serialisierbar sein
 
 
-def test_noch_nicht_gefuellte_felder_sind_leer():
-    """Anreicherung, Regeln und Ticket folgen; die Felder stehen schon und
-    tragen neutrale Werte, damit Oberfläche und Speicher sich nicht ändern."""
+def test_ohne_systemlandschaft_bleiben_die_systemfelder_leer():
+    """Ohne Systeme laufen Pseudonymisierung, Extraktion, Regeln und Entwurf
+    trotzdem durch; der Modellvergleich braucht genau diesen Weg."""
     erg = verarbeite(lade_mails()[0], FakeClient(ANTWORT), HEUTE)
     assert erg["systemdaten"] == {} and erg["hinweise"] == [] and erg["integrationsfehler"] == []
-    assert erg["ticket"] is None and erg["dringlichkeit_grund"] is None
+    assert erg["ticket"] is None and erg["status"] == "offen"
     assert erg["zustaendigkeit"] == "kundenservice"
-    assert erg["dringlichkeit"] == "hoch"  # vorerst direkt aus der Extraktion
+    # Frist 2026-09-18 sind vier Werktage ab Montag: die Fristregel greift nicht,
+    # das hoch kommt aus dem Modell.
+    assert erg["dringlichkeit"] == "hoch" and erg["dringlichkeit_grund"] is None
 
 
 def test_extraktion_hinweise_landen_im_ergebnis():
@@ -190,3 +192,65 @@ def test_kennungen_erreichen_das_modell():
         verarbeite(mails[mail_id], fake, HEUTE)
         for kennung in kennungen:
             assert kennung in fake.aufrufe[0], (mail_id, kennung)
+
+
+def _mail(mail_id: str) -> dict:
+    return {m["id"]: m for m in lade_mails()}[mail_id]
+
+
+def test_anreicherung_regeln_und_ticket(fake_systeme):
+    erg = verarbeite(_mail("m01"), FakeClient(ANTWORT), HEUTE, fake_systeme)
+
+    assert set(erg) == ERGEBNISFELDER
+    assert erg["systemdaten"]["bestellung"]["status"] == "versendet"
+    assert erg["systemdaten"]["kontakt"]["kundennummer"] == "K-10234"
+    assert erg["zustaendigkeit"] == "kundenservice"
+    assert erg["dringlichkeit"] == "hoch" and erg["dringlichkeit_grund"] is None
+    assert erg["ticket"]["ticket_id"] and erg["ticket"]["status"] == "offen"
+    assert set(erg["ticket"]) == {"ticket_id", "status"}
+    assert erg["hinweise"] == [] and erg["integrationsfehler"] == [] and erg["status"] == "offen"
+    assert "SN-7F3K9Q2L" in erg["antwort_entwurf"]
+    json.dumps(erg)
+
+
+def test_zweiter_lauf_erzeugt_kein_zweites_ticket(fake_systeme):
+    erste = verarbeite(_mail("m01"), FakeClient(ANTWORT), HEUTE, fake_systeme)
+    zweite = verarbeite(_mail("m01"), FakeClient(ANTWORT), HEUTE, fake_systeme)
+    assert erste["ticket"]["ticket_id"] == zweite["ticket"]["ticket_id"]
+
+
+def test_systemausfall_wird_pruefung_noetig(fake_systeme):
+    """Ausfall heisst: weiterarbeiten, nichts behaupten, zur Prüfung vorlegen."""
+    fake_systeme.ausgefallen.add("erp")
+    erg = verarbeite(_mail("m01"), FakeClient(ANTWORT), HEUTE, fake_systeme)
+
+    assert erg["status"] == "pruefung_noetig"
+    assert erg["integrationsfehler"] == ["erp: simulierter Ausfall"]
+    assert "bestellung" not in erg["systemdaten"]
+    assert "Wir prüfen den Stand und melden uns heute noch." in erg["antwort_entwurf"]
+    assert "SN-7F3K9Q2L" not in erg["antwort_entwurf"]
+    assert erg["ticket"]["ticket_id"]  # das CRM läuft, das Ticket entsteht trotzdem
+
+
+def test_unbekannte_bestellnummer_wird_zur_rueckfrage(fake_systeme):
+    """m15 nennt B-2026-4688 statt B-2026-04688: der Entwurf fragt nach."""
+    antwort = dict(ANTWORT, kunde={"firma": "[FIRMA_1]", "kundennummer": None},
+                   ansprechpartner={"anrede": "Frau", "name": "[NAME_1]"},
+                   bezug={"bestellnummer": "B-2026-4688", "rechnungsnummer": None, "veredelungsauftrag": None},
+                   artikel=[], dringlichkeit="mittel", frist=None, unklarheiten=[])
+    erg = verarbeite(_mail("m15"), FakeClient(antwort), HEUTE, fake_systeme)
+
+    meldung = "Bestellnummer B-2026-4688 ist im ERP nicht bekannt"
+    assert erg["hinweise"] == [meldung]
+    assert erg["extraktion"]["unklarheiten"] == [meldung]
+    assert meldung in erg["antwort_entwurf"]
+    assert erg["status"] == "offen"  # unbekannte Kennung ist kein Integrationsfehler
+    assert erg["systemdaten"]["kunde"]["kundennummer"] == "K-10311"
+
+
+def test_reklamation_hebt_die_dringlichkeit(fake_systeme):
+    antwort = dict(ANTWORT, anliegen=[{"kategorie": "reklamation", "beschreibung": "Falsche Farbe"}],
+                   dringlichkeit="niedrig", frist=None)
+    erg = verarbeite(_mail("m13"), FakeClient(antwort), HEUTE, fake_systeme)
+    assert erg["dringlichkeit"] == "hoch" and erg["dringlichkeit_grund"] == "Reklamation"
+    assert erg["zustaendigkeit"] == "kundenservice"

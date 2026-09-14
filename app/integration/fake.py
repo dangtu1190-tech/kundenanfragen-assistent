@@ -40,6 +40,10 @@ class FakeCRM:
         self._nach_referenz[daten["externe_referenz"]] = ticket
         return ticket
 
+    def ticket(self, ticket_id):
+        """Nur fuer Tests: Blick in den Ticketbestand ohne ihn zu veraendern."""
+        return self._tickets.get(ticket_id)
+
     def ticket_status(self, ticket_id, status):
         ticket = self._tickets.get(ticket_id)
         if ticket is None:

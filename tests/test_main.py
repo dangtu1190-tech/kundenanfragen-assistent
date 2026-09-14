@@ -21,14 +21,20 @@ ANTWORT = {
 
 
 @pytest.fixture
-def client(tmp_path, monkeypatch):
+def client(tmp_path, monkeypatch, fake_systeme):
+    """Server mit Fake-Modell und Fake-Systemlandschaft.
+
+    Ohne systeme_factory wuerde der Server die Mock-Systeme im Prozess starten
+    und Tickets nach systeme/daten/tickets.json schreiben; die Tests wuerden
+    also das Repo veraendern.
+    """
     daten = tmp_path / "data"
     daten.mkdir()
     shutil.copyfile("data/mails.json", daten / "mails.json")
     shutil.copyfile("data/konfig.json", daten / "konfig.json")
     monkeypatch.setattr(speicher, "DATEN", daten)
     monkeypatch.setenv("LIVE_MODELLAUFRUFE", "1")
-    app = erzeuge_app(client_factory=lambda: FakeClient(ANTWORT))
+    app = erzeuge_app(client_factory=lambda: FakeClient(ANTWORT), systeme_factory=lambda: fake_systeme)
     return TestClient(app)
 
 
@@ -36,7 +42,12 @@ def test_startseite_und_status(client):
     assert client.get("/").status_code == 200
     s = client.get("/api/status").json()
     assert s["anbieter"] == "fake" and s["heute"] == "2026-09-14"
-    assert s["systeme_erreichbar"] is None  # füllt die Anreicherung
+    assert s["systeme_erreichbar"] is True
+
+
+def test_status_meldet_systemausfall(client, fake_systeme):
+    fake_systeme.ausgefallen.add("mes")
+    assert client.get("/api/status").json()["systeme_erreichbar"] is False
 
 
 def test_mails_liste_und_detail(client):
@@ -97,3 +108,52 @@ def test_verarbeiten_ohne_live_schalter_ist_gesperrt(client, monkeypatch):
     for wert in ("1", "true", "JA", "on"):
         monkeypatch.setenv("LIVE_MODELLAUFRUFE", wert)
         assert client.post("/api/mails/m01/verarbeiten").status_code == 200, wert
+
+
+def test_freigabe_und_ablehnung_setzen_den_ticketstatus(client, fake_systeme):
+    """Der Ticketstatus im CRM folgt der Entscheidung im Assistenten."""
+    ticket_id = client.post("/api/mails/m01/verarbeiten").json()["ticket"]["ticket_id"]
+    assert fake_systeme.crm.ticket(ticket_id)["status"] == "offen"
+
+    r = client.post("/api/mails/m01/status", json={"status": "freigegeben"}).json()
+    assert fake_systeme.crm.ticket(ticket_id)["status"] == "beantwortet"
+    assert r["ticket"]["status"] == "beantwortet"
+
+    client.post("/api/mails/m01/status", json={"status": "abgelehnt"})
+    assert fake_systeme.crm.ticket(ticket_id)["status"] == "verworfen"
+
+    client.post("/api/mails/m01/status", json={"status": "offen"})
+    assert fake_systeme.crm.ticket(ticket_id)["status"] == "offen"
+
+
+def test_statusaenderung_bei_crm_ausfall_ist_502(client, fake_systeme):
+    """Schlaegt die Synchronisation fehl, darf der gespeicherte Status nicht
+    weiterlaufen: sonst steht im Assistenten freigegeben und im CRM offen."""
+    client.post("/api/mails/m01/verarbeiten")
+    fake_systeme.ausgefallen.add("crm")
+
+    r = client.post("/api/mails/m01/status", json={"status": "freigegeben", "antwort_entwurf": "Geändert"})
+    assert r.status_code == 502 and "crm" in r.json()["detail"]
+
+    gespeichert = client.get("/api/mails/m01").json()["ergebnis"]
+    assert gespeichert["status"] == "offen"
+    assert gespeichert["antwort_entwurf"] != "Geändert"
+
+
+def test_statusaenderung_ohne_ticket_bleibt_moeglich(client, fake_systeme):
+    """Ist beim Verarbeiten kein Ticket entstanden (CRM war aus), soll die
+    Freigabe trotzdem funktionieren."""
+    fake_systeme.ausgefallen.add("crm")
+    erg = client.post("/api/mails/m01/verarbeiten").json()
+    assert erg["ticket"] is None and erg["status"] == "pruefung_noetig"
+
+    fake_systeme.ausgefallen.clear()
+    r = client.post("/api/mails/m01/status", json={"status": "freigegeben"})
+    assert r.status_code == 200 and r.json()["status"] == "freigegeben"
+
+
+def test_verarbeiten_liefert_systemdaten_und_ticket(client):
+    erg = client.post("/api/mails/m01/verarbeiten").json()
+    assert erg["systemdaten"]["bestellung"]["status"] == "versendet"
+    assert erg["ticket"]["ticket_id"].startswith("T-")
+    assert erg["integrationsfehler"] == []
