@@ -28,8 +28,8 @@ run "plan_ohne_zugangsdaten" {
   }
 
   assert {
-    condition     = azurerm_container_app.app.template[0].max_replicas >= 1 && azurerm_container_app.app.template[0].max_replicas <= 10
-    error_message = "max_replicas muss begrenzt sein (1 bis 10)."
+    condition     = azurerm_container_app.app.template[0].max_replicas == 1
+    error_message = "max_replicas muss 1 sein: der Zustand liegt in JSON-Dateien im Container (Ergebnisse, Mails, tickets.json). Zwei Replikate hätten jedes einen eigenen Satz Dateien und einen eigenen Ticketzähler, und die Idempotenz über externe_referenz gälte nur je Replikat."
   }
 
   assert {
@@ -78,6 +78,19 @@ run "plan_ohne_zugangsdaten" {
       for e in azurerm_container_app.app.template[0].container[0].env : e if e.name == "SYSTEME_BASE_URL"
     ]) == 1
     error_message = "Der app-Container muss SYSTEME_BASE_URL=http://localhost:8050 gesetzt haben (Sidecar teilt sich localhost)."
+  }
+
+  # /api/health kommt ohne Aufruf eines Fachsystems aus. Zeigten die Proben auf
+  # /api/status, würde ein Ausfall des systeme-Sidecars (oder sein etwas
+  # späterer Start) den gesunden App-Container als ungesund neu starten lassen.
+  assert {
+    condition     = azurerm_container_app.app.template[0].container[0].liveness_probe[0].path == "/api/health"
+    error_message = "Die Liveness-Probe des app-Containers muss auf /api/health zeigen, nicht auf /api/status (das ruft das MES im Sidecar auf)."
+  }
+
+  assert {
+    condition     = azurerm_container_app.app.template[0].container[0].readiness_probe[0].path == "/api/health"
+    error_message = "Die Readiness-Probe des app-Containers muss auf /api/health zeigen, nicht auf /api/status (das ruft das MES im Sidecar auf)."
   }
 
   assert {

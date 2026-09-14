@@ -1,4 +1,5 @@
 import shutil
+from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 from fastapi.testclient import TestClient
@@ -182,3 +183,41 @@ def test_statuswechsel_bei_unbekanntem_ticket_ist_409(client, fake_systeme):
     r = client.post("/api/mails/m01/status", json={"status": "freigegeben"})
     assert r.status_code == 409 and "im CRM unbekannt" in r.json()["detail"]
     assert client.get("/api/mails/m01").json()["ergebnis"]["status"] == "offen"
+
+
+def test_health_ohne_systemaufruf(client, fake_systeme):
+    """Die Probe darf nicht am Sidecar haengen: auch bei ausgefallener
+    Systemlandschaft meldet /api/health ok, waehrend /api/status das
+    Fachsystem weiterhin wirklich anfragt."""
+    fake_systeme.ausgefallen.add("mes")
+    r = client.get("/api/health")
+    assert r.status_code == 200 and r.json() == {"status": "ok"}
+    assert client.get("/api/status").json()["systeme_erreichbar"] is False
+
+
+def test_status_nennt_versender(client):
+    """Die Oberflaeche setzt daraus den Untertitel (docs/index.html, s.versender)."""
+    assert client.get("/api/status").json()["versender"] == "Berufskleidung Nord GmbH"
+
+
+def test_gleichzeitige_neue_mails_bekommen_eigene_ids(client):
+    """Acht parallele POST /api/mails duerfen keine ID doppelt vergeben.
+
+    FastAPI fuehrt synchrone Routen in einem Threadpool aus; ohne die Sperre in
+    app/speicher.py lesen zwei Anfragen denselben Stand, vergeben dieselbe ID
+    und die zweite ueberschreibt die erste Mail.
+    """
+    def anlegen(n: int):
+        return client.post("/api/mails", json={"absender_name": f"Person {n}", "absender_firma": "",
+                                               "absender_email": f"p{n}@example.org",
+                                               "betreff": "Test", "text": "Hallo."})
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        antworten = list(pool.map(anlegen, range(8)))
+
+    assert [r.status_code for r in antworten] == [200] * 8
+    ids = sorted(r.json()["id"] for r in antworten)
+    assert ids == [f"m{n}" for n in range(16, 24)]
+    gespeichert = speicher.lade_mails()
+    assert len(gespeichert) == 23
+    assert len({m["id"] for m in gespeichert}) == 23

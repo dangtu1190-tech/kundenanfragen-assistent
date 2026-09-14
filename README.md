@@ -494,13 +494,37 @@ geprüft, aber bewusst nicht ausgerollt. Nichts davon erzeugt laufende Kosten.
 **Ein Image, zwei Rollen.** Das `Dockerfile` baut in zwei Stufen auf
 `python:3.12-slim`: Abhängigkeiten in Stufe 1, Laufzeitbild in Stufe 2 mit
 `app/`, `systeme/`, `data/` und `docs/index.html`, als Benutzer `app`
-(UID 10001) ohne Root-Rechte, mit Healthcheck auf `/api/status`. Dasselbe Image
+(UID 10001) ohne Root-Rechte, mit Healthcheck auf `/api/health`. Dasselbe Image
 läuft je nach Kommando als App (`app.main:app`, Port 8040) oder als
 Mock-Systemlandschaft (`systeme.main:app`, Port 8050). `docker-compose.yml`
 startet beides als zwei Dienste mit `SYSTEME_BASE_URL=http://systeme:8050`.
 Konfiguration ausschließlich über Umgebungsvariablen (`.env.example`), keine
 Werte im Image. Der Server schreibt Statusänderungen nach `data/`; im Container
 ist das flüchtig, ein Neustart stellt den Stand des Images wieder her.
+
+**Zwei Endpunkte, zwei Zwecke.** `GET /api/health` antwortet `{"status":
+"ok"}`, sobald der Prozess steht, und ruft dabei kein Fachsystem auf. Genau
+dort stellen Docker, Container Apps, Render und Fly ihre Proben. `GET
+/api/status` fragt das MES wirklich an und liefert `systeme_erreichbar` samt
+Anbieter, Modell, Live-Schalter und Versendername für die Oberfläche; als
+Probe taugt er nicht, denn ein Ausfall der Systemlandschaft (oder ein Sidecar,
+der ein paar Sekunden später bereit ist) würde den gesunden App-Container als
+ungesund neu starten lassen. Der Rauchtest in der CI wartet deshalb auf
+`/api/health` und prüft danach `/api/status` auf `systeme_erreichbar: true`.
+
+**Eine Instanz, mit Absicht.** `max_replicas` steht auf 1. Das ist keine reine
+Kostenentscheidung: der Zustand liegt in JSON-Dateien im Container
+(`data/ergebnisse.json`, `data/mails.json`, `systeme/daten/tickets.json`).
+Zwei Replikate hätten jedes seinen eigenen Satz Dateien und einen eigenen
+Ticketzähler; dieselbe Mail bekäme je nach Replikat ein anderes Ergebnis, und
+die Idempotenz über `externe_referenz` gälte nur innerhalb eines Replikats.
+`terraform test` prüft den Wert mit einer Assertion, die genau das als Grund
+nennt. Innerhalb des einen Prozesses sind die Schreibzugriffe abgesichert: ein
+`threading.Lock` in `app/speicher.py` (und einer in `systeme/crm.py`) umschließt
+jede Folge aus Lesen, Ändern und Schreiben, und geschrieben wird über eine
+Zwischendatei mit `os.replace`, damit nie eine halb geschriebene JSON-Datei
+zurückbleibt. Mehrere Instanzen wären erst mit einer gemeinsamen Datenhaltung
+sinnvoll.
 
 **Pipeline** (`.github/workflows/ci.yml`), drei Jobs:
 
@@ -511,8 +535,9 @@ ist das flüchtig, ein Neustart stellt den Stand des Images wieder her.
    Schlägt der Pseudonymisierungsschritt fehl, wird kein Image gebaut.
 2. *Docker-Image.* Bauen, dann ein Rauchtest mit beiden Containern in einem
    eigenen Docker-Netz: der Systeme-Container muss `/erp/docs` ausliefern, der
-   App-Container muss `/api/status` mit `live_modellaufrufe: false` und
-   `systeme_erreichbar: true` beantworten, der Verarbeiten-Endpunkt muss 403
+   App-Container muss nach dem Warten auf `/api/health` sein `/api/status` mit
+   `live_modellaufrufe: false` und `systeme_erreichbar: true` beantworten, der
+   Verarbeiten-Endpunkt muss 403
    liefern und die Startseite 200. Wird ein Container nicht rechtzeitig bereit,
    bricht der Job mit einer Fehlermeldung ab statt still weiterzulaufen. Bei
    einem Push auf `main` geht das Image nach
@@ -541,15 +566,16 @@ liest ihn zur Laufzeit über die Managed Identity.
 Wert über 0 laufen die Replikate rund um die Uhr und werden auch ohne Traffic
 berechnet; das ist der häufigste Grund für unerwartete Rechnungen. Mit 0 fährt
 die App ohne Anfragen herunter und startet beim nächsten Aufruf in einigen
-Sekunden neu. `max_replicas` ist begrenzt, damit auch unerwarteter Traffic
-gedeckelt bleibt. Dazu ein Budget auf Ebene der Resource Group über wenige Euro
+Sekunden neu. `max_replicas = 1` deckelt die Gegenrichtung, aus dem oben
+genannten fachlichen Grund und nicht nur wegen der Kosten. Dazu ein Budget auf Ebene der Resource Group über wenige Euro
 im Monat mit E-Mail-Alarm bei 80 Prozent (tatsächlicher Verbrauch) und 100
 Prozent (Forecast); es warnt, es stoppt nichts. Die Tagesquote des Log
 Analytics Workspace von 0,1 GB deckelt den zweiten üblichen Kostenposten.
 
 **Nie angewendet.** `terraform test` (`infra/azure/tests/plan.tftest.hcl`)
 plant gegen einen Mock-Provider, also ohne Azure-Konto und ohne Zugangsdaten,
-und prüft per Assertion unter anderem `min_replicas = 0`. Ein `terraform apply`
+und prüft per Assertion unter anderem `min_replicas = 0`, `max_replicas = 1`
+und die Proben auf `/api/health`. Ein `terraform apply`
 gibt es weder lokal noch in der Pipeline. Die Konfiguration ist vollständig und
 validiert, aber nie angewendet worden; ein erstes `apply` findet
 erfahrungsgemäß Kleinigkeiten (Verzögerung der Rollenzuweisung, weltweit
@@ -606,7 +632,9 @@ realistischen Verträgen) und ein tatsächlich ausgerolltes Cloud-Deployment. De
 Weg dahin steht in Abschnitt 12, ausgerollt ist nichts, und die Pipeline ist
 noch nie gelaufen, weil das Repository erst angelegt wird. Die Demo arbeitet
 mit JSON-Dateien und eingespielten Testmails; Zustandsänderungen im Container
-sind flüchtig, und der Server ist auf eine Instanz ausgelegt.
+sind flüchtig, und der Server ist auf genau eine Instanz ausgelegt
+(`max_replicas = 1`, siehe Abschnitt 12): mehrere Replikate hätten jedes seine
+eigenen Dateien und einen eigenen Ticketzähler.
 
 ## 14. Wie ich das in einem Betrieb umsetzen würde
 

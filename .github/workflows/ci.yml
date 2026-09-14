@@ -49,7 +49,7 @@ jobs:
         # Zwei Container aus demselben Image: "systeme" (Mock-Systemlandschaft)
         # und "app" mit SYSTEME_BASE_URL darauf. So läuft der Rauchtest gegen
         # dieselbe Aufteilung wie docker-compose.yml und infra/azure/main.tf.
-        # --no-healthcheck: das Image bringt ein HEALTHCHECK auf /api/status auf
+        # --no-healthcheck: das Image bringt ein HEALTHCHECK auf /api/health auf
         # Port 8040 (app.main:app) mit. Dieser Container läuft aber systeme.main:app
         # auf Port 8050; ohne --no-healthcheck würde "docker ps"/"docker logs" den
         # Container fälschlich als "unhealthy" zeigen, obwohl er korrekt arbeitet.
@@ -72,9 +72,12 @@ jobs:
         run: |
           docker run -d --name rauchtest-app --network rauchtest-netz -p 8040:8040 \
             -e SYSTEME_BASE_URL=http://rauchtest-systeme:8050 rauchtest
+          # Warten auf /api/health: das antwortet, sobald der Prozess steht, ohne
+          # die Systemlandschaft anzufassen. Geprüft wird gleich danach trotzdem
+          # /api/status, denn nur dort steht systeme_erreichbar.
           bereit=0
           for i in $(seq 1 20); do
-            curl -sf http://localhost:8040/api/status && { bereit=1; break; }
+            curl -sf http://localhost:8040/api/health && { bereit=1; break; }
             sleep 1
           done
           [ "$bereit" = "1" ] || { echo "::error::app-Container wurde nicht rechtzeitig bereit"; docker logs rauchtest-app; exit 1; }

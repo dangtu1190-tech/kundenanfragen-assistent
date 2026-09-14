@@ -29,12 +29,14 @@ primary_region = "fra"
   # eine Maschine rund um die Uhr und wird auch ohne Traffic berechnet.
   min_machines_running = 0
 
+  # /api/health kommt ohne Aufruf eines Fachsystems aus; /api/status ruft das
+  # MES an und taugt deshalb nicht als Probe.
   [[http_service.checks]]
     interval = "30s"
     timeout = "5s"
     grace_period = "10s"
     method = "GET"
-    path = "/api/status"
+    path = "/api/health"
 
 [[vm]]
   size = "shared-cpu-1x"

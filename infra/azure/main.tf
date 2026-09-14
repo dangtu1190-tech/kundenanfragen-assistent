@@ -160,16 +160,20 @@ resource "azurerm_container_app" "app" {
         value = "http://localhost:8050"
       }
 
+      # /api/health, nicht /api/status: der Status ruft das MES im Sidecar auf.
+      # Als Probe würde ein Ausfall der Systemlandschaft (oder ein Sidecar, der
+      # ein paar Sekunden später bereit ist) den gesunden App-Container als
+      # ungesund abstempeln und neu starten lassen.
       liveness_probe {
         transport = "HTTP"
         port      = 8040
-        path      = "/api/status"
+        path      = "/api/health"
       }
 
       readiness_probe {
         transport = "HTTP"
         port      = 8040
-        path      = "/api/status"
+        path      = "/api/health"
       }
     }
 

@@ -54,10 +54,18 @@ variable "container_image" {
   default     = "ghcr.io/dangtu1190-tech/kundenanfragen-assistent:latest"
 }
 
+# Standard 1, und zwar nicht nur aus Kostengründen: der Zustand der Anwendung
+# liegt in JSON-Dateien im Container (data/ergebnisse.json, data/mails.json und
+# systeme/daten/tickets.json). Zwei Replikate hätten jedes seinen eigenen Satz
+# Dateien und damit einen eigenen Ticketzähler; dieselbe Mail bekäme je nach
+# Replikat ein anderes Ergebnis, und die Idempotenz über externe_referenz gälte
+# nur innerhalb eines Replikats. Erst mit einer gemeinsamen Datenhaltung
+# (Datenbank) ist ein höherer Wert fachlich zulässig; deshalb bleibt die
+# Validierung bei 1 bis 10 und die Entscheidung beim Setzen der Variablen.
 variable "max_replicas" {
-  description = "Obergrenze der Replikate. Deckelt Kosten bei unerwartetem Traffic."
+  description = "Obergrenze der Replikate. Standard 1: der Zustand liegt in Dateien im Container, zwei Replikate hätten getrennte Ergebnisse und Ticketzähler."
   type        = number
-  default     = 2
+  default     = 1
   validation {
     condition     = var.max_replicas >= 1 && var.max_replicas <= 10
     error_message = "max_replicas: 1 bis 10."

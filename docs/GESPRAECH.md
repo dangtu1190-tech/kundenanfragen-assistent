@@ -118,9 +118,14 @@ Besucher, der auf "Verarbeiten" klickt.
 
 Der Zustand ist flüchtig: der Server schreibt nach `data/`, im Container ist
 das nach einem Neustart weg. Es gibt keine Anmeldung und keine Rollen, wer die
-Seite erreicht, darf alles. Der Server ist auf eine Instanz ausgelegt, mehrere
-Repliken würden sich beim Schreiben in dieselben JSON-Dateien in die Quere
-kommen; genau deshalb ist `max_replicas` niedrig. Die Terraform-Konfiguration
+Seite erreicht, darf alles. Der Server ist auf eine Instanz ausgelegt: der
+Zustand liegt in JSON-Dateien im Container, zwei Replikate hätten jedes seinen
+eigenen Satz Dateien und einen eigenen Ticketzähler, und die Idempotenz über
+`externe_referenz` gälte nur innerhalb eines Replikats. Genau deshalb steht
+`max_replicas` auf 1, und `terraform test` prüft das mit einer Assertion, die
+den Grund mitnennt. Innerhalb des einen Prozesses ist das abgesichert: eine
+Sperre um jede Folge aus Lesen, Ändern und Schreiben, und geschrieben wird über
+eine Zwischendatei mit `os.replace`. Die Terraform-Konfiguration
 ist validiert und per `terraform test` gegen einen Mock-Provider geplant, aber
 nie angewendet worden. Und die CI ist noch nie gelaufen, weil das Repository
 erst angelegt wird; der Badge im README ist bis dahin grau.
@@ -172,7 +177,8 @@ Damit das nicht in Rückfragen versteckt bleibt, hier gebündelt:
   erfahrungsgemäß Kleinigkeiten.
 - **Die CI ist noch nie gelaufen.** Das Repository wird gerade erst angelegt.
 - **Zustand ist flüchtig**, es gibt **keine Anmeldung**, und der Server ist auf
-  **eine Instanz** ausgelegt.
+  **eine Instanz** ausgelegt (`max_replicas = 1`): der Zustand liegt in Dateien
+  im Container, zwei Replikate hätten getrennte Ergebnisse und Ticketzähler.
 - **Die Modellzahlen sind je ein Lauf**, keine Mittelwerte, und sie sind
   in-sample: der Prompt wurde gegen dieselben 15 Mails nachgeschärft, ein
   zurückgehaltener Satz existiert nicht. Einzelne Punkte sind Rauschen.

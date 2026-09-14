@@ -15,7 +15,9 @@ services:
     plan: free
     region: frankfurt
     dockerfilePath: ./Dockerfile
-    healthCheckPath: /api/status
+    # /api/health kommt ohne Aufruf eines Fachsystems aus; /api/status ruft das
+    # MES an und taugt deshalb nicht als Probe.
+    healthCheckPath: /api/health
     autoDeploy: false
     envVars:
       # Live-Pfad bleibt aus: sonst zahlt der Schlüssel für jeden Besucher.

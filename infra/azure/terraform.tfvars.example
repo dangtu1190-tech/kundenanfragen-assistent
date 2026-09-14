@@ -6,7 +6,9 @@ name_prefix      = "kanfragen"
 environment_name = "demo"
 key_vault_name   = "kv-kanfragen-demo-01" # weltweit eindeutig, ggf. Suffix ändern
 container_image  = "ghcr.io/dangtu1190-tech/kundenanfragen-assistent:latest"
-max_replicas     = 2
+# 1, weil der Zustand in Dateien im Container liegt: zwei Replikate hätten
+# getrennte Ergebnisse und einen eigenen Ticketzähler je Replikat.
+max_replicas     = 1
 
 # Budget-Alarm: Platzhalter-Adresse und Beispielbetrag, vor einem echten apply anpassen.
 budget_alert_email = "budget-alarm@example.invalid"
